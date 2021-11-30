@@ -12,4 +12,37 @@
     <dimen name="text_size_26">26sp</dimen>
     <dimen name="text_size_28">28sp</dimen>
     <dimen name="text_size_30">30sp</dimen>
+    // dimen
+    <dimen name="dimen_2">2dp</dimen>
+    <dimen name="dimen_4">4dp</dimen>
+    <dimen name="dimen_6">6dp</dimen>
+    <dimen name="dimen_8">8dp</dimen>
+    <dimen name="dimen_10">10dp</dimen>
+    <dimen name="dimen_12">12dp</dimen>
+    <dimen name="dimen_14">14dp</dimen>
+    <dimen name="dimen_16">16dp</dimen>
+    <dimen name="dimen_18">18dp</dimen>
+    <dimen name="dimen_20">20dp</dimen>
+    <dimen name="dimen_22">22dp</dimen>
+    <dimen name="dimen_24">24dp</dimen>
+    <dimen name="dimen_26">26dp</dimen>
+    <dimen name="dimen_28">28dp</dimen>
+    <dimen name="dimen_30">30dp</dimen>
+    <dimen name="dimen_32">32dp</dimen>
+    <dimen name="dimen_34">34dp</dimen>
+    <dimen name="dimen_36">36dp</dimen>
+
+    // Layout
+    <dimen name="layout_px">@dimen/dimen_16</dimen>
+    <dimen name="layout_mb">@dimen/dimen_36</dimen>
+
+    // Button
+    <dimen name="button_py">@dimen/dimen_8</dimen>
+    <dimen name="button_mx">@dimen/dimen_20</dimen>
+    <dimen name="button_mb">@dimen/dimen_10</dimen>
+
+    // EditText
+    <dimen name="edt_py">@dimen/dimen_8</dimen>
+    <dimen name="edt_px">@dimen/dimen_14</dimen>
+
 </resources>
