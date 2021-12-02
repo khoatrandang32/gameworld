@@ -44,6 +44,7 @@ import android.util.Log
 
 import androidx.appcompat.content.res.AppCompatResources
 import com.kflower.gameworld.User
+import com.kflower.gameworld.common.components.AppEditText
 import com.kflower.gameworld.database.AppDatabaseHelper
 import com.kflower.gameworld.database.UserTable
 import kotlin.math.log
@@ -56,22 +57,26 @@ class SplashFragment : BaseFragment() {
     }
 
     lateinit var binding: SplashFragmentBinding;
+    lateinit var viewModel: SplashViewModel;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
+        viewModel= SplashViewModel();
+
         binding = SplashFragmentBinding.inflate(layoutInflater)
+        binding.viewModel= viewModel;
+//        var database = AppDatabaseHelper(context);
 
-        var database = AppDatabaseHelper(context);
-
-        Log.d(
-            "KHOA", "onCreate: " + UserTable(null).findUser(context, "Khoadz").get(0).username
-        )
-
+        viewModel.password.value="123"
         binding.loginBtn.setOnClickListener {
-            UserTable(null).addNewUser(context, User("Khoadz", "123456"))
+//            UserTable(null).addNewUser(context, User("Khoadz", "123456"))
+            Log.d("Khoa", "onCreate: "+viewModel.password.value)
+
         }
+
 
         Handler().postDelayed({
             val changeBounds = ChangeBounds();
@@ -99,7 +104,7 @@ class SplashFragment : BaseFragment() {
                     txtName.setTextColor(animation.animatedValue as Int)
                     txtSlogan.setTextColor(animation.animatedValue as Int)
                     edtUsername.setText("");
-
+//                    binding.edtPassword.setEdtText("");
                 }
 
             };

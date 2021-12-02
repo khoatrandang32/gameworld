@@ -2,7 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <data>
+        <variable
+            name="viewModel"
+            type="com.kflower.gameworld.ui.splash.SplashViewModel" />
+    </data>
     <LinearLayout
         android:id="@+id/layoutContainer"
         android:layout_width="match_parent"
@@ -68,6 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <EditText
+                    android:text="@={viewModel.username}"
                     android:textSize="@dimen/text_size_14"
                     android:hint="Enter your usenamme"
                     android:paddingVertical="@dimen/dimen_2"
@@ -80,17 +85,14 @@
                     android:singleLine="true" />
             </LinearLayout>
 
-
-            <EditText
+            <com.kflower.gameworld.common.components.AppEditText
                 android:id="@+id/edtPassword"
+                app:text="@={viewModel.password}"
+                app:hint="Username"
+                app:title="USERNAME"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_edt_layout"
-                android:imeOptions="actionDone"
-                android:lines="1"
-                android:paddingHorizontal="@dimen/edt_px"
-                android:paddingVertical="@dimen/edt_py"
-                android:singleLine="true" />
+                android:layout_height="wrap_content"/>
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
