@@ -64,17 +64,15 @@ class SplashFragment : BaseFragment() {
 
         super.onCreate(savedInstanceState)
 
-        viewModel= SplashViewModel();
+        viewModel = SplashViewModel();
 
         binding = SplashFragmentBinding.inflate(layoutInflater)
-        binding.viewModel= viewModel;
+        binding.viewModel = viewModel;
 //        var database = AppDatabaseHelper(context);
 
-        viewModel.password.value="123"
         binding.loginBtn.setOnClickListener {
 //            UserTable(null).addNewUser(context, User("Khoadz", "123456"))
-            Log.d("Khoa", "onCreate: "+viewModel.password.value)
-
+            Log.d("Khoa", "onCreate: " + viewModel.password.value)
         }
 
 
@@ -103,8 +101,9 @@ class SplashFragment : BaseFragment() {
                     imgLogo.setColorFilter(animation.animatedValue as Int)
                     txtName.setTextColor(animation.animatedValue as Int)
                     txtSlogan.setTextColor(animation.animatedValue as Int)
-                    edtUsername.setText("");
-//                    binding.edtPassword.setEdtText("");
+                    edtUsername.setEdtText("");
+                    edtPassword.setEdtText("");
+
                 }
 
             };

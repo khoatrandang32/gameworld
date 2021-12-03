@@ -1,6 +1,7 @@
 package com.kflower.gameworld.common.components
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -8,8 +9,10 @@ import android.widget.LinearLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
@@ -57,27 +60,36 @@ class AppEditText : LinearLayout {
             val typedArray = context.theme.obtainStyledAttributes(
                 attrs, R.styleable.AppEditText, 0, 0
             )
-            if(!typedArray.getText(R.styleable.AppEditText_text).isNullOrEmpty()){
-                text= typedArray.getText(R.styleable.AppEditText_text).toString()
+            if (!typedArray.getText(R.styleable.AppEditText_text).isNullOrEmpty()) {
+                text = typedArray.getText(R.styleable.AppEditText_text).toString()
                 editText.setText(text)
                 Log.d("KHOA", "initText $text")
             }
-            if(!typedArray.getText(R.styleable.AppEditText_hint).isNullOrEmpty()){
-                hint= typedArray.getText(R.styleable.AppEditText_hint).toString()
-                editText.hint=hint
+            if (!typedArray.getText(R.styleable.AppEditText_hint).isNullOrEmpty()) {
+                hint = typedArray.getText(R.styleable.AppEditText_hint).toString()
+                editText.hint = hint
             }
-            if(!typedArray.getText(R.styleable.AppEditText_title).isNullOrEmpty()){
-                title= typedArray.getText(R.styleable.AppEditText_title).toString()
-                txtTitle.text=title
+            if (!typedArray.getText(R.styleable.AppEditText_title).isNullOrEmpty()) {
+                title = typedArray.getText(R.styleable.AppEditText_title).toString()
+                txtTitle.text = title
             }
+            editText.imeOptions = typedArray.getInt(R.styleable.AppEditText_imeOptions, 0x00000000);
+
+            var inputType = typedArray.getInt(R.styleable.AppEditText_inputType, 0x00000000);
+            if (inputType == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
+
+            }
+            editText.inputType = inputType
+            editText.typeface = Typeface.DEFAULT;
 
 
         }
 
     }
+
     @JvmName("setEdtText")
-    public fun setEdtText(text:String){
-        this.text= text;
+    public fun setEdtText(text: String) {
+        this.text = text;
         editText.setText(text)
 
     }

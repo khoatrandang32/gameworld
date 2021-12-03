@@ -25,6 +25,8 @@
             android:layout_height="wrap_content" />
 
         <com.kflower.gameworld.common.components.AppEditText
+            app:title="123213"
+            app:text="userasdsadsa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
