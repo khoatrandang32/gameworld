@@ -8,8 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="main_color">#F22E63</color>
-    <color name="sub_color">#FF6489</color>
-    <color name="background_color">#fff</color>
+    <color name="main_color">#8B78FF</color>
+    <color name="sub_color">#338B78FF</color>
+    <color name="error_color">#f03a47</color>
+    <color name="text_color">#555866</color>
+    <color name="hint_color">#9fa3c2</color>
+    <color name="title_color">#7d8199</color>
+    <color name="icon_color">#807d8199</color>
+    <color name="background_color">#ffffff</color>
 
 </resources>

@@ -29,12 +29,14 @@
                 android:id="@+id/imgLogo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_app_logo" />
+                android:src="@drawable/ic_app_logo"
+ />
 
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:shadowColor="@color/white"
                 android:text="@string/app_name"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_26" />
@@ -74,11 +76,11 @@
                 app:hint="Enter your password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <EditText
-                android:imeOptions=""
-                android:inputType=""
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+<!--            <EditText-->
+<!--                android:imeOptions=""-->
+<!--                android:inputType=""-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"/>-->
 
             <Space
                 android:layout_width="match_parent"

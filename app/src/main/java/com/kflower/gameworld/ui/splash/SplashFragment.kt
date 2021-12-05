@@ -43,6 +43,7 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.lifecycle.Observer
 import com.kflower.gameworld.User
 import com.kflower.gameworld.common.components.AppEditText
 import com.kflower.gameworld.database.AppDatabaseHelper
@@ -72,7 +73,9 @@ class SplashFragment : BaseFragment() {
 
         binding.loginBtn.setOnClickListener {
 //            UserTable(null).addNewUser(context, User("Khoadz", "123456"))
-            Log.d("Khoa", "onCreate: " + viewModel.password.value)
+            binding.edtUsername.setError(true);
+            binding.edtPassword.setError(true,"Vl");
+
         }
 
 
@@ -92,23 +95,33 @@ class SplashFragment : BaseFragment() {
             }
             binding.logoLayout.layoutParams = params
             val mainColor = resources.getColor(R.color.main_color)
-            val bgColor = resources.getColor(R.color.background_color)
+            val bgColor = resources.getColor(R.color.white)
             updateColor(mainColor, bgColor) { animation ->
                 binding.layoutContainer.setBackgroundColor(animation.animatedValue as Int)
             };
+
+            viewModel.username.observe(this, {
+                Log.d("KHOA", "observe")
+//                if(it.length>5){
+//                    binding.edtUsername.setError(true);
+//                }
+            })
+
             updateColor(bgColor, mainColor) { animation ->
                 binding.apply {
                     imgLogo.setColorFilter(animation.animatedValue as Int)
                     txtName.setTextColor(animation.animatedValue as Int)
                     txtSlogan.setTextColor(animation.animatedValue as Int)
-                    edtUsername.setEdtText("");
-                    edtPassword.setEdtText("");
+                    binding.edtUsername.setEdtText("");
+                    binding.edtPassword.setEdtText("");
 
                 }
 
             };
         }, 2000)
-
+//        Handler().postDelayed({
+//
+//        },2100)
 
     }
 

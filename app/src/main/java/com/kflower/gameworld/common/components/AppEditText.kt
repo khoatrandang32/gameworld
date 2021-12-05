@@ -1,6 +1,8 @@
 package com.kflower.gameworld.common.components
 
+import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.widget.EditText
@@ -13,20 +15,37 @@ import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.EditorInfo
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import com.kflower.gameworld.R
 import androidx.databinding.InverseBindingListener
+import android.text.method.PasswordTransformationMethod
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.graphics.drawable.DrawableCompat
+import android.graphics.drawable.GradientDrawable
 
 
 class AppEditText : LinearLayout {
 
     lateinit var editText: EditText;
     lateinit var txtTitle: TextView;
+    lateinit var textViewErr: TextView;
+    lateinit var imgViewTailIcon: ImageView;
+    lateinit var inputContainer: LinearLayout;
+    lateinit var inputOutline: LinearLayout;
+    lateinit var bgDrawable: GradientDrawable;
     var text = ""
+    var strokeWidth = 5;
     var hint = ""
     var title = ""
+    var isPassword = false;
+    var isShowPassword = false;
+    var isEdtError = false;
 
     constructor(context: Context) : super(context) {
         initView(null)
@@ -54,7 +73,11 @@ class AppEditText : LinearLayout {
         view.layoutParams = layoutParams
         this.addView(view)
         editText = findViewById(R.id.appEditText);
+        inputOutline = findViewById(R.id.inputOutline);
         txtTitle = findViewById(R.id.txtTitle);
+        textViewErr = findViewById(R.id.textViewErr);
+        inputContainer = findViewById(R.id.inputContainer);
+        imgViewTailIcon = findViewById(R.id.imgViewTailIcon);
 
         if (attrs != null) {
             val typedArray = context.theme.obtainStyledAttributes(
@@ -63,7 +86,6 @@ class AppEditText : LinearLayout {
             if (!typedArray.getText(R.styleable.AppEditText_text).isNullOrEmpty()) {
                 text = typedArray.getText(R.styleable.AppEditText_text).toString()
                 editText.setText(text)
-                Log.d("KHOA", "initText $text")
             }
             if (!typedArray.getText(R.styleable.AppEditText_hint).isNullOrEmpty()) {
                 hint = typedArray.getText(R.styleable.AppEditText_hint).toString()
@@ -75,17 +97,89 @@ class AppEditText : LinearLayout {
             }
             editText.imeOptions = typedArray.getInt(R.styleable.AppEditText_imeOptions, 0x00000000);
 
-            var inputType = typedArray.getInt(R.styleable.AppEditText_inputType, 0x00000000);
-            if (inputType == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
-
+            var inputType = typedArray.getInt(R.styleable.AppEditText_inputType, 0x00000001);
+            isPassword = inputType == 0x00000081
+            if (isPassword) {
+                imgViewTailIcon.setImageResource(R.drawable.ic_eye_close)
+            } else {
+                imgViewTailIcon.setImageResource(R.drawable.ic_close)
             }
+            setCloseIcon();
             editText.inputType = inputType
             editText.typeface = Typeface.DEFAULT;
+            imgViewTailIcon.setOnClickListener {
 
+                if (isPassword) {
+                    var selectionStart = editText.selectionStart
+                    var selectionEnd = editText.selectionEnd
+                    isShowPassword = !isShowPassword;
+                    if (isShowPassword) {
+                        imgViewTailIcon.setImageResource(R.drawable.ic_eye_open)
+                        editText.transformationMethod = null
 
+                    } else {
+                        imgViewTailIcon.setImageResource(R.drawable.ic_eye_close)
+                        editText.transformationMethod = PasswordTransformationMethod()
+
+                    }
+                    editText.setSelection(selectionStart, selectionEnd)
+
+                } else {
+                    editText.setText("");
+                    imgViewTailIcon.visibility = GONE
+                }
+            }
+
+            inputContainer.setOnClickListener {
+                editText.requestFocus()
+                val imm: InputMethodManager? =
+                    (context as Activity).getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+            }
+            bgDrawable = inputOutline.background as GradientDrawable
+            bgDrawable.setStroke(strokeWidth, Color.TRANSPARENT)
+            editText.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    bgDrawable.setStroke(
+                        strokeWidth,
+                        context.resources.getColor(R.color.main_color)
+                    )
+                } else {
+                    bgDrawable.setStroke(strokeWidth, Color.TRANSPARENT)
+                }
+            }
         }
 
     }
+
+
+    private fun setCloseIcon() {
+        if (isPassword) {
+        } else {
+            if (editText.text.isNullOrEmpty()) {
+                imgViewTailIcon.visibility = View.GONE
+            } else {
+                imgViewTailIcon.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    public fun setError(isError: Boolean,errorMessage:String?=null) {
+        isEdtError = isError;
+        bgDrawable = inputOutline.background as GradientDrawable
+        if (isError) {
+            bgDrawable.setStroke(strokeWidth, context.resources.getColor(R.color.error_color))
+            if(errorMessage.isNullOrEmpty()){
+                textViewErr.visibility= GONE
+            }
+            else{
+                textViewErr.visibility= VISIBLE
+                textViewErr.text = errorMessage
+            }
+        }
+
+    }
+
 
     @JvmName("setEdtText")
     public fun setEdtText(text: String) {
@@ -141,7 +235,14 @@ class AppEditText : LinearLayout {
 
                     override fun afterTextChanged(editable: Editable) {
                         textAttrChanged.onChange()
-                        view.text = editable.toString()
+                        view.setCloseIcon()
+                        if (view.isEdtError) {
+                            view.setError(false)
+                            view.bgDrawable.setStroke(view.strokeWidth,
+                                view.context.resources.getColor(R.color.main_color))
+                            view.textViewErr.visibility= GONE
+                        }
+
                     }
                 })
             }
