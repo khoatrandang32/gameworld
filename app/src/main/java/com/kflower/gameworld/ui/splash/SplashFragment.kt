@@ -102,6 +102,8 @@ class SplashFragment : BaseFragment() {
         Handler().postDelayed({
             val currentUser = auth.currentUser
             Log.d("KHOA", "onCreate: $currentUser")
+            navigateTo(MainFragment())
+
             if(currentUser != null){
                navigateTo(MainFragment())
             }
