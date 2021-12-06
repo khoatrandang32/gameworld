@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1018454661440",
+    "project_id": "gamewolrd-2487d",
+    "storage_bucket": "gamewolrd-2487d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018454661440:android:0a165a86e4ec0e7fd302a5",
+        "android_client_info": {
+          "package_name": "com.kflower.gameworld"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018454661440-gqd2udl1l3sv5sqrmp8mhk03c2pljv9u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kflower.gameworld",
+            "certificate_hash": "0d5ab3bcf0986de29f0e7503fbf146f661cdbabf"
+          }
+        },
+        {
+          "client_id": "1018454661440-fc8mneeqqfei3sj1ab2sl7v5if6skiml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv_rrcn0178AdvX27ApXZCm1rFZO3a69I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018454661440-fc8mneeqqfei3sj1ab2sl7v5if6skiml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

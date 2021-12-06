@@ -11,6 +11,7 @@ import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.database.UserTable
 import com.kflower.gameworld.databinding.MainFragmentBinding
 import com.kflower.gameworld.databinding.SplashFragmentBinding
+import com.kflower.gameworld.ui.splash.SplashFragment
 
 
 class MainFragment : BaseFragment() {
@@ -25,6 +26,7 @@ class MainFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding= MainFragmentBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
     }
 

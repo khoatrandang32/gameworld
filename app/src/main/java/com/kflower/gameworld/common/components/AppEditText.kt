@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.graphics.drawable.DrawableCompat
 import android.graphics.drawable.GradientDrawable
+import androidx.core.view.isVisible
 
 
 class AppEditText : LinearLayout {
@@ -146,6 +147,8 @@ class AppEditText : LinearLayout {
                     )
                 } else {
                     bgDrawable.setStroke(strokeWidth, Color.TRANSPARENT)
+                    textViewErr.visibility= GONE
+                    textViewErr.text = "";
                 }
             }
         }
