@@ -57,6 +57,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation 'com.google.firebase:firebase-database-ktx:19.7.0'
     implementation 'com.github.mmin18:realtimeblurview:1.2.1'
+    implementation "com.airbnb.android:lottie:4.2.1"
+    implementation 'androidx.navigation:navigation-common-ktx:2.3.5'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

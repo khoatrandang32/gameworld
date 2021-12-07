@@ -13,7 +13,6 @@ class AppBottomBar:LinearLayout {
     }
 
 
-
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
 
         initView(attrs)

@@ -5,6 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.kflower.gameworld.R
 import com.kflower.gameworld.databinding.BaseActivityBinding
+import androidx.navigation.NavOptions
+
+
+
 
 abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +21,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 .replace(R.id.container, setDefaultFragment())
                 .commitNow()
         }
+
 
     }
 

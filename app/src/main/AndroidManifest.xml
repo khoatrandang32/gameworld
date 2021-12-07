@@ -11,7 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GameWorld">
         <activity
-            android:windowSoftInputMode="adjustResize"
             android:name=".MainActivity"
             android:exported="true">
 

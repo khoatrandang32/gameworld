@@ -7,23 +7,29 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.kflower.gameworld.R
+
 
 public abstract class BaseFragment : Fragment() {
-    lateinit var fgParent:ViewGroup;
+    lateinit var fgParent: ViewGroup;
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fgParent= container!!;
+        fgParent = container!!;
         return getLayoutBinding().root
     }
 
     protected fun navigateTo(newFragment: Fragment) {
-        if(fgParent!=null){
+        if (fgParent != null) {
             val ft: FragmentTransaction = parentFragmentManager.beginTransaction()
+            ft.setCustomAnimations(
+                R.anim.fade_in,
+                R.anim.fade_out,
+            )
             ft.replace(fgParent.id, newFragment)
             ft.addToBackStack(null)
-           ft.commit()
+            ft.commit()
         }
 
     }
@@ -33,6 +39,6 @@ public abstract class BaseFragment : Fragment() {
 
     }
 
-    protected abstract fun getLayoutBinding():ViewDataBinding;
+    protected abstract fun getLayoutBinding(): ViewDataBinding;
 
 }
