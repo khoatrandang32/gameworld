@@ -67,9 +67,6 @@ class SplashFragment : BaseFragment() {
         binding.logoLayout.layoutParams = params
         binding.layoutContainer.setBackgroundColor(resources.getColor(R.color.main_color));
 
-//        binding.animationView.setAnimationFromUrl("https://firebasestorage.googleapis.com/v0/b/gamewolrd-2487d.appspot.com/o/74547-games-icon.json?alt=media&token=df65ebb1-a017-4266-b074-c444a5daede8")
-//        binding.animationView.playAnimation()
-
         binding.viewModel = viewModel;
 //        var database = AppDatabaseHelper(context);
 
@@ -114,7 +111,7 @@ class SplashFragment : BaseFragment() {
 
                 updateColor(bgColor, mainColor) { animation ->
                     binding.apply {
-                        imgLogo.setColorFilter(animation.animatedValue as Int)
+//                        imgLogo.setColorFilter(animation.animatedValue as Int)
                         txtName.setTextColor(animation.animatedValue as Int)
                         txtSlogan.setTextColor(animation.animatedValue as Int)
                         binding.edtUsername.setEdtText("");
