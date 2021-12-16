@@ -1,6 +1,7 @@
 package com.kflower.gameworld.common.components
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -79,17 +80,50 @@ class AppBottomBar:LinearLayout {
                 onChangeTab(3);
             }
         }
+        changeSelectedTabIcon(curTabIndex)
     }
     private fun onChangeTab(index:Int){
         if(curTabIndex!=index) {
             listener.onChangeTab(index)
             curTabIndex = index;
             resetBtn();
+            changeSelectedTabIcon(index);
         }
     }
 
+    private fun changeSelectedTabIcon(index:Int) {
+        when(index){
+            0 ->{
+                var icon= resources.getDrawable(R.drawable.ic_home_solid);
+                icon.setTint(resources.getColor(R.color.main_color))
+                imgHome.setImageDrawable(icon)
+            }
+            1 ->{
+                var icon= resources.getDrawable(R.drawable.ic_search);
+                icon.setTint(resources.getColor(R.color.main_color))
+                imgSearch.setImageDrawable(icon)
+            }
+            2 ->{
+                var icon= resources.getDrawable(R.drawable.ic_categories_solid);
+                icon.setTint(resources.getColor(R.color.main_color))
+                imgCategories.setImageDrawable(icon)
+            }
+            3 ->{
+                var icon= resources.getDrawable(R.drawable.ic_user_solid);
+                icon.setTint(resources.getColor(R.color.main_color))
+                imgProfile.setImageDrawable(icon)
+            }
+        }
+
+    }
+
     private fun resetBtn() {
-        btnTabHome
+        var iconSearch= resources.getDrawable(R.drawable.ic_search);
+        iconSearch.setTint(resources.getColor(R.color.black))
+        imgHome.setImageResource(R.drawable.ic_home_outline);
+        imgSearch.setImageDrawable(iconSearch);
+        imgCategories.setImageResource(R.drawable.ic_categories_outline);
+        imgProfile.setImageResource(R.drawable.ic_user_outline);
     }
 
     public fun setOnTabChange(listener:AppBottomBarInterface){

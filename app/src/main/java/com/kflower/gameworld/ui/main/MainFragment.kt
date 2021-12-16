@@ -26,6 +26,8 @@ open class MainFragment : BaseFragment() {
 
     lateinit var binding: MainFragmentBinding;
 
+    var currentTab=0;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= MainFragmentBinding.inflate(layoutInflater)
@@ -38,12 +40,14 @@ open class MainFragment : BaseFragment() {
         }
         binding.bottomBar.setOnTabChange(object :AppBottomBarInterface{
             override fun onChangeTab(index: Int) {
+                var isRightSlide= currentTab<index;
                 when (index) {
-                    0 -> goToTab(HomeFragment.newInstance())
-                    1 -> goToTab(SearchFragment.newInstance())
-                    2 -> goToTab(CategoriesFragment.newInstance())
-                    3 -> goToTab(ProfileFragment.newInstance())
+                    0 -> goToTab(HomeFragment.newInstance(),isRightSlide)
+                    1 -> goToTab(SearchFragment.newInstance(),isRightSlide)
+                    2 -> goToTab(CategoriesFragment.newInstance(),isRightSlide)
+                    3 -> goToTab(ProfileFragment.newInstance(),isRightSlide)
                 }
+                currentTab= index
             }
 
         })
@@ -52,13 +56,21 @@ open class MainFragment : BaseFragment() {
     override fun getLayoutBinding(): ViewDataBinding {
         return binding;
     }
-    protected fun goToTab(newFragment: Fragment) {
+    protected fun goToTab(newFragment: Fragment,isRightSlide:Boolean) {
 
         val ft: FragmentTransaction = childFragmentManager.beginTransaction()
-        ft.setCustomAnimations(
-            R.anim.slide_in,
-            R.anim.slide_out,
-        )
+        if(isRightSlide){
+            ft.setCustomAnimations(
+                R.anim.slide_in,
+                R.anim.slide_out,
+            )
+        }
+        else{
+            ft.setCustomAnimations(
+                R.anim.slide_left,
+                R.anim.slide_right,
+            )
+        }
         ft.replace(R.id.frameLayoutHomeNav, newFragment)
         ft.addToBackStack(null)
         ft.commit()
