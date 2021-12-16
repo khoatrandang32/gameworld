@@ -6,16 +6,18 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main"
         android:layout_width="match_parent"
+        android:background="@color/background_color"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".ui.main.MainFragment">
 
 
         <FrameLayout
-            android:id="@+id/frameLayout"
+            android:id="@+id/frameLayoutHomeNav"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <com.kflower.gameworld.common.components.AppBottomBar
+            android:id="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent" />

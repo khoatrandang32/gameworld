@@ -7,34 +7,74 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="@dimen/dimen_14"
         android:background="@drawable/bg_app_bottom_bar"
         android:elevation="@dimen/dimen_20"
+        android:gravity="center"
         android:orientation="horizontal">
-
-        <ImageView
+        <LinearLayout
+            android:id="@+id/btnTabHome"
+            android:clickable="true"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen_30"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_home_outline" />
+            android:background="@drawable/bg_btn_ripple"
+            android:gravity="center"
+            android:paddingVertical="@dimen/dimen_18">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen_30"
-            android:layout_weight="1"
-            android:src="@drawable/ic_search" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_home_outline" />
+        </LinearLayout>
 
-        <ImageView
+        <LinearLayout
+            android:id="@+id/btnTabSearch"
+            android:clickable="true"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen_30"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_categories_outline" />
+            android:background="@drawable/bg_btn_ripple"
+            android:gravity="center"
+            android:paddingVertical="@dimen/dimen_18">
 
-        <ImageView
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_search" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnTabCategories"
+            android:clickable="true"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen_30"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_user_outline" />
+            android:background="@drawable/bg_btn_ripple"
+            android:gravity="center"
+            android:paddingVertical="@dimen/dimen_18">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_categories_outline" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnTabProfile"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_ripple"
+            android:gravity="center"
+            android:paddingVertical="@dimen/dimen_18">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_user_outline" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
