@@ -23,6 +23,7 @@
             android:paddingVertical="@dimen/dimen_18">
 
             <ImageView
+                android:id="@+id/imgHome"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_home_outline" />
@@ -39,6 +40,7 @@
             android:paddingVertical="@dimen/dimen_18">
 
             <ImageView
+                android:id="@+id/imgSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_search" />
@@ -55,6 +57,7 @@
             android:paddingVertical="@dimen/dimen_18">
 
             <ImageView
+                android:id="@+id/imgCategories"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_categories_outline" />
@@ -71,6 +74,7 @@
             android:paddingVertical="@dimen/dimen_18">
 
             <ImageView
+                android:id="@+id/imgProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_user_outline" />

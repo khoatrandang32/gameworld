@@ -40,10 +40,9 @@ open class MainFragment : BaseFragment() {
             override fun onChangeTab(index: Int) {
                 when (index) {
                     0 -> goToTab(HomeFragment.newInstance())
-                    1 -> goToTab(HomeFragment())
+                    1 -> goToTab(SearchFragment.newInstance())
                     2 -> goToTab(CategoriesFragment.newInstance())
                     3 -> goToTab(ProfileFragment.newInstance())
-
                 }
             }
 
@@ -54,11 +53,19 @@ open class MainFragment : BaseFragment() {
         return binding;
     }
     protected fun goToTab(newFragment: Fragment) {
-        val transaction = childFragmentManager.beginTransaction()
-        transaction.add(R.id.container, newFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
 
+        val ft: FragmentTransaction = childFragmentManager.beginTransaction()
+        ft.setCustomAnimations(
+            R.anim.slide_in,
+            R.anim.slide_out,
+        )
+        ft.replace(R.id.frameLayoutHomeNav, newFragment)
+        ft.addToBackStack(null)
+        ft.commit()
+
+//        childFragmentManager.beginTransaction()
+//            .replace(R.id.frameLayoutHomeNav, newFragment)
+//            .commitNow()
     }
 
 

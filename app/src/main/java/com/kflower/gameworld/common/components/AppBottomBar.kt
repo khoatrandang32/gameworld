@@ -2,14 +2,17 @@ package com.kflower.gameworld.common.components
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import com.kflower.gameworld.R
 import com.kflower.gameworld.ui.main.categories.CategoriesFragment
 import com.kflower.gameworld.ui.main.home.HomeFragment
 import com.kflower.gameworld.ui.main.profile.ProfileFragment
 import com.kflower.gameworld.ui.main.search.SearchFragment
+import kotlin.math.log
 
 class AppBottomBar:LinearLayout {
 
@@ -17,6 +20,12 @@ class AppBottomBar:LinearLayout {
     lateinit var btnTabSearch :LinearLayout;
     lateinit var btnTabCategories :LinearLayout;
     lateinit var btnTabProfile :LinearLayout;
+    lateinit var imgHome :ImageView;
+    lateinit var imgSearch :ImageView;
+    lateinit var imgCategories :ImageView;
+    lateinit var imgProfile :ImageView;
+
+    var curTabIndex=0;
 
     lateinit var listener :AppBottomBarInterface;
     constructor(context: Context) : super(context) {
@@ -51,22 +60,38 @@ class AppBottomBar:LinearLayout {
         btnTabHome= view.findViewById(R.id.btnTabHome);
         btnTabSearch= view.findViewById(R.id.btnTabSearch);
         btnTabCategories= view.findViewById(R.id.btnTabCategories);
-        btnTabProfile= view.findViewById(R.id.btnTabProfile);
+        btnTabProfile= view.findViewById(R.id.btnTabProfile)
+        imgHome= view.findViewById(R.id.imgHome);
+        imgSearch= view.findViewById(R.id.imgSearch);
+        imgCategories= view.findViewById(R.id.imgCategories);
+        imgProfile= view.findViewById(R.id.imgProfile);
         if(listener!=null){
             btnTabHome.setOnClickListener {
-                listener.onChangeTab(0)
+                onChangeTab(0)
             }
             btnTabSearch.setOnClickListener {
-                listener.onChangeTab(1)
+                onChangeTab(1)
             }
             btnTabCategories.setOnClickListener {
-                listener.onChangeTab(2)
+                onChangeTab(2)
             }
             btnTabProfile.setOnClickListener {
-                listener.onChangeTab(3)
+                onChangeTab(3);
             }
         }
     }
+    private fun onChangeTab(index:Int){
+        if(curTabIndex!=index) {
+            listener.onChangeTab(index)
+            curTabIndex = index;
+            resetBtn();
+        }
+    }
+
+    private fun resetBtn() {
+        btnTabHome
+    }
+
     public fun setOnTabChange(listener:AppBottomBarInterface){
         this.listener= listener;
     }
