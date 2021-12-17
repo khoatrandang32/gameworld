@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.kflower.gameworld.R
 import com.kflower.gameworld.ui.main.categories.CategoriesFragment
 import com.kflower.gameworld.ui.main.home.HomeFragment
@@ -25,6 +26,11 @@ class AppBottomBar:LinearLayout {
     lateinit var imgSearch :ImageView;
     lateinit var imgCategories :ImageView;
     lateinit var imgProfile :ImageView;
+    //
+    lateinit var txtHome :TextView;
+    lateinit var txtSearch :TextView;
+    lateinit var txtCategories :TextView;
+    lateinit var txtProfile :TextView;
 
     var curTabIndex=0;
 
@@ -66,6 +72,13 @@ class AppBottomBar:LinearLayout {
         imgSearch= view.findViewById(R.id.imgSearch);
         imgCategories= view.findViewById(R.id.imgCategories);
         imgProfile= view.findViewById(R.id.imgProfile);
+        //
+        txtHome= view.findViewById(R.id.txtHome);
+        txtSearch= view.findViewById(R.id.txtSearch);
+        txtCategories= view.findViewById(R.id.txtCategories);
+        txtProfile= view.findViewById(R.id.txtProfile);
+
+
         if(listener!=null){
             btnTabHome.setOnClickListener {
                 onChangeTab(0)
@@ -97,21 +110,26 @@ class AppBottomBar:LinearLayout {
                 var icon= resources.getDrawable(R.drawable.ic_home_solid);
                 icon.setTint(resources.getColor(R.color.main_color))
                 imgHome.setImageDrawable(icon)
+                txtHome.setTextColor(resources.getColor(R.color.main_color));
+
             }
             1 ->{
                 var icon= resources.getDrawable(R.drawable.ic_search);
                 icon.setTint(resources.getColor(R.color.main_color))
                 imgSearch.setImageDrawable(icon)
+                txtSearch.setTextColor(resources.getColor(R.color.main_color));
             }
             2 ->{
                 var icon= resources.getDrawable(R.drawable.ic_categories_solid);
                 icon.setTint(resources.getColor(R.color.main_color))
                 imgCategories.setImageDrawable(icon)
+                txtCategories.setTextColor(resources.getColor(R.color.main_color));
             }
             3 ->{
                 var icon= resources.getDrawable(R.drawable.ic_user_solid);
                 icon.setTint(resources.getColor(R.color.main_color))
                 imgProfile.setImageDrawable(icon)
+                txtProfile.setTextColor(resources.getColor(R.color.main_color));
             }
         }
 
@@ -124,6 +142,12 @@ class AppBottomBar:LinearLayout {
         imgSearch.setImageDrawable(iconSearch);
         imgCategories.setImageResource(R.drawable.ic_categories_outline);
         imgProfile.setImageResource(R.drawable.ic_user_outline);
+        //
+        txtHome.setTextColor(context.resources.getColor(R.color.text_color));
+        txtSearch.setTextColor(context.resources.getColor(R.color.text_color));
+        txtCategories.setTextColor(context.resources.getColor(R.color.text_color));
+        txtProfile.setTextColor(context.resources.getColor(R.color.text_color));
+
     }
 
     public fun setOnTabChange(listener:AppBottomBarInterface){

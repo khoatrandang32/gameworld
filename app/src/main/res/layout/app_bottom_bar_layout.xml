@@ -18,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:orientation="vertical"
             android:background="@drawable/bg_btn_ripple"
             android:gravity="center"
             android:paddingVertical="@dimen/dimen_18">
@@ -27,11 +28,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_home_outline" />
+            <TextView
+                android:id="@+id/txtHome"
+                android:text="Home"
+                android:textColor="@color/text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/btnTabSearch"
             android:clickable="true"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -44,12 +52,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_search" />
+            <TextView
+                android:id="@+id/txtSearch"
+                android:text="Search"
+                android:textColor="@color/text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/btnTabCategories"
             android:clickable="true"
             android:layout_width="wrap_content"
+            android:orientation="vertical"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/bg_btn_ripple"
@@ -61,6 +76,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_categories_outline" />
+            <TextView
+                android:id="@+id/txtCategories"
+                android:text="Categories"
+                android:textColor="@color/text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <LinearLayout
@@ -69,6 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:orientation="vertical"
             android:background="@drawable/bg_btn_ripple"
             android:gravity="center"
             android:paddingVertical="@dimen/dimen_18">
@@ -78,6 +100,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_user_outline" />
+            <TextView
+                android:id="@+id/txtProfile"
+                android:text="Profile"
+                android:textColor="@color/text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
     </LinearLayout>

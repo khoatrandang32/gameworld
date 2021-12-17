@@ -5,6 +5,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.databinding.HomeFragmentBinding
+import com.kflower.gameworld.dialog.ChooseAvatarDialog
 
 class HomeFragment : BaseFragment() {
 
