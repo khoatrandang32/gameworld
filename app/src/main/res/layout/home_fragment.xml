@@ -6,16 +6,36 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main"
         android:layout_width="match_parent"
-        android:gravity="center"
-        android:background="#123321"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:paddingHorizontal="@dimen/dimen_16"
+        android:paddingVertical="@dimen/dimen_20"
         tools:context=".ui.main.MainFragment">
 
-        <TextView
-            android:text="HOME"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="@dimen/dimen_16"
+                android:padding="@dimen/dimen_4"
+                android:src="@drawable/default_avatar_1"
+                app:shapeAppearanceOverlay="@style/circle"
+                app:strokeColor="@color/main_color"
+                app:strokeWidth="2dp" />
+
+            <TextView
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_26"
+                android:fontFamily="@font/bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guest" />
+        </LinearLayout>
     </LinearLayout>
 </layout>
