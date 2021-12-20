@@ -4,40 +4,32 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import com.google.android.material.imageview.ShapeableImageView
+import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
 import com.kflower.gameworld.R
-import com.kflower.gameworld.databinding.AvatarItemBinding
 
-class AvatarAdapter: BaseAdapter{
-    var context: Context;
-    private var list:MutableList<Int>
 
-    constructor(context: Context,list: MutableList<Int>){
-        this.context=context;
-        this.list= list;
+class AvatarAdapter(
+    var context: Context,
+    var list: MutableList<Int>
+) : RecyclerView.Adapter<AvatarAdapter.AvatarViewHolder>() {
+    override fun onBindViewHolder(holder: AvatarViewHolder, position: Int) {
+        holder.bindData(context, list?.get(position))
     }
 
-    override fun getCount(): Int {
-        return list.size
+    override fun getItemCount(): Int = list.size
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvatarViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return AvatarViewHolder(inflater.inflate(R.layout.avatar_item, parent, false))
     }
 
-    override fun getItem(position: Int): Any {
-        return list[position]
-    }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong();
-    }
+    class AvatarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val imgView: ImageView = itemView.findViewById(R.id.imgAvatar)
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val inflater = context
-            .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        var view = inflater.inflate(R.layout.avatar_item, null)
-        //
-        var imgAvatar=view.findViewById<ShapeableImageView>(R.id.imgAvatar);
-        imgAvatar.setImageDrawable(context.getDrawable(list[position]))
-
-        return view;
+        fun bindData(context: Context, image: Int) {
+            imgView.setImageDrawable(context.getDrawable(image));
+        }
     }
 }

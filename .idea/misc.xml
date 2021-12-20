@@ -12,14 +12,16 @@
         <entry key="..\:/GameWolrd/app/src/main/res/drawable/bg_button.xml" value="0.21851851851851853" />
         <entry key="..\:/GameWolrd/app/src/main/res/drawable/bg_edt_layout.xml" value="0.21851851851851853" />
         <entry key="..\:/GameWolrd/app/src/main/res/drawable/bg_edt_layout_container.xml" value="0.21851851851851853" />
+        <entry key="..\:/GameWolrd/app/src/main/res/drawable/bg_sub_btn.xml" value="0.1046875" />
         <entry key="..\:/GameWolrd/app/src/main/res/drawable/ic_close.xml" value="0.10104166666666667" />
         <entry key="..\:/GameWolrd/app/src/main/res/drawable/ic_search.xml" value="0.1765625" />
         <entry key="..\:/GameWolrd/app/src/main/res/layout/app_bottom_bar_layout.xml" value="0.264" />
         <entry key="..\:/GameWolrd/app/src/main/res/layout/app_edittext_component_layout.xml" value="0.2" />
         <entry key="..\:/GameWolrd/app/src/main/res/layout/avatar_item.xml" value="0.1578125" />
+        <entry key="..\:/GameWolrd/app/src/main/res/layout/carousel_item.xml" value="0.16" />
         <entry key="..\:/GameWolrd/app/src/main/res/layout/dialog_choose_avatar.xml" value="0.1578125" />
         <entry key="..\:/GameWolrd/app/src/main/res/layout/dialog_loading.xml" value="0.1578125" />
-        <entry key="..\:/GameWolrd/app/src/main/res/layout/home_fragment.xml" value="0.1578125" />
+        <entry key="..\:/GameWolrd/app/src/main/res/layout/home_fragment.xml" value="0.22135416666666666" />
         <entry key="..\:/GameWolrd/app/src/main/res/layout/login_fragment.xml" value="0.25" />
         <entry key="..\:/GameWolrd/app/src/main/res/layout/main_fragment.xml" value="0.2" />
         <entry key="..\:/GameWolrd/app/src/main/res/layout/splash_fragment.xml" value="0.176" />

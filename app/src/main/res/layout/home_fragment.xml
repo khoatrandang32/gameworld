@@ -30,12 +30,19 @@
                 app:strokeWidth="2dp" />
 
             <TextView
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_26"
-                android:fontFamily="@font/bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Guest" />
+                android:fontFamily="@font/bold"
+                android:text="Guest"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_26" />
         </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/carousel"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/dimen_30"
+            android:layout_height="300dp"/>
+
     </LinearLayout>
 </layout>

@@ -44,7 +44,7 @@ class ChooseAvatarDialog : Dialog {
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        binding.gridView.adapter= avatarAdapter;
+//        binding.gridView.adapter= avatarAdapter;
 
     }
 }
