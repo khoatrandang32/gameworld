@@ -62,7 +62,9 @@ class SplashFragment : BaseFragment() {
         binding.viewModel = viewModel;
 
         Handler().postDelayed({
-            navigateTo(MainFragment.newInstance())
+//            finish()
+            navigateTo( MainFragment.newInstance())
+
         }, 3000)
 
     }

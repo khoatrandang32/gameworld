@@ -17,5 +17,24 @@
         <item name="android:windowDisablePreview">true</item>
 
         <!-- Customize your theme here. -->
+
+    </style>
+
+    <style name="circleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10%</item>
+    </style>
+    <style name="Theme.GameWorld.Fullscreen" parent="Theme.GameWorld">
+        <item name="android:actionBarStyle">@style/Widget.Theme.GameWorld.ActionBar.Fullscreen
+        </item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <style name="ThemeOverlay.GameWorld.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
 </resources>

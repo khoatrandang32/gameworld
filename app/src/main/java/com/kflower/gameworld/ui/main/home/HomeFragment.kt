@@ -1,23 +1,22 @@
 package com.kflower.gameworld.ui.main.home
 
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
-import androidx.constraintlayout.helper.widget.Carousel
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.kflower.gameworld.R
-import com.kflower.gameworld.adapter.AvatarAdapter
+import com.kflower.gameworld.adapter.AudioAdapter
+import com.kflower.gameworld.adapter.AudioVerticalAdapter
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.databinding.HomeFragmentBinding
+
+import com.kflower.gameworld.model.AudioBook
+import kotlin.collections.ArrayList
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
+import com.kflower.gameworld.adapter.AudioGroupAdapter
+import com.kflower.gameworld.dialog.AppDrawer
 import com.kflower.gameworld.dialog.ChooseAvatarDialog
-
-import androidx.recyclerview.widget.RecyclerView
-
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.slider.Slider
-import com.kflower.gameworld.adapter.CarouselAdapter
-import kotlin.math.pow
+import com.kflower.gameworld.model.AudioGroup
 
 
 class HomeFragment : BaseFragment() {
@@ -29,55 +28,76 @@ class HomeFragment : BaseFragment() {
     private lateinit var viewModel: HomeViewModel
 
     lateinit var binding: HomeFragmentBinding;
-    lateinit var listAvatar: ArrayList<String>;
+    lateinit var dataListAudio: ArrayList<AudioBook>;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= HomeFragmentBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        binding = HomeFragmentBinding.inflate(layoutInflater)
+        dataListAudio = arrayListOf();
+        initFakeData();
+        //
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManagerVertical =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+
         binding.apply {
-            listAvatar= ArrayList();
-            listAvatar.add("https://jssors8.azureedge.net/demos/image-slider/img/px-beach-daylight-fun-1430675-image.jpg")
-            listAvatar.add("https://jssors8.azureedge.net/demos/image-slider/img/px-beach-daylight-fun-1430675-image.jpg")
-            listAvatar.add("https://jssors8.azureedge.net/demos/image-slider/img/px-beach-daylight-fun-1430675-image.jpg")
-            val layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            carousel.layoutManager = layoutManager
-            carousel.adapter= CarouselAdapter(requireContext(),listAvatar)
-            carousel.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                   carousel.apply {
-                       post {
-                           (0 until childCount).forEach { position ->
-                               val child = getChildAt(position)
-                               val childCenterX = (child.left + child.right) / 2
-                               val scaleValue = getGaussianScale(childCenterX, 0.8f, 0.2f, 150.toDouble(),left,right)
-                               child.scaleX = scaleValue
-                               child.scaleY = scaleValue
-                           }
-                       }
-                   }
+            binding.containerLayout.setStatusBarColor(resources.getColor(R.color.main_color))
+            //
+            lvAudio.layoutManager = layoutManager;
+            lvAudio.adapter = AudioAdapter(requireContext(), dataListAudio);
+
+            var listGroup = arrayListOf<AudioGroup>()
+            listGroup.add(AudioGroup("Popular", dataListAudio))
+
+            lvGroupAudios.layoutManager = layoutManagerVertical;
+            lvGroupAudios.adapter = AudioGroupAdapter(requireContext(), listGroup);
+//            lvVerticalAudio.isNestedScrollingEnabled = false;
+
+            refreshLayout.apply {
+                setOnRefreshListener {
+                    isRefreshing = false
                 }
-            })
+            }
+            appToolBar.setOnClickLeft{
+                val drawer= AppDrawer(requireContext())
+                drawer.show()
+            }
+
         }
+
     }
-    private fun getGaussianScale(
-        childCenterX: Int,
-        minScaleOffest: Float,
-        scaleFactor: Float,
-        spreadFactor: Double,
-        left:Int,
-        right:Int
-    ): Float {
-        val recyclerCenterX = (left + right) / 2
-        return (Math.pow(
-            Math.E,
-            -(childCenterX - recyclerCenterX.toDouble()).pow(2.toDouble()) / (2 * Math.pow(
-                spreadFactor,
-                2.toDouble()
-            ))
-        ) * scaleFactor + minScaleOffest).toFloat()
+
+    private fun initFakeData() {
+        dataListAudio.add(
+            AudioBook(
+                "https://jssors8.azureedge.net/demos/image-slider/img/px-beach-daylight-fun-1430675-image.jpg",
+                "",
+                "Nhất Niệm Vĩnh Hằng"
+            )
+        )
+        dataListAudio.add(
+            AudioBook(
+                "https://d1j8r0kxyu9tj8.cloudfront.net/images/1566809340Y397jnilYDd15KN.jpg",
+                "",
+                "Audio Book 2"
+            )
+        )
+        dataListAudio.add(
+            AudioBook(
+                "https://i.pinimg.com/originals/bc/d5/c9/bcd5c9519581acc60bd60a429ab0c88f.jpg",
+                "",
+                "Audio Book 3"
+            )
+        )
+        dataListAudio.add(
+            AudioBook(
+                "https://cdn-amz.fadoglobal.io/images/I/71OIhbUOF-L.jpg",
+                "",
+                "Audio Book 4"
+            )
+        )
     }
 
     override fun getLayoutBinding(): ViewDataBinding {

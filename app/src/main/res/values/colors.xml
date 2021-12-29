@@ -9,13 +9,19 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
 
-    <color name="main_color">#36c5fe</color>
-    <color name="sub_color">#3336c5fe</color>
+    <color name="main_color">#767BFA</color>
+    <color name="sub_color">#33767BFA</color>
     <color name="error_color">#f03a47</color>
     <color name="text_color">#555866</color>
     <color name="hint_color">#9fa3c2</color>
+    <color name="gray_color">#ABAFD1</color>
     <color name="title_color">#7d8199</color>
     <color name="icon_color">#807d8199</color>
-    <color name="background_color">#F6F7FC</color>
+    <color name="background_color">#fff</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
 
 </resources>

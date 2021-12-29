@@ -114,7 +114,7 @@ class AppBottomBar:LinearLayout {
 
             }
             1 ->{
-                var icon= resources.getDrawable(R.drawable.ic_search);
+                var icon= resources.getDrawable(R.drawable.ic_search_solid);
                 icon.setTint(resources.getColor(R.color.main_color))
                 imgSearch.setImageDrawable(icon)
                 txtSearch.setTextColor(resources.getColor(R.color.main_color));
@@ -136,17 +136,15 @@ class AppBottomBar:LinearLayout {
     }
 
     private fun resetBtn() {
-        var iconSearch= resources.getDrawable(R.drawable.ic_search);
-        iconSearch.setTint(resources.getColor(R.color.black))
         imgHome.setImageResource(R.drawable.ic_home_outline);
-        imgSearch.setImageDrawable(iconSearch);
+        imgSearch.setImageResource(R.drawable.ic_search);
         imgCategories.setImageResource(R.drawable.ic_categories_outline);
         imgProfile.setImageResource(R.drawable.ic_user_outline);
         //
-        txtHome.setTextColor(context.resources.getColor(R.color.text_color));
-        txtSearch.setTextColor(context.resources.getColor(R.color.text_color));
-        txtCategories.setTextColor(context.resources.getColor(R.color.text_color));
-        txtProfile.setTextColor(context.resources.getColor(R.color.text_color));
+        txtHome.setTextColor(context.resources.getColor(R.color.gray_color));
+        txtSearch.setTextColor(context.resources.getColor(R.color.gray_color));
+        txtCategories.setTextColor(context.resources.getColor(R.color.gray_color));
+        txtProfile.setTextColor(context.resources.getColor(R.color.gray_color));
 
     }
 
