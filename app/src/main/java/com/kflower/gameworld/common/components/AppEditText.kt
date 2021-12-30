@@ -5,16 +5,13 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.util.AttributeSet
-import android.widget.EditText
 import android.widget.LinearLayout
 
 import android.view.LayoutInflater
 import android.view.View
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
-import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -22,21 +19,19 @@ import androidx.databinding.InverseBindingAdapter
 import com.kflower.gameworld.R
 import androidx.databinding.InverseBindingListener
 import android.text.method.PasswordTransformationMethod
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.graphics.drawable.DrawableCompat
 import android.graphics.drawable.GradientDrawable
-import androidx.core.view.isVisible
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
 
 
 class AppEditText : LinearLayout {
 
-    lateinit var editText: EditText;
+    lateinit var editText: AppEdt;
     lateinit var txtTitle: TextView;
     lateinit var textViewErr: TextView;
     lateinit var imgViewTailIcon: ImageView;
+    lateinit var imgLeftIcon: ImageView;
     lateinit var inputContainer: LinearLayout;
     lateinit var inputOutline: LinearLayout;
     lateinit var bgDrawable: GradientDrawable;
@@ -79,6 +74,7 @@ class AppEditText : LinearLayout {
         textViewErr = findViewById(R.id.textViewErr);
         inputContainer = findViewById(R.id.inputContainer);
         imgViewTailIcon = findViewById(R.id.imgViewTailIcon);
+        imgLeftIcon = findViewById(R.id.imgLeftIcon);
 
         if (attrs != null) {
             val typedArray = context.theme.obtainStyledAttributes(
@@ -92,9 +88,16 @@ class AppEditText : LinearLayout {
                 hint = typedArray.getText(R.styleable.AppEditText_hint).toString()
                 editText.hint = hint
             }
+            if (typedArray.getDrawable(R.styleable.AppEditText_iconLeftSrc) != null) {
+                imgLeftIcon.visibility = VISIBLE
+                imgLeftIcon.setImageDrawable(typedArray.getDrawable(R.styleable.AppEditText_iconLeftSrc))
+            }
             if (!typedArray.getText(R.styleable.AppEditText_title).isNullOrEmpty()) {
+                txtTitle.visibility = VISIBLE
                 title = typedArray.getText(R.styleable.AppEditText_title).toString()
                 txtTitle.text = title
+            } else {
+                txtTitle.visibility = GONE
             }
             editText.imeOptions = typedArray.getInt(R.styleable.AppEditText_imeOptions, 0x00000000);
 
@@ -147,10 +150,58 @@ class AppEditText : LinearLayout {
                     )
                 } else {
                     bgDrawable.setStroke(strokeWidth, Color.TRANSPARENT)
-                    textViewErr.visibility= GONE
+                    textViewErr.visibility = GONE
                     textViewErr.text = "";
                 }
             }
+        }
+        //
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                charSequence: CharSequence,
+                i: Int,
+                i1: Int,
+                i2: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                charSequence: CharSequence,
+                i: Int,
+                i1: Int,
+                i2: Int
+            ) {
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+                setCloseIcon()
+                if (isEdtError) {
+                    setError(false)
+                    bgDrawable.setStroke(
+                        strokeWidth,
+                        view.context.resources.getColor(R.color.main_color)
+                    )
+                    textViewErr.visibility = GONE
+                }
+
+            }
+        })
+
+        //
+        editText.setOnKeyPreImeListener(object : AppEdt.OnKeyPreImeListener {
+            override fun onImeBack(editText: AppEdt) {
+                editText.clearFocus()
+            }
+
+        })
+        editText.setOnEditorActionListener { v, actionId, event ->
+            if ((event != null && (event.keyCode == KeyEvent.KEYCODE_ENTER))
+                || (actionId == EditorInfo.IME_ACTION_DONE)
+            ) {
+                editText.clearFocus()
+
+            }
+            false
         }
 
     }
@@ -160,23 +211,24 @@ class AppEditText : LinearLayout {
         if (isPassword) {
         } else {
             if (editText.text.isNullOrEmpty()) {
+                Log.d("KHOA", "setCloseIcon: 1")
                 imgViewTailIcon.visibility = View.GONE
             } else {
+                Log.d("KHOA", "setCloseIcon: 2")
                 imgViewTailIcon.visibility = View.VISIBLE
             }
         }
     }
 
-    public fun setError(isError: Boolean,errorMessage:String?=null) {
+    public fun setError(isError: Boolean, errorMessage: String? = null) {
         isEdtError = isError;
         bgDrawable = inputOutline.background as GradientDrawable
         if (isError) {
             bgDrawable.setStroke(strokeWidth, context.resources.getColor(R.color.error_color))
-            if(errorMessage.isNullOrEmpty()){
-                textViewErr.visibility= GONE
-            }
-            else{
-                textViewErr.visibility= VISIBLE
+            if (errorMessage.isNullOrEmpty()) {
+                textViewErr.visibility = GONE
+            } else {
+                textViewErr.visibility = VISIBLE
                 textViewErr.text = errorMessage
             }
         }
@@ -241,9 +293,11 @@ class AppEditText : LinearLayout {
                         view.setCloseIcon()
                         if (view.isEdtError) {
                             view.setError(false)
-                            view.bgDrawable.setStroke(view.strokeWidth,
-                                view.context.resources.getColor(R.color.main_color))
-                            view.textViewErr.visibility= GONE
+                            view.bgDrawable.setStroke(
+                                view.strokeWidth,
+                                view.context.resources.getColor(R.color.main_color)
+                            )
+                            view.textViewErr.visibility = GONE
                         }
 
                     }

@@ -49,7 +49,7 @@
         <entry key="..\:/Khoa/gameworld/app/src/main/res/drawable/ic_userx.xml" value="0.15052083333333333" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/activity_fullscreen.xml" value="0.1" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/app_bottom_bar_layout.xml" value="0.264" />
-        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/app_edittext_component_layout.xml" value="0.2" />
+        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/app_edittext_component_layout.xml" value="0.264" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/app_linear_layout.xml" value="0.4" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/app_tool_bar_layout.xml" value="0.264" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/audio_group_item.xml" value="0.1609375" />
@@ -58,14 +58,18 @@
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/audio_vertical_item.xml" value="0.264" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/base_activity.xml" value="0.25416666666666665" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/carousel_item.xml" value="0.16" />
+        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/categories_fragment.xml" value="0.144" />
+        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/category_item.xml" value="0.1" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/dialog_loading.xml" value="0.1526268115942029" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/home_fragment.xml" value="0.176" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/layout_head_title.xml" value="0.264" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/main_fragment.xml" value="0.2" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/nav_header.xml" value="0.176" />
-        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/search_fragment.xml" value="0.165625" />
+        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/search_fragment.xml" value="0.2" />
+        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/search_group_item.xml" value="0.264" />
+        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/search_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/splash_fragment.xml" value="0.12" />
-        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/template_fragment.xml" value="0.23854166666666668" />
+        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/template_fragment.xml" value="0.12" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/menu/drawer_view.xml" value="0.264" />
       </map>
     </option>

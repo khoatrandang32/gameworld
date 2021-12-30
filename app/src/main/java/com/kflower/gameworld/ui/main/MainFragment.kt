@@ -93,7 +93,6 @@ open class MainFragment : BaseFragment() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
     }
 
 }

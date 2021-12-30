@@ -1,6 +1,7 @@
 package com.kflower.gameworld
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.kflower.gameworld.common.core.BaseActivity

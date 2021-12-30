@@ -13,15 +13,15 @@ import com.kflower.gameworld.model.AudioBook
 
 
 class AudioAdapter(private val context: Context, var listAudio: MutableList<AudioBook>) :
-    RecyclerView.Adapter<AudioAdapter.AudioAdapterHolder>() {
+    RecyclerView.Adapter<AudioAdapter.AGroupSearchAdapterHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int
-    ): AudioAdapterHolder {
+    ): AGroupSearchAdapterHolder {
 //        val view: View = LayoutInflater.from(context).inflate(R.layout.audio_item, parent, false)
         val view: View = LayoutInflater.from(context).inflate(R.layout.audio_horizontal_item, parent, false)
-        return AudioAdapterHolder(view)
+        return AGroupSearchAdapterHolder(view)
     }
 
-    override fun onBindViewHolder(holder: AudioAdapterHolder, position: Int) {
+    override fun onBindViewHolder(holder: AGroupSearchAdapterHolder, position: Int) {
         holder.bindData(context, listAudio?.get(position))
     }
 
@@ -29,7 +29,7 @@ class AudioAdapter(private val context: Context, var listAudio: MutableList<Audi
         return listAudio.size;
     }
 
-    inner class AudioAdapterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class AGroupSearchAdapterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imgView: ImageView = itemView.findViewById(R.id.imageAudio)
         private val txtAudioBookName: TextView = itemView.findViewById(R.id.txtAudioBookName)
 
