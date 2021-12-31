@@ -29,23 +29,20 @@ class CenterZoomLinearLayoutManager(
     }
 
     private fun scaleChildren() {
-        val midpoint = height / 2f
         val childHeight = getChildAt(childCount - 1)!!.height
         val childO = getChildAt(0) as View
-
-        for (i in 0 until childCount) {
+        var scaleChild0 =  ((childHeight + getDecoratedTop(childO)).toFloat())/childHeight
+        childO.scaleX = scaleChild0
+        childO.scaleY = scaleChild0
+        childO.alpha= scaleChild0-(1-scaleChild0)
+        childO.translationY=-(getDecoratedTop(childO)/3)/scaleChild0
+        for (i in 1 until childCount) {
             val child = getChildAt(i) as View
+            child.alpha= 1f
+            child.scaleX = 1f
+            child.scaleY = 1f
+            child.translationY=0f
 
-            if (i == 0) {
-                var scale =  ((childHeight + getDecoratedTop(child)).toFloat())/childHeight
-
-                child.scaleX = scale
-                child.scaleY = scale
-            }
-            else{
-                child.scaleX = 1f
-                child.scaleY = 1f
-            }
 //            val child = getChildAt(i) as View
 //            child.translationY= -(child.height/2).toFloat()
 

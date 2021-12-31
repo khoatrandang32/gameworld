@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.kflower.gameworld.common.components.AppLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <com.kflower.gameworld.common.components.AppLinearLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".ui.main.MainFragment">
+
         <LinearLayout
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/layout_px"
-            android:paddingVertical="@dimen/dimen_16"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dimen_16">
+
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_16"
+                android:paddingHorizontal="@dimen/layout_px"
+                android:text="Favourites"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/dimen_30" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lvFav"
+                android:clipToPadding="false"
+                android:paddingRight="@dimen/dimen_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_16"
+                android:layout_marginTop="@dimen/dimen_8"
+                android:paddingHorizontal="@dimen/layout_px"
                 android:text="Categories"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/dimen_30"
-                android:layout_marginBottom="@dimen/dimen_16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <View
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:textSize="@dimen/dimen_30" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:background="@color/text_color"
                 android:id="@+id/lvCategories"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:paddingBottom="50dp"
+                android:paddingHorizontal="@dimen/layout_px" />
         </LinearLayout>
 
     </com.kflower.gameworld.common.components.AppLinearLayout>

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.cardview.widget.CardView
         android:id="@+id/container"
-        android:layout_marginBottom="@dimen/dimen_12"
+        android:layout_marginLeft="@dimen/dimen_16"
         app:cardCornerRadius="@dimen/dimen_12"
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_width="130dp"
+        android:layout_height="130dp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kflower.gameworld.adapter.CategoriesAdapter
+import com.kflower.gameworld.adapter.FavouriteCategoriesAdapter
 import com.kflower.gameworld.common.components.CenterZoomLinearLayoutManager
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.databinding.CategoriesFragmentBinding
@@ -34,22 +35,111 @@ class CategoriesFragment : BaseFragment() {
         viewModel = ViewModelProvider(this).get(CategoriesViewModel::class.java)
         val layoutManagerVertical =
             CenterZoomLinearLayoutManager(requireContext())
+        val layoutManagerHorizontal =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         var listCategory = arrayListOf<Category>()
-        listCategory.add(Category("Romantic", ""))
-        listCategory.add(Category("Kungfu", ""))
-        listCategory.add(Category("Science", ""))
-        listCategory.add(Category("Romantic", ""))
-        listCategory.add(Category("Kungfu", ""))
-        listCategory.add(Category("Science", ""))
-        listCategory.add(Category("Romantic", ""))
-        listCategory.add(Category("Kungfu", ""))
-        listCategory.add(Category("Science", ""))
-        listCategory.add(Category("Romantic", ""))
-        listCategory.add(Category("Kungfu", ""))
-        listCategory.add(Category("Science", ""))
+        listCategory.add(
+            Category(
+                "Romantic",
+                "https://jssors8.azureedge.net/demos/image-slider/img/px-beach-daylight-fun-1430675-image.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Kungfu",
+                "https://d1j8r0kxyu9tj8.cloudfront.net/images/1566809340Y397jnilYDd15KN.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Science",
+                "https://i.pinimg.com/originals/bc/d5/c9/bcd5c9519581acc60bd60a429ab0c88f.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Romantic",
+                "https://cdn-amz.fadoglobal.io/images/I/71OIhbUOF-L.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Romantic",
+                "https://jssors8.azureedge.net/demos/image-slider/img/px-beach-daylight-fun-1430675-image.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Kungfu",
+                "https://d1j8r0kxyu9tj8.cloudfront.net/images/1566809340Y397jnilYDd15KN.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Science",
+                "https://i.pinimg.com/originals/bc/d5/c9/bcd5c9519581acc60bd60a429ab0c88f.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Romantic",
+                "https://cdn-amz.fadoglobal.io/images/I/71OIhbUOF-L.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Romantic",
+                "https://jssors8.azureedge.net/demos/image-slider/img/px-beach-daylight-fun-1430675-image.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Kungfu",
+                "https://d1j8r0kxyu9tj8.cloudfront.net/images/1566809340Y397jnilYDd15KN.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Science",
+                "https://i.pinimg.com/originals/bc/d5/c9/bcd5c9519581acc60bd60a429ab0c88f.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Romantic",
+                "https://cdn-amz.fadoglobal.io/images/I/71OIhbUOF-L.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Romantic",
+                "https://jssors8.azureedge.net/demos/image-slider/img/px-beach-daylight-fun-1430675-image.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Kungfu",
+                "https://d1j8r0kxyu9tj8.cloudfront.net/images/1566809340Y397jnilYDd15KN.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Science",
+                "https://i.pinimg.com/originals/bc/d5/c9/bcd5c9519581acc60bd60a429ab0c88f.jpg"
+            )
+        )
+        listCategory.add(
+            Category(
+                "Romantic",
+                "https://cdn-amz.fadoglobal.io/images/I/71OIhbUOF-L.jpg"
+            )
+        )
         binding.apply {
             lvCategories.layoutManager = layoutManagerVertical
             lvCategories.adapter = CategoriesAdapter(requireContext(), listCategory)
+
+            lvFav.layoutManager = layoutManagerHorizontal;
+            lvFav.adapter = FavouriteCategoriesAdapter(requireContext(), listCategory)
         }
     }
 
