@@ -9,10 +9,16 @@ import com.kflower.gameworld.databinding.AudioGroupItemBinding
 
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kflower.gameworld.interfaces.OnClickAudioBook
+import com.kflower.gameworld.model.AudioBook
 import com.kflower.gameworld.model.AudioGroup
 
 
-class AudioGroupAdapter(context: Context, audioGroupList: MutableList<AudioGroup>) :
+class AudioGroupAdapter(
+    context: Context,
+    audioGroupList: MutableList<AudioGroup>,
+    val listener: OnClickAudioBook
+) :
     RecyclerView.Adapter<AudioGroupAdapter.MyViewHolder>() {
     private var layoutInflater: LayoutInflater? = null
     private var context: Context = context;
@@ -41,13 +47,17 @@ class AudioGroupAdapter(context: Context, audioGroupList: MutableList<AudioGroup
         holder.binding.apply {
             groupName = curItem.title;
             lvVerticalAudio.layoutManager = layoutManagerVertical;
-            lvVerticalAudio.adapter = AudioVerticalAdapter(context, curItem.listAudio);
+            lvVerticalAudio.adapter =
+                AudioVerticalAdapter(context, curItem.listAudio, object : OnClickAudioBook {
+                    override fun onClick(item: AudioBook) {
+                        listener.onClick(item)
+                    }
+                });
         }
     }
 
     override fun getItemCount(): Int {
         return audioGroupList.size
     }
-
 
 }

@@ -15,7 +15,7 @@ import com.kflower.gameworld.interfaces.IOnBackPressed
 
 
 public abstract class BaseFragment : Fragment(), IOnBackPressed {
-    lateinit var fgParent: ViewGroup;
+    private var fgParent: ViewGroup?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,16 +24,30 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
         return getLayoutBinding().root
     }
 
-    protected fun navigateTo(newFragment: Fragment) {
+    fun navigateTo(newFragment: Fragment) {
         if (fgParent != null) {
             val ft: FragmentTransaction = parentFragmentManager.beginTransaction()
             ft.setCustomAnimations(
                 R.anim.fade_in,
                 R.anim.fade_out,
             )
-            ft.replace(fgParent.id, newFragment)
+            ft.replace(fgParent!!.id, newFragment)
             ft.addToBackStack(null)
             ft.commit()
+        }
+
+    }
+    fun parentNavigateTo(newFragment: Fragment) {
+        if (fgParent != null) {
+            val ft: FragmentTransaction? = parentFragment?.parentFragmentManager?.beginTransaction()
+            ft?.setCustomAnimations(
+                R.anim.fade_in,
+                R.anim.fade_out,
+            )
+
+            parentFragment?.let { ft?.replace(it.id, newFragment) }
+            ft?.addToBackStack(null)
+            ft?.commit()
         }
 
     }

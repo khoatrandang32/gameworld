@@ -63,34 +63,6 @@ class TemplateFragment : BaseFragment() {
                 .load("https://i.pinimg.com/originals/bc/d5/c9/bcd5c9519581acc60bd60a429ab0c88f.jpg")
                 .into(imgTopAudio);
 
-            dataListAudio.add(
-                AudioBook(
-                    "https://jssors8.azureedge.net/demos/image-slider/img/px-beach-daylight-fun-1430675-image.jpg",
-                    "",
-                    "Audio Book 1"
-                )
-            )
-            dataListAudio.add(
-                AudioBook(
-                    "https://d1j8r0kxyu9tj8.cloudfront.net/images/1566809340Y397jnilYDd15KN.jpg",
-                    "",
-                    "Audio Book 2"
-                )
-            )
-            dataListAudio.add(
-                AudioBook(
-                    "https://i.pinimg.com/originals/bc/d5/c9/bcd5c9519581acc60bd60a429ab0c88f.jpg",
-                    "",
-                    "Audio Book 3"
-                )
-            )
-            dataListAudio.add(
-                AudioBook(
-                    "https://cdn-amz.fadoglobal.io/images/I/71OIhbUOF-L.jpg",
-                    "",
-                    "Audio Book 4"
-                )
-            )
             viewpager.apply {
 
                 orientation = ViewPager2.ORIENTATION_HORIZONTAL;

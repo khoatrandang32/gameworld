@@ -1,20 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.kflower.gameworld.common.components.AppLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main"
+        android:background="@color/background_color"
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".ui.main.MainFragment">
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/layout_px"
+            android:paddingVertical="@dimen/dimen_16"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="Profile"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/dimen_30"
+                android:layout_marginBottom="@dimen/dimen_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.imageview.ShapeableImageView
+                    app:shapeAppearanceOverlay="@style/circle"
+                    tools:src="@drawable/img_temp"
+                    android:scaleType="centerCrop"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/dimen_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        tools:text="Dang Khoa"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/dimen_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 
-        <TextView
-            android:text="PROFILE"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
+    </com.kflower.gameworld.common.components.AppLinearLayout>
 </layout>

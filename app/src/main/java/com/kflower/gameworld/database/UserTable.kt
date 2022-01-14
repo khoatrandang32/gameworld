@@ -4,8 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.provider.BaseColumns
-import android.util.Log
 import com.kflower.gameworld.User
 
 class UserTable(db: SQLiteDatabase?) {
@@ -33,7 +31,7 @@ class UserTable(db: SQLiteDatabase?) {
         val dbHelper = AppDatabaseHelper(context)
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {
-            put(USERNAME, user.username)
+            put(USERNAME, user.email)
             put(PASSWORD, user.password)
         }
         val newRowId = db?.insert(TABLE_USER, null, values)
@@ -44,7 +42,7 @@ class UserTable(db: SQLiteDatabase?) {
         val dbHelper = AppDatabaseHelper(context)
         val db = dbHelper.writableDatabase
         val values = ContentValues()
-        values.put(USERNAME, user.username)
+        values.put(USERNAME, user.email)
         values.put(PASSWORD, user.password)
 
         db.insert(TABLE_USER, null, values)
@@ -71,14 +69,14 @@ class UserTable(db: SQLiteDatabase?) {
             null
         )
         with(cursor) {
-            while (moveToNext()) {
-                listUser.add(
-                    User(
-                        cursor?.getString(1),
-                        cursor?.getString(2)
-                    )
-                )
-            }
+//            while (moveToNext()) {
+//                listUser.add(
+//                    User(
+//                        cursor?.getString(1),
+//                        cursor?.getString(2)
+//                    )
+//                )
+//            }
         }
         cursor.close()
         return listUser

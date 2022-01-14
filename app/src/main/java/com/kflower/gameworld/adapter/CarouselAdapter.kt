@@ -33,7 +33,7 @@ class CarouselAdapter (
 
         fun bindData(context: Context, audio: AudioBook) {
             Glide.with(context).load(audio.thumbnailUrl).into(imgView);
-            txtAudioBookName.text= audio.name;
+            txtAudioBookName.text= audio.title;
         }
     }
 }

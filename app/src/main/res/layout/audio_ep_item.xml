@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data >
+        <variable
+            name="isSelect"
+            type="Boolean" />
+    </data>
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/dimen_10"
+        android:layout_height="wrap_content"
+        android:background="@{isSelect?@drawable/bg_solid_rounded:@drawable/bg_edt_layout}"
+        android:gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/dimen_8"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/dimen_6"
+        android:paddingVertical="@dimen/dimen_8">
+
+        <TextView
+            android:id="@+id/txtAudioEp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@{isSelect?@color/white:@color/main_color}"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="bold"
+            tools:text="Tap 1" />
+
+        <ImageView
+            android:id="@+id/imgDownload"
+            android:layout_width="@dimen/dimen_18"
+            android:layout_height="@dimen/dimen_18"
+            android:src="@drawable/ic_download"
+            app:tint="@color/main_color" />
+    </LinearLayout>
+</layout>

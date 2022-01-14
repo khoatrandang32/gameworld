@@ -2,6 +2,7 @@ package com.kflower.gameworld.ui.main
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -10,11 +11,12 @@ import com.kflower.gameworld.common.components.AppBottomBarInterface
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.constants.StatusMode
 import com.kflower.gameworld.databinding.MainFragmentBinding
+import com.kflower.gameworld.model.AudioBook
 import com.kflower.gameworld.ui.main.categories.CategoriesFragment
 import com.kflower.gameworld.ui.main.home.HomeFragment
 import com.kflower.gameworld.ui.main.profile.ProfileFragment
 import com.kflower.gameworld.ui.main.search.SearchFragment
-import kotlin.math.log
+import retrofit2.Callback
 
 
 open class MainFragment : BaseFragment() {
@@ -27,22 +29,21 @@ open class MainFragment : BaseFragment() {
 
     lateinit var binding: MainFragmentBinding;
 
-    val homeFragment = HomeFragment();
-    val searchFragment = SearchFragment();
-    val categoriesFragment = CategoriesFragment();
-    val profileFragment = ProfileFragment();
-
-
     var currentTab = 0;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainFragmentBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel =  ViewModelProvider(this).get(MainViewModel::class.java)
+
+        val homeFragment = HomeFragment();
+        val searchFragment = SearchFragment();
+        val categoriesFragment = CategoriesFragment();
+        val profileFragment = ProfileFragment();
 
         if (savedInstanceState == null) {
             childFragmentManager.beginTransaction()
-                .replace(R.id.frameLayoutHomeNav, HomeFragment.newInstance())
+                .replace(R.id.frameLayoutHomeNav, homeFragment)
                 .commitNow()
         }
         binding.bottomBar.setOnTabChange(object : AppBottomBarInterface {

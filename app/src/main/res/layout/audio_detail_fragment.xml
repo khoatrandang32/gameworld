@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="com.kflower.gameworld.ui.audioDetail.AudioDetailViewModel" />
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbarSize="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp">
+
+                    <ImageView
+                        android:id="@+id/imgThumbnail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        tools:src="@drawable/img_temp" />
+                    <View
+                        android:background="@drawable/bg_cover_"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                    <ImageView
+                        android:id="@+id/imgBack"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginLeft="@dimen/dimen_16"
+                        android:layout_marginTop="44dp"
+                        android:src="@drawable/ic_left_arrow"
+                        android:layout_width="@dimen/dimen_20"
+                        android:layout_height="@dimen/dimen_20"
+                        app:tint="@color/white" />
+                    <ImageView
+                        android:id="@+id/imgPlay"
+                        android:clickable="true"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:background="@drawable/bg_btn_ripple"
+                        android:src="@drawable/ic_play_solid"
+                        android:layout_width="60dp"
+                        android:padding="@dimen/dimen_12"
+                        android:layout_height="60dp"
+                        app:tint="@color/main_color" />
+                    <TextView
+                        android:textSize="@dimen/text_size_18"
+                        android:textColor="@color/white"
+                        android:text="Listen"
+                        android:gravity="center"
+                        app:layout_constraintTop_toBottomOf="@id/imgPlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/dimen_16"
+                    android:paddingVertical="@dimen/dimen_24">
+
+                    <TextView
+                        android:id="@+id/audioName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dimen_4"
+                        android:text="@{viewModel.item.title}"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/dimen_26"
+                        android:textStyle="bold"
+                        tools:text="Audio Name" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen_16"
+                            android:layout_height="@dimen/dimen_16"
+                            android:src="@drawable/ic_star" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dimen_8"
+                            android:layout_weight="1"
+                            android:text="9.1 Stars"
+                            android:textColor="@color/hint_color" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_12"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Author"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/text_size_18"
+                                android:textColor="@color/text_color" />
+
+                            <TextView
+                                android:id="@+id/txtAuthor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.item.author}"
+                                android:textColor="@color/hint_color"
+                                tools:text="Author" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Reader"
+                                android:textSize="@dimen/text_size_18"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_color" />
+
+                            <TextView
+                                android:id="@+id/txtReader"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.item.reader}"
+                                android:textColor="@color/hint_color"
+                                tools:text="Reader" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Episodes"
+                                android:textSize="@dimen/text_size_18"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_color" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{viewModel.item.episodes.size()+` Episodes`}"
+                                android:textColor="@color/hint_color"
+                                tools:text="Reader" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_12"
+                        android:layout_marginBottom="@dimen/dimen_8"
+                        android:textStyle="bold"
+                        android:text="Description"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <TextView
+                        android:id="@+id/txtDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.item.decription}"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_size_14"
+                        tools:text="Description" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_12"
+                        android:layout_marginBottom="@dimen/dimen_8"
+                        android:textStyle="bold"
+                        android:text="Comments"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_18" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="There are no comments."
+                        android:visibility="@{viewModel.item.comments.size()>0?View.GONE:View.VISIBLE}"
+                        android:textColor="@color/hint_color"
+                        android:textSize="@dimen/text_size_14" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/lvComments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="@dimen/dimen_8" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</layout>

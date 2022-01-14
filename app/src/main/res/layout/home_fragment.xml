@@ -45,13 +45,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen_12"
                         android:clipToPadding="false"
-                        android:paddingRight="@dimen/dimen_16" />
+                        android:paddingHorizontal="@dimen/dimen_8" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/lvGroupAudios"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen_12" />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 

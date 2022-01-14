@@ -1,3 +1,12 @@
 package com.kflower.gameworld.model
 
-data class Category(var title: String, var img: String)
+import com.google.gson.annotations.SerializedName
+
+data class Category(
+    @SerializedName("title")
+    var title: String,
+    @SerializedName("imgThumbnail")
+    var img: String,
+    @SerializedName("_id")
+    var id: String?
+)
