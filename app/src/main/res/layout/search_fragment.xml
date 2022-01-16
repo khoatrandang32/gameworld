@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
+    <data>
+        <variable
+            name="viewModel"
+            type="com.kflower.gameworld.ui.main.search.SearchViewModel" />
+    </data>
     <com.kflower.gameworld.common.components.AppLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -26,6 +30,7 @@
             <com.kflower.gameworld.common.components.AppEditText
                 app:iconLeftSrc="@drawable/ic_search"
                 app:inputType="text"
+                app:text="@={viewModel.searchText}"
                 app:hint="Type to search ..."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -33,6 +38,11 @@
                 android:id="@+id/lvGroupSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lvAudioResult"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"/>
         </LinearLayout>
 
     </com.kflower.gameworld.common.components.AppLinearLayout>

@@ -1,7 +1,5 @@
 package com.kflower.gameworld.ui.play
 
-import android.app.DownloadManager
-import android.content.Context
 import android.util.Log
 import android.widget.SeekBar
 import androidx.databinding.ViewDataBinding
@@ -17,7 +15,6 @@ import android.graphics.drawable.Drawable
 import android.graphics.Bitmap
 
 import android.content.Intent
-import android.net.Uri
 import android.os.*
 
 import androidx.core.content.ContextCompat
@@ -25,30 +22,15 @@ import com.kflower.gameworld.interfaces.isMediaPlayChanged
 import com.kflower.gameworld.services.MediaSessionService
 
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.google.android.exoplayer2.offline.DownloadHelper
-import com.google.android.exoplayer2.offline.DownloadRequest
-import com.google.android.exoplayer2.offline.DownloadService
-import com.google.android.exoplayer2.util.Util
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
-import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.MyApplication.Companion.listener
 import com.kflower.gameworld.MyApplication.Companion.mediaPlayer
 import com.kflower.gameworld.adapter.AudioEpAdapter
-import com.kflower.gameworld.services.AppDownloadService
-import org.json.JSONObject
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.net.URL
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.getSystemService
 import com.kflower.gameworld.MyApplication.Companion.fetchAudio
-import com.kflower.gameworld.common.DownloadAudio
 import com.tonyodev.fetch2.NetworkType
 import com.tonyodev.fetch2.Priority
 import com.tonyodev.fetch2.Request
@@ -284,7 +266,7 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
         }
         binding.imgDownload.setOnClickListener {
             Log.d("KHOA", "onCreate: "+item.episodes[mediaPlayer.currentMediaItemIndex])
-            val file = "khoa222.mp3"
+            val file = "${item.id}_ID_${mediaPlayer.currentMediaItemIndex+1}.mp3"
             val downloadsPath =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path
             val dirPath = "$downloadsPath/FileDownloader/$file"

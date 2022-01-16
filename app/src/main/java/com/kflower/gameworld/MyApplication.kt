@@ -106,7 +106,8 @@ class MyApplication: Application(){
                 etaInMilliSeconds: Long,
                 downloadedBytesPerSecond: Long
             ) {
-                Log.d("KHOA", "onProgress: "+etaInMilliSeconds+" - "+downloadedBytesPerSecond+" - "+download.progress+" - "+download.total)
+
+                Log.d("KHOA", "onProgress: "+etaInMilliSeconds+" - "+downloadedBytesPerSecond+" - "+download.progress+" - "+download.total+" - "+download.id)
             }
 
             override fun onQueued(download: Download, waitingOnNetwork: Boolean) {

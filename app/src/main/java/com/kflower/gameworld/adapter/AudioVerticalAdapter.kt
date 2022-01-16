@@ -34,6 +34,11 @@ class AudioVerticalAdapter(
         holder.bindData(context, listAudio?.get(position))
     }
 
+    fun setData(list: MutableList<AudioBook>){
+        listAudio= list
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
         return listAudio.size;
     }
