@@ -1,6 +1,7 @@
 package com.kflower.gameworld.network
 
 import com.kflower.gameworld.model.AudioBook
+import com.kflower.gameworld.model.Category
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.Response
@@ -17,6 +18,15 @@ interface ApiServices {
     @POST("/audios/find")
     fun findAudio(
         @Field("title") title: String
+    ): Call<MutableList<AudioBook>>
+
+    @POST("/categories/getAll")
+    fun getAllCategories(): Call<MutableList<Category>>
+
+    @FormUrlEncoded
+    @POST("/audios/getByCategory")
+    fun getListAudioByCategory(
+        @Field("categoryId") categoryId: String
     ): Call<MutableList<AudioBook>>
 
 }

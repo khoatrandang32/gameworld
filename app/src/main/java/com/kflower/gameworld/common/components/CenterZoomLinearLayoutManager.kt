@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.Exception
 import kotlin.math.log
 
 class CenterZoomLinearLayoutManager(
@@ -29,19 +30,20 @@ class CenterZoomLinearLayoutManager(
     }
 
     private fun scaleChildren() {
-        val childHeight = getChildAt(childCount - 1)!!.height
-        val childO = getChildAt(0) as View
-        var scaleChild0 =  ((childHeight + getDecoratedTop(childO)).toFloat())/childHeight
-        childO.scaleX = scaleChild0
-        childO.scaleY = scaleChild0
-        childO.alpha= scaleChild0-(1-scaleChild0)
-        childO.translationY=-(getDecoratedTop(childO)/3)/scaleChild0
-        for (i in 1 until childCount) {
-            val child = getChildAt(i) as View
-            child.alpha= 1f
-            child.scaleX = 1f
-            child.scaleY = 1f
-            child.translationY=0f
+        try {
+            val childHeight = getChildAt(childCount - 1)!!.height
+            val childO = getChildAt(0) as View
+            var scaleChild0 =  ((childHeight + getDecoratedTop(childO)).toFloat())/childHeight
+            childO.scaleX = scaleChild0
+            childO.scaleY = scaleChild0
+            childO.alpha= scaleChild0-(1-scaleChild0)
+            childO.translationY=-(getDecoratedTop(childO)/3)/scaleChild0
+            for (i in 1 until childCount) {
+                val child = getChildAt(i) as View
+                child.alpha= 1f
+                child.scaleX = 1f
+                child.scaleY = 1f
+                child.translationY=0f
 
 //            val child = getChildAt(i) as View
 //            child.translationY= -(child.height/2).toFloat()
@@ -51,6 +53,8 @@ class CenterZoomLinearLayoutManager(
 //            Log.d("KHOA", "scaleChildren $i: "+scale)
 
 //            child.alpha= scale
+            }
         }
+        catch (e:Exception){}
     }
 }

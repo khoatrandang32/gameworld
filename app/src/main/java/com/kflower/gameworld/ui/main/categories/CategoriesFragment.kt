@@ -18,6 +18,7 @@ import com.kflower.gameworld.databinding.HomeFragmentBinding
 import com.kflower.gameworld.model.Category
 import com.kflower.gameworld.ui.main.home.HomeFragment
 import com.kflower.gameworld.ui.main.home.HomeViewModel
+import com.kflower.gameworld.ui.main.listAudio.ListAudioFragment
 
 class CategoriesFragment : BaseFragment() {
 
@@ -28,23 +29,41 @@ class CategoriesFragment : BaseFragment() {
     private lateinit var viewModel: CategoriesViewModel
 
     lateinit var binding: CategoriesFragmentBinding;
+    lateinit var adapterListAll: CategoriesAdapter;
+    lateinit var adapterListFav: FavouriteCategoriesAdapter;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = CategoriesFragmentBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(CategoriesViewModel::class.java)
+
+        adapterListAll=CategoriesAdapter(requireContext(), viewModel.listCategories.value!!,
+            object :CategoriesAdapter.OnClickCategory{
+            override fun onClick(item: Category) {
+                parentNavigateTo(ListAudioFragment(item))
+
+            }
+
+        })
+        adapterListFav= FavouriteCategoriesAdapter(requireContext(), viewModel.listCategories.value!!)
+
+        viewModel.getCategories();
+
+        viewModel.listCategories.observe(this,{
+            adapterListAll.setData(it)
+            adapterListFav.setData(it)
+        })
         val layoutManagerVertical =
             CenterZoomLinearLayoutManager(requireContext())
         val layoutManagerHorizontal =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        var listCategory = arrayListOf<Category>()
 
         binding.apply {
             lvCategories.layoutManager = layoutManagerVertical
-            lvCategories.adapter = CategoriesAdapter(requireContext(), listCategory)
+            lvCategories.adapter = adapterListAll
 
             lvFav.layoutManager = layoutManagerHorizontal;
-            lvFav.adapter = FavouriteCategoriesAdapter(requireContext(), listCategory)
+            lvFav.adapter =  adapterListFav;
         }
     }
 

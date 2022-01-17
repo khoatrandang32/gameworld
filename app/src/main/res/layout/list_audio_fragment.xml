@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.kflower.gameworld.ui.main.listAudio.ListAudioViewModel" />
+    </data>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.kflower.gameworld.common.components.AppLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ScrollView
+            android:layout_weight="1"
+            android:paddingHorizontal="@dimen/layout_px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:elevation="@dimen/dimen_12"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/dimen_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/imgLeft"
+                        android:src="@drawable/ic_left_arrow"
+                        android:layout_width="@dimen/dimen_20"
+                        android:layout_height="@dimen/dimen_20"/>
+                    <TextView
+                        android:text="@{viewModel.curCategory.title}"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="@dimen/dimen_22"
+                        android:layout_marginHorizontal="@dimen/dimen_12"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <ImageView
+                        android:id="@+id/imgRight"
+                        android:visibility="invisible"
+                        android:layout_width="@dimen/dimen_20"
+                        android:layout_height="@dimen/dimen_24"/>
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvAudio"
+                    android:layout_marginTop="@dimen/dimen_12"
+                    tools:listitem="@layout/audio_vertical_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</layout>

@@ -9,8 +9,9 @@ import com.bumptech.glide.Glide
 import com.kflower.gameworld.R
 import com.kflower.gameworld.databinding.FavCategoryItemBinding
 import com.kflower.gameworld.model.Category
+import glimpse.glide.GlimpseTransformation
 
-class FavouriteCategoriesAdapter (context: Context, audioGroupList: MutableList<Category>) :
+class FavouriteCategoriesAdapter(context: Context, audioGroupList: MutableList<Category>) :
     RecyclerView.Adapter<FavouriteCategoriesAdapter.FavouriteCategoriesAdapterHolder>() {
     private var layoutInflater: LayoutInflater? = null
     private var context: Context = context;
@@ -22,7 +23,10 @@ class FavouriteCategoriesAdapter (context: Context, audioGroupList: MutableList<
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouriteCategoriesAdapterHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): FavouriteCategoriesAdapterHolder {
         if (layoutInflater == null) {
             layoutInflater = LayoutInflater.from(parent.context)
         }
@@ -32,15 +36,21 @@ class FavouriteCategoriesAdapter (context: Context, audioGroupList: MutableList<
     }
 
     override fun onBindViewHolder(holder: FavouriteCategoriesAdapterHolder, position: Int) {
-        val curCategory= categoryList[position];
+        val curCategory = categoryList[position];
         holder.binding.apply {
-            txtText.text=curCategory.title
-            Glide.with(context).load(curCategory.img).into(imgBg);
+            txtText.text = curCategory.title
+            Glide.with(context).load(curCategory.img)
+                .transform(GlimpseTransformation()).into(imgBg);
         }
     }
 
     override fun getItemCount(): Int {
         return categoryList.size
+    }
+
+    fun setData(list: MutableList<Category>) {
+        categoryList = list
+        notifyDataSetChanged()
     }
 
 

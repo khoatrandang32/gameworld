@@ -35,7 +35,6 @@ class AppEditText : LinearLayout {
     lateinit var inputContainer: LinearLayout;
     lateinit var inputOutline: LinearLayout;
     lateinit var bgDrawable: GradientDrawable;
-    var text = ""
     var strokeWidth = 5;
     var hint = ""
     var title = ""
@@ -80,9 +79,8 @@ class AppEditText : LinearLayout {
             val typedArray = context.theme.obtainStyledAttributes(
                 attrs, R.styleable.AppEditText, 0, 0
             )
-            if (!typedArray.getText(R.styleable.AppEditText_text).isNullOrEmpty()) {
-                text = typedArray.getText(R.styleable.AppEditText_text).toString()
-                editText.setText(text)
+            if (typedArray.getText(R.styleable.AppEditText_text)!=null) {
+                editText.setText(typedArray.getText(R.styleable.AppEditText_text).toString())
             }
             if (!typedArray.getText(R.styleable.AppEditText_hint).isNullOrEmpty()) {
                 hint = typedArray.getText(R.styleable.AppEditText_hint).toString()
@@ -238,7 +236,6 @@ class AppEditText : LinearLayout {
 
     @JvmName("setEdtText")
     public fun setEdtText(text: String) {
-        this.text = text;
         editText.setText(text)
 
     }
@@ -250,18 +247,20 @@ class AppEditText : LinearLayout {
         @JvmStatic
         fun setText(view: AppEditText, value: String?) {
             Log.d("KHOA", "setText $value")
-            if (value.isNullOrEmpty()) {
-                view.text = ""
+            if (value==null) {
+                view.editText.setText("");
             } else {
-                if (value != view.text) view.setEdtText(value.toString())
+                if (value != view.editText.text.toString()) {
+                    view.setEdtText(value.toString())
+                }
             }
         }
 
         @InverseBindingAdapter(attribute = "text")
         @JvmStatic
         fun getText(view: AppEditText): String {
-            Log.d("KHOA", "getText ${view.text}")
-            return view.text;
+            Log.d("KHOA", "getText ${view.editText.text.toString()}")
+            return view.editText.text.toString();
         }
 
         @BindingAdapter("textAttrChanged")

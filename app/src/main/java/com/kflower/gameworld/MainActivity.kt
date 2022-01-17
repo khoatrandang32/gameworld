@@ -18,9 +18,6 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MyApplication.fetchAudio.getDownloads(Func {
-            Log.d("KHOA", "onCreate: "+it[0].progress)
-        })
 
     }
 

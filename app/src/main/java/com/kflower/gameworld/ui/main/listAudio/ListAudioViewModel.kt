@@ -1,4 +1,4 @@
-package com.kflower.gameworld.ui.main.categories
+package com.kflower.gameworld.ui.main.listAudio
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -10,18 +10,19 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CategoriesViewModel : ViewModel() {
-    val listCategories = MutableLiveData<MutableList<Category>>(arrayListOf())
+class ListAudioViewModel:ViewModel() {
+    val curCategory = MutableLiveData<Category>()
+    val listAudio = MutableLiveData<MutableList<AudioBook>>(arrayListOf())
     var apiService = NetworkProvider.apiService;
 
-    fun getCategories() {
-        apiService.getAllCategories().enqueue(object : Callback<MutableList<Category>> {
+    fun getAudioListByCategory(id: String) {
+        apiService.getListAudioByCategory(id).enqueue(object : Callback<MutableList<AudioBook>> {
             override fun onResponse(
-                call: Call<MutableList<Category>>,
-                response: Response<MutableList<Category>>
+                call: Call<MutableList<AudioBook>>,
+                response: Response<MutableList<AudioBook>>
             ) {
                 if (response.isSuccessful ) {
-                    listCategories.postValue(response.body())
+                    listAudio.postValue(response.body())
                     Log.d("KHOA", "success: " + response.code())
 
                 } else {
@@ -29,7 +30,7 @@ class CategoriesViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<MutableList<Category>>, t: Throwable) {
+            override fun onFailure(call: Call<MutableList<AudioBook>>, t: Throwable) {
                 Log.d("KHOA", "res: " + t.message);
             }
 

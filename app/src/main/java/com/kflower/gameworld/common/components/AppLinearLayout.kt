@@ -31,11 +31,11 @@ class AppLinearLayout : LinearLayout {
     }
 
     private fun initView(attrs: AttributeSet?) {
-        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+//        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         val view: View = LayoutInflater.from(context).inflate(
             R.layout.app_linear_layout, null
         )
-        view.layoutParams = layoutParams
+//        view.layoutParams = layoutParams
         safeView = view.findViewById(R.id.safeView);
 
         val rectangle = Rect()
