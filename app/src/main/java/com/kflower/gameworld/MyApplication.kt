@@ -49,6 +49,7 @@ class MyApplication: Application(){
         //
         var listenerNoti: isMediaPlayChanged? = null
         var listener: isMediaPlayChanged? = null
+        var miniPlayerListener: isMediaPlayChanged? = null
         lateinit  var databaseProvider: DatabaseProvider
         lateinit var downloadContentDirectory: File
 
@@ -183,18 +184,21 @@ class MyApplication: Application(){
                 super.onIsPlayingChanged(isPlaying)
                 listener?.isPlayChanged(isPlaying);
                 listenerNoti?.isPlayChanged(isPlaying);
+                miniPlayerListener?.isPlayChanged(isPlaying)
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
                 super.onPlaybackStateChanged(playbackState)
                 listener?.onPlaybackStateChanged(playbackState);
                 listenerNoti?.onPlaybackStateChanged(playbackState);
+                miniPlayerListener?.onPlaybackStateChanged(playbackState);
             }
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 super.onMediaItemTransition(mediaItem, reason)
                 listener?.onMediaItemTransition(mediaItem, reason)
                 listenerNoti?.onMediaItemTransition(mediaItem, reason)
+                miniPlayerListener?.onMediaItemTransition(mediaItem, reason)
             }
 
         })

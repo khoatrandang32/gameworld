@@ -82,7 +82,7 @@ class MediaSessionService : Service() {
     private fun getMetadata(): MediaMetadataCompat {
 
         val builder = MediaMetadataCompat.Builder()
-        builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, "Tập ${mediaPlayer.currentMediaItemIndex+1}")
+        builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, "${PlayAudioManager.playingAudio?.title} - Tập ${mediaPlayer.currentMediaItemIndex+1}")
         builder.putLong(
             MediaMetadataCompat.METADATA_KEY_DURATION, mediaPlayer.duration
         )

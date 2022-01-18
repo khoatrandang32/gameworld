@@ -13,6 +13,7 @@ import com.kflower.gameworld.databinding.SearchFragmentBinding
 import com.kflower.gameworld.interfaces.OnClickAudioBook
 import com.kflower.gameworld.model.AudioBook
 import com.kflower.gameworld.model.SearchGroup
+import com.kflower.gameworld.ui.audioDetail.AudioDetailFragment
 import com.kflower.gameworld.ui.main.home.HomeFragment
 import com.kflower.gameworld.ui.main.home.HomeViewModel
 
@@ -67,7 +68,7 @@ class SearchFragment : BaseFragment() {
 
         audioAdapter= AudioVerticalAdapter(requireContext(), listAudios, object : OnClickAudioBook {
             override fun onClick(item: AudioBook) {
-
+                parentNavigateTo(AudioDetailFragment(item))
             }
         });
         binding.apply {

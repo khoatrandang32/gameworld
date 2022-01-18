@@ -10,6 +10,7 @@ import com.kflower.gameworld.databinding.ListAudioFragmentBinding
 import com.kflower.gameworld.interfaces.OnClickAudioBook
 import com.kflower.gameworld.model.AudioBook
 import com.kflower.gameworld.model.Category
+import com.kflower.gameworld.ui.audioDetail.AudioDetailFragment
 import com.kflower.gameworld.ui.main.profile.ProfileFragment
 import com.kflower.gameworld.ui.main.profile.ProfileViewModel
 
@@ -42,7 +43,7 @@ class ListAudioFragment(private val itemCategory: Category) : BaseFragment() {
 
         audioAdapter= AudioVerticalAdapter(requireContext(), viewModel.listAudio.value!!, object : OnClickAudioBook {
             override fun onClick(item: AudioBook) {
-
+                navigateTo(AudioDetailFragment(item))
             }
         });
         binding?.apply {

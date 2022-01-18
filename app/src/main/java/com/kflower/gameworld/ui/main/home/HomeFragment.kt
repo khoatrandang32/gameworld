@@ -71,10 +71,10 @@ class HomeFragment() : BaseFragment() {
                     isRefreshing = false
                 }
             }
-            appToolBar.setOnClickLeft {
-                val drawer = AppDrawer(requireContext())
-                drawer.show()
-            }
+//            appToolBar.setOnClickLeft {
+//                val drawer = AppDrawer(requireContext())
+//                drawer.show()
+//            }
 
         }
 

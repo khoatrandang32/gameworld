@@ -12,6 +12,7 @@ import com.kflower.gameworld.interfaces.isMediaPlayChanged
 import android.graphics.Bitmap
 import com.kflower.gameworld.MyApplication.Companion.cacheDataSourceFactory
 import com.kflower.gameworld.MyApplication.Companion.mediaPlayer
+import com.kflower.gameworld.model.AudioBook
 
 
 object PlayAudioManager {
@@ -19,7 +20,7 @@ object PlayAudioManager {
     private var listener: isMediaPlayChanged? = null
     public var thumnailBitmap: Bitmap?=null
     public var isShowNoti: Boolean=false
-    public var playingAudioId:String?=null;
+    public var playingAudio:AudioBook?=null;
 
 
     fun preparePlayNewAudioList( episodes: MutableList<String>) {

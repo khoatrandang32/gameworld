@@ -104,10 +104,10 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
                 }
             })
 
-        if(item.id!=PlayAudioManager.playingAudioId){
+        if(item.id!=PlayAudioManager.playingAudio?.id){
             PlayAudioManager.preparePlayNewAudioList(
                 item.episodes)
-            PlayAudioManager.playingAudioId= item.id
+            PlayAudioManager.playingAudio= item
         }
         else{
             viewModel.isPlaying.postValue(mediaPlayer.isPlaying)
@@ -187,11 +187,15 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
                 }
             }
             imgNext.setOnClickListener {
-                viewModel?.isLoading?.postValue(true)
                 mediaPlayer.seekToNextMediaItem()
-                viewModel?.reset()
+                if (mediaPlayer.currentMediaItemIndex != (PlayAudioManager.playingAudio?.episodes?.size!!-1)) {
+                    viewModel?.reset()
+                } else {
+                    mediaPlayer.seekTo(0,0)
+                    viewModel?.currentPos?.postValue(0)
+                }
 
-
+                viewModel?.isLoading?.postValue(true)
             }
 
             bottomSheetLayout.imgClose.setOnClickListener {

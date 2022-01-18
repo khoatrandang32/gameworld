@@ -1,52 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-
-    <com.kflower.gameworld.common.components.AppLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/main"
-        android:background="@color/background_color"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.main.MainFragment">
+        android:layout_height="wrap_content">
         <LinearLayout
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/layout_px"
-            android:paddingVertical="@dimen/dimen_16"
+            android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:text="Profile"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/dimen_30"
-                android:layout_marginBottom="@dimen/dimen_16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:background="@color/background_color"
+            android:orientation="vertical">
+
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.imageview.ShapeableImageView
-                    app:shapeAppearanceOverlay="@style/circle"
-                    tools:src="@drawable/img_temp"
-                    android:scaleType="centerCrop"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/layout_px"
+                    android:paddingVertical="@dimen/dimen_16">
+
+                    <com.kflower.gameworld.common.components.AppLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dimen_16"
+                        android:text="Profile"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/dimen_30" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/default_avatar"
+                            app:shapeAppearanceOverlay="@style/circle" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dimen_14"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/dimen_18"
+                                android:textStyle="bold"
+                                tools:text="Dang Khoa" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/img_welcome" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_8"
+                            android:layout_marginBottom="@dimen/dimen_14"
+                            android:gravity="center"
+                            android:paddingHorizontal="@dimen/dimen_30"
+                            android:text="Đăng nhập giúp bạn lưu trữ, đánh dấu truyện đã nghe và đồng bộ dữ liệu trên nhiều thiết bị di động"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/dimen_8"
+                                android:background="@drawable/bg_button"
+                                android:clickable="true"
+                                android:gravity="center"
+                                android:paddingVertical="8dp"
+                                android:text="Sign In"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dimen_8"
+                                android:background="@drawable/bg_sub_btn"
+                                android:clickable="true"
+                                android:gravity="center"
+                                android:paddingVertical="8dp"
+                                android:text="Sign Up"
+                                android:textColor="@color/text_color" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_marginLeft="@dimen/dimen_14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        tools:text="Dang Khoa"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/dimen_18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dimen_8"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_app_bottom_bar"
+                    android:elevation="@dimen/dimen_12"
+                    android:paddingHorizontal="@dimen/layout_px">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcOptions"
+                        tools:listitem="@layout/option_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_4" />
+
+                    <LinearLayout
+                        android:clickable="true"
+                        android:background="@drawable/bg_ripple"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/dimen_12"
+                        android:paddingVertical="@dimen/dimen_14">
+                        <ImageView
+                            android:id="@+id/imgIcon"
+                            android:src="@drawable/ic_exit"
+                            android:layout_marginRight="@dimen/dimen_12"
+                            android:layout_width="@dimen/dimen_24"
+                            android:layout_height="@dimen/dimen_24"
+                            app:tint="@color/error_color" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/error_color"
+                            android:textSize="@dimen/text_size_14"
+                            android:text="Đăng xuất" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
 
-    </com.kflower.gameworld.common.components.AppLinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

@@ -7,6 +7,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.kflower.gameworld.R
+import com.kflower.gameworld.common.PlayAudioManager
 import com.kflower.gameworld.common.components.AppBottomBarInterface
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.constants.StatusMode
@@ -16,6 +17,7 @@ import com.kflower.gameworld.ui.main.categories.CategoriesFragment
 import com.kflower.gameworld.ui.main.home.HomeFragment
 import com.kflower.gameworld.ui.main.profile.ProfileFragment
 import com.kflower.gameworld.ui.main.search.SearchFragment
+import com.kflower.gameworld.ui.play.PlayAudioFragment
 import retrofit2.Callback
 
 
@@ -59,6 +61,11 @@ open class MainFragment : BaseFragment() {
             }
 
         })
+        binding.miniMedia.setOnClick {
+            PlayAudioManager.playingAudio?.let {
+                navigateTo(PlayAudioFragment(it))
+            }
+        }
         setStatusBarMode(StatusMode.DarkMode)
 
     }

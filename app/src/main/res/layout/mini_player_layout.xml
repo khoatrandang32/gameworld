@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/container"
+    android:layout_height="wrap_content"
+    android:background="@color/hint_color"
+    android:gravity="center"
+    android:orientation="vertical">
+    <SeekBar
+        android:id="@+id/seekBar"
+        tools:progress="20"
+        android:progressDrawable="@drawable/mini_seekbar_style"
+        android:thumb="@drawable/mini_custom_thumb"
+        android:layout_width="match_parent"
+        android:minHeight="@dimen/dimen_6"
+        android:maxHeight="@dimen/dimen_6"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/dimen_12"
+        android:paddingTop="@dimen/dimen_10"
+        android:paddingBottom="@dimen/dimen_36"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgAudio"
+            android:layout_width="@dimen/dimen_36"
+            android:layout_height="@dimen/dimen_36"
+            android:layout_marginRight="@dimen/dimen_10"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/circle"
+            tools:src="@drawable/img_temp" />
+
+        <LinearLayout
+            android:layout_marginRight="@dimen/dimen_30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtAudioBookName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Audio Name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scrollHorizontally="true"
+                />
+
+            <TextView
+                android:id="@+id/txtAudioAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Audio Name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_10" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgPre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dimen_8"
+            android:src="@drawable/ic_prev_solid"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/imgPlayAndPause"
+            android:layout_width="@dimen/dimen_30"
+            android:layout_height="@dimen/dimen_30"
+            android:layout_marginRight="@dimen/dimen_8"
+            android:src="@drawable/ic_play_solid"
+            app:tint="@color/white" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:layout_marginRight="@dimen/dimen_8"
+            android:indeterminateTint="@color/white"
+            android:indeterminateTintMode="src_atop"
+            android:layout_width="@dimen/dimen_30"
+            android:layout_height="@dimen/dimen_30"/>
+
+        <ImageView
+            android:id="@+id/imgNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dimen_8"
+            android:src="@drawable/ic_next_solid"
+            app:tint="@color/white" />
+    </LinearLayout>
+
+</LinearLayout>

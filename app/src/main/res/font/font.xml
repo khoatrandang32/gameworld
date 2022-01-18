@@ -4,4 +4,5 @@
     <font android:font="@font/bold" />
     <font android:font="@font/italic" />
     <font android:font="@font/bold_italic" />
+    <font android:font="@font/itim" />
 </font-family>

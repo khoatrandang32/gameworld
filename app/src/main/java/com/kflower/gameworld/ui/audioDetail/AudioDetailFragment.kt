@@ -63,7 +63,7 @@ class AudioDetailFragment(val item: AudioBook) : BaseFragment() {
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .transform(GlimpseTransformation())
                     .into(imgThumbnail)
-//                Glide.with(requireContext()).load(it.thumbnailUrl).into(imgThumbnail);
+//                Glide.with(requireContext()).load(it.thumbnailUrl).into(imgThumbnail);miniMedia
                 lvComments.layoutManager = layoutManagerVertical;
                 lvComments.adapter = CommentAdapter(requireContext(), it.comments);
                 refreshLayout.apply {
