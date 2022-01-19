@@ -2,7 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <data>
+        <variable
+            name="viewModel"
+            type="com.kflower.gameworld.ui.main.categories.CategoriesViewModel" />
+        <import type="android.view.View"/>
+    </data>
     <com.kflower.gameworld.common.components.AppLinearLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
@@ -11,6 +16,8 @@
         tools:context=".ui.main.MainFragment">
 
         <LinearLayout
+            tools:visibility="gone"
+            android:visibility="@{!viewModel.isLoading?View.VISIBLE:View.GONE}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -24,7 +31,6 @@
                 android:text="Favourites"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/dimen_30" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/lvFav"
                 android:clipToPadding="false"
@@ -51,6 +57,38 @@
                 android:paddingBottom="50dp"
                 android:paddingHorizontal="@dimen/layout_px" />
         </LinearLayout>
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:visibility="@{viewModel.isLoading?View.VISIBLE:View.GONE}"
+            tools:visibility="visible"
+            android:id="@+id/shimmerLayoutTop"
+            android:paddingTop="@dimen/dimen_16"
+            app:shimmer_auto_start="true"
+            android:paddingHorizontal="@dimen/layout_px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <View
+                    android:background="@drawable/bg_solid_rounded"
+                    android:layout_marginBottom="@dimen/dimen_14"
+                    android:backgroundTint="@color/hint_color"
+                    android:layout_width="200dp"
+                    android:layout_height="@dimen/dimen_20"/>
+                <include layout="@layout/category_hoz_shimmer" />
+                <View
+                    android:background="@drawable/bg_solid_rounded"
+                    android:layout_marginTop="@dimen/dimen_18"
+                    android:layout_marginBottom="@dimen/dimen_14"
+                    android:backgroundTint="@color/hint_color"
+                    android:layout_width="200dp"
+                    android:layout_height="@dimen/dimen_20"/>
+                <include layout="@layout/category_ver_shimmer"/>
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
 
     </com.kflower.gameworld.common.components.AppLinearLayout>
 </layout>

@@ -28,8 +28,10 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
         if (fgParent != null) {
             val ft: FragmentTransaction = parentFragmentManager.beginTransaction()
             ft.setCustomAnimations(
-                R.anim.fade_in,
-                R.anim.fade_out,
+                R.anim.slide_in,
+                R.anim.slide_out,
+                R.anim.slide_left,
+                R.anim.slide_right,
             )
             ft.replace(fgParent!!.id, newFragment)
             ft.addToBackStack(null)
@@ -41,8 +43,10 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
         if (fgParent != null) {
             val ft: FragmentTransaction? = parentFragment?.parentFragmentManager?.beginTransaction()
             ft?.setCustomAnimations(
-                R.anim.fade_in,
-                R.anim.fade_out,
+                R.anim.slide_in,
+                R.anim.slide_out,
+                R.anim.slide_left,
+                R.anim.slide_right,
             )
 
             parentFragment?.let { ft?.replace(it.id, newFragment) }

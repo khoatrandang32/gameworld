@@ -35,9 +35,7 @@ import com.tonyodev.fetch2.NetworkType
 import com.tonyodev.fetch2.Priority
 import com.tonyodev.fetch2.Request
 import android.os.Environment
-
-
-
+import com.kflower.gameworld.common.Utils
 
 
 class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
@@ -98,6 +96,7 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     binding.imgThumbnail.setImageBitmap(resource)
                     PlayAudioManager.thumnailBitmap= resource
+                    println("KHOA${Utils().bitMapToString(resource)}")
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
@@ -108,6 +107,8 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
             PlayAudioManager.preparePlayNewAudioList(
                 item.episodes)
             PlayAudioManager.playingAudio= item
+            mediaPlayer.playWhenReady = true
+
         }
         else{
             viewModel.isPlaying.postValue(mediaPlayer.isPlaying)
@@ -133,7 +134,6 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
         }
 
 
-        mediaPlayer.playWhenReady = true
         listener= object : isMediaPlayChanged {
             override fun isPlayChanged(isPlaying: Boolean) {
                 viewModel.isPlaying.postValue(isPlaying)

@@ -10,6 +10,7 @@ import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.databinding.HomeFragmentBinding
 import com.kflower.gameworld.databinding.ProfileFragmentBinding
 import com.kflower.gameworld.model.Option
+import com.kflower.gameworld.ui.login.LoginFragment
 import com.kflower.gameworld.ui.main.home.HomeFragment
 import com.kflower.gameworld.ui.main.home.HomeViewModel
 
@@ -48,6 +49,9 @@ class ProfileFragment : BaseFragment() {
         binding?.apply {
             rcOptions.layoutManager=  LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             rcOptions.adapter= optionAdapter
+            btnLogin.setOnClickListener {
+                parentNavigateTo(LoginFragment())
+            }
         }
     }
 

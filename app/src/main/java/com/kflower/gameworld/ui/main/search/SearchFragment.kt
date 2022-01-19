@@ -29,6 +29,8 @@ class SearchFragment : BaseFragment() {
 
     lateinit var binding: SearchFragmentBinding;
 
+    var searchText="";
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= SearchFragmentBinding.inflate(layoutInflater)
@@ -39,15 +41,20 @@ class SearchFragment : BaseFragment() {
         binding.viewModel= viewModel;
 
         viewModel.searchText.observe(this,{
-            Log.d("KHOA", "searchText: "+it)
-            viewModel.getAudioList(it)
+            if(searchText!=it){
+                searchText= it;
+                viewModel.getAudioList(it)
+                Log.d("KHOA", "searchText: "+it)
+            }
         })
 
         viewModel.listAudio.observe(this,{
 //            listAudios= it;
 //            audioAdapter.notifyDataSetChanged()
             audioAdapter.setData(it);
-        })
+        });
+
+        binding.shimmerLayout.startShimmer();
 
         val layoutManagerVertical =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

@@ -1,3 +1,9 @@
 package com.kflower.gameworld.model
 
-data class AudioGroup(var title: String, var listAudio: MutableList<AudioBook>)
+import com.google.gson.annotations.SerializedName
+
+data class AudioGroup(
+    @SerializedName("title")
+    var title: String,
+    @SerializedName("listAudio")
+    var listAudio: MutableList<AudioBook>)

@@ -1,6 +1,7 @@
 package com.kflower.gameworld.network
 
 import com.kflower.gameworld.model.AudioBook
+import com.kflower.gameworld.model.AudioGroup
 import com.kflower.gameworld.model.Category
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
@@ -8,8 +9,8 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiServices {
-    @POST("/audios/getAudio")
-    fun getAudioList(): Call<MutableList<AudioBook>>
+    @POST("/audios/getHomeCate")
+    fun getAudioList(): Call<MutableList<AudioGroup>>
 
     @GET("/audios/getAudio/{id}")
     fun getAudioDetail(@Path("id") customerId: String): Call<AudioBook>

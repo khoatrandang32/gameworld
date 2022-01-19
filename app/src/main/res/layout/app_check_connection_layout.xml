@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/errorContainer"
+        tools:visibility="visible"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/imgNoConnect"
+            android:src="@drawable/img_no_connection"
+            android:layout_width="300dp"
+            android:layout_height="200dp"/>
+        <TextView
+            android:text="Lỗi kết nối!"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/dimen_20"
+            android:textSize="@dimen/text_size_30"
+            android:textColor="@color/main_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Kết nối của bạn không ổn định.\n Vui lòng kiểm tra lại kết nối của bạn!"
+            android:textColor="@color/hint_color"
+            android:textSize="@dimen/text_size_16" />
+        <Button
+            android:id="@+id/btnRetry"
+            android:background="@drawable/bg_button"
+            android:text="Thử lại"
+            android:layout_marginTop="@dimen/dimen_32"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>

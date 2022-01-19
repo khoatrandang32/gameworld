@@ -77,6 +77,7 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'
     implementation 'androidx.media2:media2:1.0.0-alpha04'
     implementation "androidx.tonyodev.fetch2:xfetch2:3.1.6"
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 

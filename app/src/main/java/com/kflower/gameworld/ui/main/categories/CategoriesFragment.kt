@@ -35,7 +35,11 @@ class CategoriesFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = CategoriesFragmentBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this).get(CategoriesViewModel::class.java)
+        viewModel = CategoriesViewModel()
+
+        binding.viewModel= viewModel;
+        binding.lifecycleOwner=this
+
 
         adapterListAll=CategoriesAdapter(requireContext(), viewModel.listCategories.value!!,
             object :CategoriesAdapter.OnClickCategory{

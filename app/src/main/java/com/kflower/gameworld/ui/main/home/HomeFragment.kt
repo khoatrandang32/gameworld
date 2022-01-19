@@ -1,6 +1,8 @@
 package com.kflower.gameworld.ui.main.home
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.window.SplashScreen
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
@@ -21,34 +23,25 @@ import com.kflower.gameworld.ui.splash.SplashFragment
 
 class HomeFragment() : BaseFragment() {
 
-
     private lateinit var viewModel: HomeViewModel
 
     lateinit var binding: HomeFragmentBinding;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = HomeFragmentBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-
+        binding.viewModel= viewModel;
+        binding.lifecycleOwner= this;
         //
         viewModel.getAudioList();
         //
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManagerVertical =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
-        viewModel.listAudio.observe(this, {
+        viewModel.listAudioGroup.observe(this, {
             binding.apply {
-                lvAudio.layoutManager = layoutManager;
-                lvAudio.adapter = AudioAdapter(requireContext(), viewModel.listAudio.value!!);
-
-                var listGroup = arrayListOf<AudioGroup>()
-                listGroup.add(AudioGroup("Popular", viewModel.listAudio.value!!))
-                lvGroupAudios.layoutManager = layoutManagerVertical;
+                lvGroupAudios.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
                 lvGroupAudios.adapter =
-                    AudioGroupAdapter(requireContext(), listGroup, object : OnClickAudioBook {
+                    AudioGroupAdapter(requireContext(), it, object : OnClickAudioBook {
                         override fun onClick(item: AudioBook) {
                             parentNavigateTo(AudioDetailFragment(item))
                         }
@@ -62,12 +55,11 @@ class HomeFragment() : BaseFragment() {
             binding.containerLayout.setStatusBarColor(resources.getColor(R.color.main_color))
             //
 
-            viewModel.listAudio.value?.let {
+            binding.checkConnectionLayout.setOnRetry { viewModel?.getAudioList(); }
 
-            }
             refreshLayout.apply {
                 setOnRefreshListener {
-                    viewModel.getAudioList();
+                    viewModel?.getAudioList();
                     isRefreshing = false
                 }
             }
