@@ -18,7 +18,12 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        MyApplication.fetchAudio.getDownloads(Func {
+            if (it.isNotEmpty()) {
+                Log.d(
+                    "KHOA", "onCreate: " + it[0].fileUri+ " - "+it[0].url)
+            }
+        })
     }
 
     override fun setDefaultFragment(): Fragment {

@@ -269,7 +269,6 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
             gridLayoutManager.scrollToPositionWithOffset(mediaPlayer.currentMediaItemIndex,500);
         }
         binding.imgDownload.setOnClickListener {
-            Log.d("KHOA", "onCreate: "+item.episodes[mediaPlayer.currentMediaItemIndex])
             val file = "${item.id}_ID_${mediaPlayer.currentMediaItemIndex+1}.mp3"
             val downloadsPath =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path

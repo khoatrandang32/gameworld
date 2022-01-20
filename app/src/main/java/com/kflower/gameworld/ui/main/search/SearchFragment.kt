@@ -2,6 +2,7 @@ package com.kflower.gameworld.ui.main.search
 
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,6 +48,7 @@ class SearchFragment : BaseFragment() {
                 Log.d("KHOA", "searchText: "+it)
             }
         })
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         viewModel.listAudio.observe(this,{
 //            listAudios= it;
@@ -55,7 +57,6 @@ class SearchFragment : BaseFragment() {
         });
 
         binding.shimmerLayout.startShimmer();
-
         val layoutManagerVertical =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
@@ -83,11 +84,25 @@ class SearchFragment : BaseFragment() {
             lvGroupSearch.adapter= GroupSearchAdapter(requireContext(),listSearchGr)
             lvAudioResult.layoutManager=LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             lvAudioResult.adapter=audioAdapter;
+            checkConnectionLayout.setOnRetry {
+                viewModel?.searchText?.value?.apply {
+                    viewModel?.getAudioList(this)
+                }
+            }
         }
     }
 
     override fun getLayoutBinding(): ViewDataBinding {
         return binding;
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(viewModel.isError.value==true){
+            viewModel.searchText.value?.apply {
+                viewModel?.getAudioList(this)
+            }
+        }
     }
 
 }

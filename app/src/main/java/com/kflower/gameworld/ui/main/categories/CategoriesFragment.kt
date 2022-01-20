@@ -68,11 +68,21 @@ class CategoriesFragment : BaseFragment() {
 
             lvFav.layoutManager = layoutManagerHorizontal;
             lvFav.adapter =  adapterListFav;
+            checkConnectionLayout.setOnRetry {
+                viewModel?.getCategories();
+            }
         }
     }
 
     override fun getLayoutBinding(): ViewDataBinding {
         return binding;
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(viewModel.isError.value==true){
+            viewModel?.getCategories();
+        }
     }
 
 }

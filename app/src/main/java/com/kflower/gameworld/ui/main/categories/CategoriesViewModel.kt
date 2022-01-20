@@ -1,5 +1,6 @@
 package com.kflower.gameworld.ui.main.categories
 
+import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +15,10 @@ class CategoriesViewModel : ViewModel() {
     val listCategories = MutableLiveData<MutableList<Category>>(arrayListOf())
     val isLoading = MutableLiveData(false)
     var apiService = NetworkProvider.apiService;
+    val isError = MutableLiveData(false)
 
     fun getCategories() {
+        isError.postValue(false)
         isLoading.postValue(true)
         apiService.getAllCategories().enqueue(object : Callback<MutableList<Category>> {
             override fun onResponse(
@@ -30,12 +33,18 @@ class CategoriesViewModel : ViewModel() {
                 } else {
                     Log.d("KHOA", "fail: " + response.code())
 //                    isLoading.postValue(false)
+                    Handler().postDelayed({
+                        isError.postValue(true)
+                    }, 1000)
                 }
             }
 
             override fun onFailure(call: Call<MutableList<Category>>, t: Throwable) {
                 Log.d("KHOA", "res: " + t.message);
 //                isLoading.postValue(false)
+                Handler().postDelayed({
+                    isError.postValue(true)
+                }, 1000)
             }
 
         })

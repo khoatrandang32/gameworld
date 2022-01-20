@@ -8,87 +8,94 @@
             type="com.kflower.gameworld.ui.main.categories.CategoriesViewModel" />
         <import type="android.view.View"/>
     </data>
-    <com.kflower.gameworld.common.components.AppLinearLayout
-        android:id="@+id/main"
+    <com.kflower.gameworld.common.components.CheckConnectionLayout
+        app:isError="@{viewModel.isError}"
+        android:id="@+id/checkConnectionLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.main.MainFragment">
-
-        <LinearLayout
-            tools:visibility="gone"
-            android:visibility="@{!viewModel.isLoading?View.VISIBLE:View.GONE}"
+        android:layout_height="wrap_content">
+        <com.kflower.gameworld.common.components.AppLinearLayout
+            android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingTop="@dimen/dimen_16">
+            tools:context=".ui.main.MainFragment">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_16"
-                android:paddingHorizontal="@dimen/layout_px"
-                android:text="Favourites"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/dimen_30" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/lvFav"
-                android:clipToPadding="false"
-                android:paddingRight="@dimen/dimen_16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_16"
-                android:layout_marginTop="@dimen/dimen_8"
-                android:paddingHorizontal="@dimen/layout_px"
-                android:text="Categories"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/dimen_30" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/lvCategories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clipToPadding="false"
-                android:paddingBottom="50dp"
-                android:paddingHorizontal="@dimen/layout_px" />
-        </LinearLayout>
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:visibility="@{viewModel.isLoading?View.VISIBLE:View.GONE}"
-            tools:visibility="visible"
-            android:id="@+id/shimmerLayoutTop"
-            android:paddingTop="@dimen/dimen_16"
-            app:shimmer_auto_start="true"
-            android:paddingHorizontal="@dimen/layout_px"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <LinearLayout
+                tools:visibility="gone"
+                android:visibility="@{!viewModel.isLoading?View.VISIBLE:View.GONE}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/dimen_16">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen_16"
+                    android:paddingHorizontal="@dimen/layout_px"
+                    android:text="Favourites"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/dimen_30" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lvFav"
+                    android:clipToPadding="false"
+                    android:paddingRight="@dimen/dimen_16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen_16"
+                    android:layout_marginTop="@dimen/dimen_8"
+                    android:paddingHorizontal="@dimen/layout_px"
+                    android:text="Categories"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/dimen_30" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lvCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:paddingBottom="50dp"
+                    android:paddingHorizontal="@dimen/layout_px" />
+            </LinearLayout>
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:visibility="@{viewModel.isLoading?View.VISIBLE:View.GONE}"
+                tools:visibility="visible"
+                android:id="@+id/shimmerLayoutTop"
+                android:paddingTop="@dimen/dimen_16"
+                app:shimmer_auto_start="true"
+                android:paddingHorizontal="@dimen/layout_px"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <View
-                    android:background="@drawable/bg_solid_rounded"
-                    android:layout_marginBottom="@dimen/dimen_14"
-                    android:backgroundTint="@color/hint_color"
-                    android:layout_width="200dp"
-                    android:layout_height="@dimen/dimen_20"/>
-                <include layout="@layout/category_hoz_shimmer" />
-                <View
-                    android:background="@drawable/bg_solid_rounded"
-                    android:layout_marginTop="@dimen/dimen_18"
-                    android:layout_marginBottom="@dimen/dimen_14"
-                    android:backgroundTint="@color/hint_color"
-                    android:layout_width="200dp"
-                    android:layout_height="@dimen/dimen_20"/>
-                <include layout="@layout/category_ver_shimmer"/>
-            </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <View
+                        android:background="@drawable/bg_solid_rounded"
+                        android:layout_marginBottom="@dimen/dimen_14"
+                        android:backgroundTint="@color/hint_color"
+                        android:layout_width="200dp"
+                        android:layout_height="@dimen/dimen_20"/>
+                    <include layout="@layout/category_hoz_shimmer" />
+                    <View
+                        android:background="@drawable/bg_solid_rounded"
+                        android:layout_marginTop="@dimen/dimen_18"
+                        android:layout_marginBottom="@dimen/dimen_14"
+                        android:backgroundTint="@color/hint_color"
+                        android:layout_width="200dp"
+                        android:layout_height="@dimen/dimen_20"/>
+                    <include layout="@layout/category_ver_shimmer"/>
+                </LinearLayout>
 
-        </com.facebook.shimmer.ShimmerFrameLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
 
-    </com.kflower.gameworld.common.components.AppLinearLayout>
+        </com.kflower.gameworld.common.components.AppLinearLayout>
+
+    </com.kflower.gameworld.common.components.CheckConnectionLayout>
 </layout>
