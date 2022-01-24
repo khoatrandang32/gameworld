@@ -11,9 +11,6 @@
             name="viewModel"
             type="com.kflower.gameworld.ui.play.PlayAudioViewModel" />
     </data>
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -178,6 +175,7 @@
                             app:tint="@color/hint_color" />
 
                         <ImageView
+                            android:id="@+id/imgClock"
                             android:layout_width="@dimen/dimen_26"
                             android:layout_height="@dimen/dimen_26"
                             android:layout_marginHorizontal="@dimen/dimen_20"
@@ -290,6 +288,5 @@
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <include android:id="@+id/bottom_sheetLayout" layout="@layout/bottom_sheet_select_ep"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+<!--        <include android:id="@+id/bottom_sheetLayout" layout="@layout/bottom_sheet_select_ep"/>-->
 </layout>

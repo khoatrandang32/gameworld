@@ -35,7 +35,9 @@ import com.tonyodev.fetch2.NetworkType
 import com.tonyodev.fetch2.Priority
 import com.tonyodev.fetch2.Request
 import android.os.Environment
+import com.kflower.gameworld.bottomsheet.BottomSheetEpisodes
 import com.kflower.gameworld.common.Utils
+import com.kflower.gameworld.ui.timer.TimerFragment
 
 
 class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
@@ -46,8 +48,7 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
     private lateinit var durationHandler: Handler
     private var isChanging = false;
     lateinit var binding: PlayAudioFragmentBinding;
-    lateinit var sheetBehavior: BottomSheetBehavior<*>
-    lateinit var gridLayoutManager: GridLayoutManager
+    lateinit var bottomSheet: BottomSheetEpisodes;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +56,17 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
 
         binding = PlayAudioFragmentBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(PlayAudioViewModel::class.java)
+        bottomSheet= BottomSheetEpisodes(item.episodes,object :AudioEpAdapter.AudioEpListener{
+            override fun onClick(audioUrl: String, position: Int) {
+                viewModel?.isLoading?.postValue(true)
+                mediaPlayer.seekTo(position, 0);
+                bottomSheet.dismiss()
+            }
 
+            override fun onDownload(audioUrl: String, position: Int) {
+            }
+
+        })
         viewModel.item.postValue(item);
         durationHandler = Handler(Looper.getMainLooper());
 
@@ -66,28 +77,24 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
         }
         //
 
-        gridLayoutManager =
-            GridLayoutManager(requireContext(), 3)
 
-        binding.bottomSheetLayout?.apply {
-            recyclerView.layoutManager=gridLayoutManager;
-            recyclerView.adapter= AudioEpAdapter(requireContext(), item.episodes, object :AudioEpAdapter.AudioEpListener{
-                override fun onClick(audioUrl: String, position: Int) {
-                    viewModel?.isLoading?.postValue(true)
-                    mediaPlayer.seekTo(position,0);
-                    sheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-
-                }
-
-                override fun onDownload(audioUrl: String, position: Int) {
-                }
-
-
-            });
-
-        }
-
-        sheetBehavior = BottomSheetBehavior.from(binding.bottomSheetLayout.bottomSheet);
+//        binding.bottomSheetLayout?.apply {
+//            recyclerView.layoutManager=gridLayoutManager;
+//            recyclerView.adapter= AudioEpAdapter(requireContext(), item.episodes, object :AudioEpAdapter.AudioEpListener{
+//                override fun onClick(audioUrl: String, position: Int) {
+//                    viewModel?.isLoading?.postValue(true)
+//                    mediaPlayer.seekTo(position,0);
+//                    sheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+//
+//                }
+//
+//                override fun onDownload(audioUrl: String, position: Int) {
+//                }
+//
+//
+//            });
+//
+//        }
 
         Glide.with(this)
             .asBitmap()
@@ -186,6 +193,11 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
                     mediaPlayer.play()
                 }
             }
+
+            imgClock.setOnClickListener {
+                navigateTo(TimerFragment());
+            }
+
             imgNext.setOnClickListener {
                 mediaPlayer.seekToNextMediaItem()
                 if (mediaPlayer.currentMediaItemIndex != (PlayAudioManager.playingAudio?.episodes?.size!!-1)) {
@@ -198,9 +210,6 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
                 viewModel?.isLoading?.postValue(true)
             }
 
-            bottomSheetLayout.imgClose.setOnClickListener {
-                sheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            }
 
             imgPre.setOnClickListener {
                 mediaPlayer.seekToPreviousMediaItem()
@@ -265,8 +274,7 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
         }
 
         binding.imgList.setOnClickListener {
-            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            gridLayoutManager.scrollToPositionWithOffset(mediaPlayer.currentMediaItemIndex,500);
+            bottomSheet.show(parentFragmentManager,BottomSheetEpisodes.TAG);
         }
         binding.imgDownload.setOnClickListener {
             val file = "${item.id}_ID_${mediaPlayer.currentMediaItemIndex+1}.mp3"
@@ -290,24 +298,6 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
 //            var downloadAudio= DownloadAudio().execute(item.episodes[mediaPlayer.currentMediaItemIndex]);
         }
 
-        sheetBehavior.setBottomSheetCallback(object : BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-                    }
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                    }
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                    }
-                    BottomSheetBehavior.STATE_DRAGGING -> {
-                    }
-                    BottomSheetBehavior.STATE_SETTLING -> {
-                    }
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-        })
     }
 
     private val updateSeekBarTime: Runnable = object : Runnable {

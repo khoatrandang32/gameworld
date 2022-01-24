@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/bg_app_bottom_bar"
+    android:elevation="@dimen/dimen_16"
+    android:translationZ="@dimen/dimen_16"
+    android:paddingHorizontal="@dimen/layout_px"
+    android:paddingVertical="@dimen/dimen_16"
+    android:layout_marginTop="@dimen/dimen_12"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="@dimen/text_size_16"
+        android:textColor="@color/text_color"
+        android:textStyle="bold"
+        android:text="Chọn thời gian"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

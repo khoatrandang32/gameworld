@@ -10,9 +10,6 @@
     app:behavior_hideable="true"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-    <com.kflower.gameworld.common.components.AppLinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
     <LinearLayout
         android:paddingHorizontal="@dimen/dimen_16"
         android:gravity="center"

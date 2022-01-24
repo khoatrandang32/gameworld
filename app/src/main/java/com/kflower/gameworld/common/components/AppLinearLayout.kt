@@ -10,6 +10,10 @@ import android.view.View
 import android.view.Window
 import android.widget.LinearLayout
 import com.kflower.gameworld.R
+import android.content.ContextWrapper
+
+
+
 
 class AppLinearLayout : LinearLayout {
     private lateinit var safeView: View
@@ -39,13 +43,20 @@ class AppLinearLayout : LinearLayout {
         safeView = view.findViewById(R.id.safeView);
 
         val rectangle = Rect()
-        val window: Window = (context as Activity).window
+        val window: Window = unwrap(context).window
         window.decorView.getWindowVisibleDisplayFrame(rectangle)
         val statusBarHeight: Int = rectangle.top
         safeView.layoutParams= LayoutParams(safeView.width,statusBarHeight);
 
         this.addView(view)
 
+    }
+    private fun unwrap(context: Context): Activity {
+        var context: Context? = context
+        while (context !is Activity && context is ContextWrapper) {
+            context = context.baseContext
+        }
+        return context as Activity
     }
     fun setStatusBarColor(color:Int){
         safeView.setBackgroundColor(color)
