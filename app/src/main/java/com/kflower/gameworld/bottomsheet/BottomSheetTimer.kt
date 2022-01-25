@@ -7,17 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.R
 import com.kflower.gameworld.adapter.AudioEpAdapter
+import com.kflower.gameworld.adapter.TimeListAdapter
 
 class BottomSheetTimer : BottomSheetDialogFragment {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
+
+    lateinit var adapter: TimeListAdapter;
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,8 +32,30 @@ class BottomSheetTimer : BottomSheetDialogFragment {
 
         var view = inflater.inflate(R.layout.bottom_sheet_timer, container, false)
 
+        var rvTimeItem = view.findViewById<RecyclerView>(R.id.rvTimeItem);
+        rvTimeItem.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        //
+        (dialog as BottomSheetDialog)?.apply {
+            behavior.isDraggable= false
+            behavior.isHideable = false
+        }
+        isCancelable = false
+        var list = mutableListOf<Int>();
+        list.add(15);
+        list.add(30);
+        list.add(60);
+        list.add(-1);
+        adapter =
+            TimeListAdapter(requireContext(), list, object : TimeListAdapter.TimeClickListener {
+                override fun onClick(item: Int, position: Int) {
+
+                }
+
+            })
+        rvTimeItem.adapter = adapter
         return view;
     }
+
     constructor() {
 
     }

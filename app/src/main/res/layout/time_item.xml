@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_ripple"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                tools:text="12321"
+                android:gravity="center_vertical"
+                android:id="@+id/txtTime"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:paddingHorizontal="@dimen/text_size_16"
+                android:textSize="@dimen/text_size_16"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:imeOptions="actionDone"
+                android:textColor="@color/text_color" />
+            <com.kflower.gameworld.common.components.AppEditText
+                android:backgroundTint="#00000000"
+                android:paddingHorizontal="@dimen/text_size_16"
+                android:id="@+id/edtTime"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:hint="Nhập số phút"
+                android:imeOptions="actionDone"
+                android:textColor="@color/text_color" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/sub_color" />
+    </LinearLayout>
+</layout>

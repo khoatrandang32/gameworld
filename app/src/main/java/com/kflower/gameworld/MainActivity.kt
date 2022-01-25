@@ -10,6 +10,7 @@ import com.kflower.gameworld.common.core.BaseActivity
 import com.kflower.gameworld.ui.splash.SplashFragment
 import android.app.NotificationManager
 import android.content.Context
+import com.kflower.gameworld.ui.timer.TimerFragment
 import com.tonyodev.fetch2core.Func
 import kotlin.math.log
 
@@ -27,7 +28,8 @@ class MainActivity : BaseActivity() {
     }
 
     override fun setDefaultFragment(): Fragment {
-        return SplashFragment();
+//        return SplashFragment();
+        return TimerFragment();
     }
 
     override fun onDestroy() {

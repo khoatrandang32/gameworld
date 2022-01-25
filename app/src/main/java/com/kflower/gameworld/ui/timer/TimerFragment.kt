@@ -48,7 +48,12 @@ class TimerFragment : BaseFragment() {
 
         bottomSheet.show(parentFragmentManager,BottomSheetTimer.TAG)
 
+        binding.btnSetting.setOnClickListener{
+            bottomSheet.show(parentFragmentManager,BottomSheetTimer.TAG)
+        }
+
     }
+
 
     override fun getLayoutBinding(): ViewDataBinding {
         return binding

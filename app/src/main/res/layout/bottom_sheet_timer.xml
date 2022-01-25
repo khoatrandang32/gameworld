@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@drawable/bg_app_bottom_bar"
     android:elevation="@dimen/dimen_16"
@@ -9,12 +10,19 @@
     android:layout_marginTop="@dimen/dimen_12"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:textSize="@dimen/text_size_16"
-        android:textColor="@color/text_color"
-        android:textStyle="bold"
-        android:text="Chọn thời gian"
-        android:gravity="center"
+<!--    <TextView-->
+<!--        android:textSize="@dimen/text_size_16"-->
+<!--        android:textColor="@color/text_color"-->
+<!--        android:textStyle="bold"-->
+<!--        android:text="Chọn thời gian"-->
+<!--        android:gravity="center"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"/>-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTimeItem"
+        tools:listitem="@layout/time_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
