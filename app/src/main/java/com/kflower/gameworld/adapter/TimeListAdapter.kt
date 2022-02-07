@@ -13,6 +13,7 @@ import com.kflower.gameworld.R
 import com.kflower.gameworld.databinding.TimeItemBinding
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.getSystemService
+import com.kflower.gameworld.dialog.NewTimeEnterDialog
 
 
 class TimeListAdapter(
@@ -52,12 +53,18 @@ class TimeListAdapter(
             binding?.apply {
                 txtTime.text = "$item phút";
                 if(item>0){
-                    txtTime.visibility= View.VISIBLE;
-                    edtTime.visibility= View.GONE;
+                    txtTime.text = "$item phút";
                 }
                 else{
-                    txtTime.visibility= View.GONE;
-                    edtTime.visibility= View.VISIBLE;
+                    txtTime.text = "Khác";
+                }
+
+                container.setOnClickListener {
+                    if(item>0){}
+                    else{
+                        var dialog = NewTimeEnterDialog(context);
+                        dialog.show()
+                    }
                 }
 
             }
@@ -65,6 +72,6 @@ class TimeListAdapter(
     }
 
     interface TimeClickListener {
-        fun onClick(item: Int, position: Int)
+        fun onClick(item: Int)
     }
 }

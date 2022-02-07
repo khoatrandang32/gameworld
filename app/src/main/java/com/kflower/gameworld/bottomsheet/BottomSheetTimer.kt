@@ -47,7 +47,7 @@ class BottomSheetTimer : BottomSheetDialogFragment {
         list.add(-1);
         adapter =
             TimeListAdapter(requireContext(), list, object : TimeListAdapter.TimeClickListener {
-                override fun onClick(item: Int, position: Int) {
+                override fun onClick(item: Int) {
 
                 }
 

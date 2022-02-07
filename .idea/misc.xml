@@ -43,9 +43,11 @@
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/audio_detail_fragment.xml" value="0.15572916666666667" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/base_activity.xml" value="0.1408514492753623" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/bottom_sheet_select_ep.xml" value="0.1" />
-        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/bottom_sheet_timer.xml" value="0.264" />
+        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/bottom_sheet_timer.xml" value="0.2" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/categories_fragment.xml" value="0.1408514492753623" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/category_item.xml" value="0.1" />
+        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/dialog_network_error.xml" value="0.1875" />
+        <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/dialog_new_time_enter.xml" value="0.264" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/home_fragment.xml" value="0.264" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/list_audio_fragment.xml" value="0.12" />
         <entry key="..\:/Khoa/gameworld/app/src/main/res/layout/main_fragment.xml" value="0.136" />

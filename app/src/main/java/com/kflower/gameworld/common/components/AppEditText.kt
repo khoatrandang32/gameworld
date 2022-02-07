@@ -1,5 +1,6 @@
 package com.kflower.gameworld.common.components
 
+import android.R.attr
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
@@ -23,6 +24,9 @@ import android.view.inputmethod.InputMethodManager
 import android.graphics.drawable.GradientDrawable
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
+import android.text.InputFilter
+import android.R.attr.maxLength
+import android.text.InputFilter.LengthFilter
 
 
 class AppEditText : LinearLayout {
@@ -41,6 +45,33 @@ class AppEditText : LinearLayout {
     var isPassword = false;
     var isShowPassword = false;
     var isEdtError = false;
+
+    interface OnChangeText{
+        fun onChangeText(text: String)
+    }
+
+    public fun getText():String{
+        return editText.text.toString();
+    }
+
+    public fun setOnChangeText(listener:OnChangeText){
+            editText.addTextChangedListener(object :TextWatcher{
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+                    listener.onChangeText(s.toString())
+                }
+            })
+    }
 
     constructor(context: Context) : super(context) {
         initView(null)
@@ -76,10 +107,18 @@ class AppEditText : LinearLayout {
         imgLeftIcon = findViewById(R.id.imgLeftIcon);
 
         if (attrs != null) {
+
+
             val typedArray = context.theme.obtainStyledAttributes(
                 attrs, R.styleable.AppEditText, 0, 0
             )
-            if (typedArray.getText(R.styleable.AppEditText_text)!=null) {
+            var max= typedArray.getInt(R.styleable.AppEditText_maxLength, maxLength)
+
+            val filterArray = arrayOfNulls<InputFilter>(1)
+            filterArray[0] = LengthFilter(max)
+            editText.filters = filterArray
+
+            if (typedArray.getText(R.styleable.AppEditText_text) != null) {
                 editText.setText(typedArray.getText(R.styleable.AppEditText_text).toString())
             }
             if (!typedArray.getText(R.styleable.AppEditText_hint).isNullOrEmpty()) {
@@ -98,6 +137,7 @@ class AppEditText : LinearLayout {
                 txtTitle.visibility = GONE
             }
             editText.imeOptions = typedArray.getInt(R.styleable.AppEditText_imeOptions, 0x00000000);
+
 
             var inputType = typedArray.getInt(R.styleable.AppEditText_inputType, 0x00000001);
             isPassword = inputType == 0x00000081
@@ -247,7 +287,7 @@ class AppEditText : LinearLayout {
         @JvmStatic
         fun setText(view: AppEditText, value: String?) {
             Log.d("KHOA", "setText $value")
-            if (value==null) {
+            if (value == null) {
                 view.editText.setText("");
             } else {
                 if (value != view.editText.text.toString()) {

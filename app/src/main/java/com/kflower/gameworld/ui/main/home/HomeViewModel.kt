@@ -1,15 +1,11 @@
 package com.kflower.gameworld.ui.main.home
 
-import android.content.Context
 import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kflower.gameworld.dialog.NetworkErrorDialog
-import com.kflower.gameworld.model.AudioBook
 import com.kflower.gameworld.model.AudioGroup
 import com.kflower.gameworld.network.NetworkProvider
-import com.kflower.gameworld.ui.main.MainFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

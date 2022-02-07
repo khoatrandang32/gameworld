@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/layout_px"
+            android:background="@drawable/bg_rounded_"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_16">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Thời gian hẹn giờ"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="bold" />
+
+            <com.kflower.gameworld.common.components.AppEditText
+                android:id="@+id/edtTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/dimen_16"
+                app:hint="Nhập số phút"
+                app:inputType="numberSigned"
+                app:maxLength="3"
+                app:title="Thời gian hẹn" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:enabled="false"
+                android:id="@+id/btnConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="Đồng ý"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

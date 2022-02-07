@@ -26,16 +26,7 @@
                 android:layout_height="50dp"
                 android:imeOptions="actionDone"
                 android:textColor="@color/text_color" />
-            <com.kflower.gameworld.common.components.AppEditText
-                android:backgroundTint="#00000000"
-                android:paddingHorizontal="@dimen/text_size_16"
-                android:id="@+id/edtTime"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:hint="Nhập số phút"
-                android:imeOptions="actionDone"
-                android:textColor="@color/text_color" />
+
         </LinearLayout>
 
         <View

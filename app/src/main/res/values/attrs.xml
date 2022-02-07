@@ -5,6 +5,7 @@
         <attr name="iconLeftSrc" format="reference|color" />
         <attr name="hint" format="string" />
         <attr name="title" format="string" />
+        <attr name="maxLength" format="integer" min="0" />
         <attr name="imeOptions">
             <flag name="normal" value="0x00000000" />
             <flag name="actionUnspecified" value="0x00000000" />
