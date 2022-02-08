@@ -39,13 +39,13 @@ class BottomSheetTimer : BottomSheetDialogFragment {
         var view = inflater.inflate(R.layout.bottom_sheet_timer, container, false)
 
         var rvTimeItem = view.findViewById<RecyclerView>(R.id.rvTimeItem);
-        var btnDone= view.findViewById<TextView>(R.id.btnDone)
+        var btnDone = view.findViewById<TextView>(R.id.btnDone)
 
 
         rvTimeItem.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         //
         (dialog as BottomSheetDialog)?.apply {
-            behavior.isDraggable= false
+            behavior.isDraggable = false
             behavior.isHideable = false
         }
         isCancelable = false
@@ -53,7 +53,6 @@ class BottomSheetTimer : BottomSheetDialogFragment {
         list.add(15);
         list.add(30);
         list.add(60);
-//        list.add(-1);
         adapter =
             TimeListAdapter(requireContext(), list, object : TimeListAdapter.TimeClickListener {
                 override fun onClick(item: Int) {
@@ -64,8 +63,10 @@ class BottomSheetTimer : BottomSheetDialogFragment {
         rvTimeItem.adapter = adapter
 
         btnDone.setOnClickListener {
+            dismiss()
+            var timeset = list[adapter.selectedIndex] * 60000L
             context?.let {
-                MyApplication.startTimer(30000L,it);
+                MyApplication.startTimer(timeset, it);
             }
         }
         return view;

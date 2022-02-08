@@ -35,6 +35,7 @@ import android.content.Intent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
+import com.kflower.gameworld.interfaces.TimerChange
 import com.kflower.gameworld.services.CountDownServices
 
 
@@ -56,6 +57,7 @@ class MyApplication: Application(){
         //
         var listenerNoti: isMediaPlayChanged? = null
         var listener: isMediaPlayChanged? = null
+        var listenerTimer: TimerChange? = null
         var miniPlayerListener: isMediaPlayChanged? = null
         lateinit  var databaseProvider: DatabaseProvider
         lateinit var downloadContentDirectory: File
@@ -72,7 +74,7 @@ class MyApplication: Application(){
 
         val br: BroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                Log.d("KHOA", "onReceive ahihi: ")
+                listenerTimer?.onTimerChange(1)
             }
         }
         registerReceiver(br, IntentFilter(CountDownServices.COUNTDOWN_BR));

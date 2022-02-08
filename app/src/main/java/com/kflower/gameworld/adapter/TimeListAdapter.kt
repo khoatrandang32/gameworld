@@ -23,7 +23,7 @@ class TimeListAdapter(
 ) :
     RecyclerView.Adapter<TimeListAdapter.TimeListAdapterHolder>() {
     private var layoutInflater: LayoutInflater? = null
-    private var selectedIndex = 0;
+    public var selectedIndex = -1;
 
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
@@ -59,8 +59,19 @@ class TimeListAdapter(
                     txtTime.text = "Khác";
                 }
 
+                if(position==selectedIndex){
+                    container.setBackgroundColor(context.resources.getColor(R.color.sub_color))
+                }
+                else{
+                    container.setBackgroundColor(context.resources.getColor(R.color.background_color))
+                }
+
                 container.setOnClickListener {
-                    if(item>0){}
+                    if(item>0){
+                        selectedIndex= position
+                        notifyDataSetChanged()
+                        listener.onClick(item)
+                    }
                     else{
                         var dialog = NewTimeEnterDialog(context, object : TimeClickListener{
                             override fun onClick(item: Int) {

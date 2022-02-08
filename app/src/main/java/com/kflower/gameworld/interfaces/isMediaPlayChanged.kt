@@ -6,5 +6,4 @@ interface isMediaPlayChanged {
     fun isPlayChanged(isPlaying: Boolean)
     fun onPlaybackStateChanged(playbackState: Int)
     fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int)
-
 }
