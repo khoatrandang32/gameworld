@@ -27,6 +27,10 @@ import android.view.inputmethod.EditorInfo
 import android.text.InputFilter
 import android.R.attr.maxLength
 import android.text.InputFilter.LengthFilter
+import android.content.ContextWrapper
+
+
+
 
 
 class AppEditText : LinearLayout {
@@ -175,7 +179,7 @@ class AppEditText : LinearLayout {
             inputContainer.setOnClickListener {
                 editText.requestFocus()
                 val imm: InputMethodManager? =
-                    (context as Activity).getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                    unwrap(context).getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
                 imm?.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
             }
             bgDrawable = inputOutline.background as GradientDrawable
@@ -256,6 +260,14 @@ class AppEditText : LinearLayout {
                 imgViewTailIcon.visibility = View.VISIBLE
             }
         }
+    }
+
+    private fun unwrap(context: Context): Activity {
+        var context: Context? = context
+        while (context !is Activity && context is ContextWrapper) {
+            context = context.baseContext
+        }
+        return context as Activity
     }
 
     public fun setError(isError: Boolean, errorMessage: String? = null) {

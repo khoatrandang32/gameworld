@@ -62,7 +62,12 @@ class TimeListAdapter(
                 container.setOnClickListener {
                     if(item>0){}
                     else{
-                        var dialog = NewTimeEnterDialog(context);
+                        var dialog = NewTimeEnterDialog(context, object : TimeClickListener{
+                            override fun onClick(item: Int) {
+
+                            }
+
+                        });
                         dialog.show()
                     }
                 }

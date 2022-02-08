@@ -1,5 +1,6 @@
 package com.kflower.gameworld
 
+import android.app.Activity
 import android.app.Application
 import android.util.Log
 import com.google.android.exoplayer2.ExoPlayer
@@ -29,6 +30,12 @@ import com.tonyodev.fetch2.FetchConfiguration
 import com.tonyodev.fetch2.FetchListener
 import com.tonyodev.fetch2core.DownloadBlock
 import java.lang.Error
+import android.content.Intent
+
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.IntentFilter
+import com.kflower.gameworld.services.CountDownServices
 
 
 class MyApplication: Application(){
@@ -53,9 +60,23 @@ class MyApplication: Application(){
         lateinit  var databaseProvider: DatabaseProvider
         lateinit var downloadContentDirectory: File
 
+        public fun startTimer(time:Long, context:Context){
+            var intent = Intent(context, CountDownServices::class.java);
+            intent.putExtra(CountDownServices.TIME_KEY,time)
+            (context as Activity).startService(intent)
+        }
+
     }
     override fun onCreate() {
         super.onCreate()
+
+        val br: BroadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                Log.d("KHOA", "onReceive ahihi: ")
+            }
+        }
+        registerReceiver(br, IntentFilter(CountDownServices.COUNTDOWN_BR));
+
         Glimpse.init(this)
         FirebaseApp.initializeApp(this);
         val fetchConfiguration: FetchConfiguration = FetchConfiguration.Builder(this)
@@ -181,6 +202,7 @@ class MyApplication: Application(){
         mediaPlayer.addListener(object :Player.Listener{
 
             override fun onIsPlayingChanged(isPlaying: Boolean) {
+                Log.d("KHOA", "KHOA onIsPlayingChanged: ")
                 super.onIsPlayingChanged(isPlaying)
                 listener?.isPlayChanged(isPlaying);
                 listenerNoti?.isPlayChanged(isPlaying);
@@ -188,6 +210,8 @@ class MyApplication: Application(){
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
+                Log.d("KHOA", "KHOA onPlaybackStateChanged: ")
+
                 super.onPlaybackStateChanged(playbackState)
                 listener?.onPlaybackStateChanged(playbackState);
                 listenerNoti?.onPlaybackStateChanged(playbackState);
@@ -195,6 +219,8 @@ class MyApplication: Application(){
             }
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                Log.d("KHOA", "KHOA onMediaItemTransition: ")
+
                 super.onMediaItemTransition(mediaItem, reason)
                 listener?.onMediaItemTransition(mediaItem, reason)
                 listenerNoti?.onMediaItemTransition(mediaItem, reason)
@@ -203,6 +229,7 @@ class MyApplication: Application(){
 
         })
     }
+
 
 
 }

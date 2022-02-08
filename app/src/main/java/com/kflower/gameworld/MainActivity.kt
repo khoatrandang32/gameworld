@@ -28,8 +28,8 @@ class MainActivity : BaseActivity() {
     }
 
     override fun setDefaultFragment(): Fragment {
-//        return SplashFragment();
-        return TimerFragment();
+        return SplashFragment();
+//        return TimerFragment();
     }
 
     override fun onDestroy() {
