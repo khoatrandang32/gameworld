@@ -20,10 +20,15 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.kflower.gameworld.MyApplication
 
+import android.widget.RemoteViews
+import com.kflower.gameworld.MyApplication.Companion.timeCountDown
+import com.kflower.gameworld.R
+
 
 class CountDownServices : Service() {
     var bi = Intent(COUNTDOWN_BR)
-    var time = 21000L;
+    var time = 0L;
+
     private lateinit var cdt: CountDownTimer
 
     override fun onCreate() {
@@ -38,26 +43,14 @@ class CountDownServices : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun startMyOwnForeground() {
-        val NOTIFICATION_CHANNEL_ID = "example.permanence"
-        val channelName = "Background Service"
-        val chan = NotificationChannel(
-            NOTIFICATION_CHANNEL_ID,
-            channelName,
-            NotificationManager.IMPORTANCE_NONE
+        val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(this,
+            MyApplication.CHANNEL_ID
         )
-        chan.lightColor = Color.BLUE
-        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-
-        val manager = (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)!!
-        manager!!.createNotificationChannel(chan)
-
-        val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-        val notification: Notification = notificationBuilder.setOngoing(true)
-            .setContentTitle("App is running in background")
-            .setPriority(NotificationManager.IMPORTANCE_MIN)
-            .setCategory(Notification.CATEGORY_SERVICE)
+        val notification: Notification = notificationBuilder
+            .setContentTitle("213123")
+            .setContentText("AHihi")
             .build()
-        startForeground(2, notification)
+        startForeground(1, notification)
     }
 
 
@@ -72,6 +65,7 @@ class CountDownServices : Service() {
             }
 
             override fun onFinish() {
+                timeCountDown= 0L;
                 MyApplication.mediaPlayer.pause()
                 onDestroy()
             }

@@ -56,7 +56,7 @@ class BottomSheetTimer : BottomSheetDialogFragment {
         adapter =
             TimeListAdapter(requireContext(), list, object : TimeListAdapter.TimeClickListener {
                 override fun onClick(item: Int) {
-
+                    btnDone.isEnabled= true
                 }
 
             })

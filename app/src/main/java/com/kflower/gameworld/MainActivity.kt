@@ -10,15 +10,21 @@ import com.kflower.gameworld.common.core.BaseActivity
 import com.kflower.gameworld.ui.splash.SplashFragment
 import android.app.NotificationManager
 import android.content.Context
+import com.kflower.gameworld.MyApplication.Companion.TAG
+import com.kflower.gameworld.MyApplication.Companion.mAppContext
 import com.kflower.gameworld.ui.timer.TimerFragment
 import com.tonyodev.fetch2core.Func
+import java.util.*
 import kotlin.math.log
 
 
 class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val currentTime: Date = Calendar.getInstance().getTime()
+
         super.onCreate(savedInstanceState)
+        mAppContext= this;
         MyApplication.fetchAudio.getDownloads(Func {
             if (it.isNotEmpty()) {
                 Log.d(

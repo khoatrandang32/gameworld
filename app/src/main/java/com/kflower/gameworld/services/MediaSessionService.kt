@@ -15,23 +15,12 @@ import android.support.v4.media.session.PlaybackStateCompat
 
 import android.support.v4.media.MediaMetadataCompat
 import android.view.KeyEvent
-import android.graphics.BitmapFactory
-
-import android.graphics.Bitmap
 import android.util.Log
-import com.kflower.gameworld.R
-import com.kflower.gameworld.interfaces.isMediaPlayChanged
-import java.io.IOException
-import java.io.InputStream
-import java.net.HttpURLConnection
-import java.net.URL
-import kotlin.math.log
-import android.app.NotificationManager
-import android.content.Context
-import androidx.core.app.NotificationManagerCompat
-import com.google.android.exoplayer2.MediaItem
-import com.kflower.gameworld.MyApplication.Companion.listenerNoti
+import com.kflower.gameworld.MyApplication
+import com.kflower.gameworld.MyApplication.Companion.mIsPlaying
+import com.kflower.gameworld.MyApplication.Companion.mPlaybackState
 import com.kflower.gameworld.MyApplication.Companion.mediaPlayer
+import com.kflower.gameworld.common.lifecycleOwner
 
 
 class MediaSessionService : Service() {
@@ -60,21 +49,18 @@ class MediaSessionService : Service() {
                 mediaPlayer.seekTo(pos)
             }
         })
-        listenerNoti= object :isMediaPlayChanged{
-            override fun isPlayChanged(isPlaying: Boolean) {
+        MyApplication.mAppContext?.lifecycleOwner()?.let {
+            mIsPlaying.observe(it,{
                 startNotification()
-            }
-
-            override fun onPlaybackStateChanged(playbackState: Int) {
+            })
+            mPlaybackState.observe(it,{
                 startNotification()
-
-            }
-
-            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+            })
+            MyApplication.mMediaItem.observe(it,{
                 startNotification()
-            }
-
+            })
         }
+
         startNotification()
 
     }
@@ -86,7 +72,7 @@ class MediaSessionService : Service() {
         builder.putLong(
             MediaMetadataCompat.METADATA_KEY_DURATION, mediaPlayer.duration
         )
-        builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, "artist")
+        builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, "Tập ${mediaPlayer.currentMediaItemIndex+1}")
         builder.putBitmap(
             MediaMetadataCompat.METADATA_KEY_ALBUM_ART, PlayAudioManager.thumnailBitmap
         )

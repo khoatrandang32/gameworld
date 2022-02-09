@@ -45,15 +45,16 @@
                     android:background="@drawable/circle_shape"
                     android:indeterminate="false"
                     android:max="100"
-                    android:progress="20"
+                    android:progress="0"
                     android:progressDrawable="@drawable/circular_progress_bar" />
 
                 <TextView
+                    android:id="@+id/txtTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/dimen_30"
                     android:gravity="center"
-                    android:text="01:02"
+                    android:text="00:00"
                     android:textSize="@dimen/text_size_30"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"

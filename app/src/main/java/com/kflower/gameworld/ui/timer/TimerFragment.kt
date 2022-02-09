@@ -3,6 +3,7 @@ package com.kflower.gameworld.ui.timer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +13,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.kflower.gameworld.MyApplication
+import com.kflower.gameworld.MyApplication.Companion.TAG
+import com.kflower.gameworld.MyApplication.Companion.timeCountDown
 import com.kflower.gameworld.R
 import com.kflower.gameworld.bottomsheet.BottomSheetTimer
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.databinding.SplashFragmentBinding
 import com.kflower.gameworld.databinding.TimerFragmentBinding
 import com.kflower.gameworld.dialog.LoadingDialog
+import com.kflower.gameworld.interfaces.TimerChange
 import com.kflower.gameworld.ui.main.MainFragment
 import com.kflower.gameworld.ui.play.PlayAudioViewModel
 import com.kflower.gameworld.ui.splash.SplashFragment
@@ -46,14 +51,43 @@ class TimerFragment : BaseFragment() {
 
         bottomSheet= BottomSheetTimer();
 
-        bottomSheet.show(parentFragmentManager,BottomSheetTimer.TAG)
+        if(timeCountDown==0L){
+            bottomSheet.show(parentFragmentManager,BottomSheetTimer.TAG)
+        }
 
         binding.btnSetting.setOnClickListener{
             bottomSheet.show(parentFragmentManager,BottomSheetTimer.TAG)
         }
 
+        MyApplication.curTimer.observe(this,{
+                            binding.progressBar.max=  Integer.parseInt(timeCountDown.toString())
+                binding.progressBar.progress= Integer.parseInt(it.toString())
+                binding.txtTime.text = millisecondsToTime(it)
+        })
+
+//        MyApplication.listenerTimer= object :TimerChange{
+//            override fun onTimerChange(time: Long) {
+//                binding.progressBar.max=  Integer.parseInt(timeCountDown.toString())
+//                binding.progressBar.progress= Integer.parseInt(time.toString())
+//                binding.txtTime.text = millisecondsToTime(time)
+//            }
+//
+//        }
+
     }
 
+    private fun millisecondsToTime(milliseconds: Long): String {
+        val minutes = milliseconds / 1000 / 60
+        val seconds = milliseconds / 1000 % 60
+        val secondsStr = seconds.toString()
+        val secs: String = if (secondsStr.length >= 2) {
+            secondsStr.substring(0, 2)
+        } else {
+            "0$secondsStr"
+        }
+        var minStr= if(minutes<10) "0$minutes" else minutes
+        return "$minStr:$secs"
+    }
 
     override fun getLayoutBinding(): ViewDataBinding {
         return binding

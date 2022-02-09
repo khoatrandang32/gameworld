@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -18,15 +19,22 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.material.imageview.ShapeableImageView
 import com.kflower.gameworld.MyApplication
+import com.kflower.gameworld.MyApplication.Companion.TAG
+import com.kflower.gameworld.MyApplication.Companion.mMediaItem
 import com.kflower.gameworld.MyApplication.Companion.mediaPlayer
-import com.kflower.gameworld.MyApplication.Companion.miniPlayerListener
 import com.kflower.gameworld.R
 import com.kflower.gameworld.common.PlayAudioManager
+import com.kflower.gameworld.common.lifecycleOwner
 import com.kflower.gameworld.interfaces.isMediaPlayChanged
 import glimpse.glide.GlimpseTransformation
 import kotlin.math.roundToInt
 
 class MiniMediaPlayer : LinearLayout {
+
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        super.onLayout(changed, l, t, r, b)
+        Log.d(TAG, "onLayout: ")
+    }
 
     lateinit var seekBar: SeekBar;
     lateinit var container: LinearLayout;
@@ -57,6 +65,18 @@ class MiniMediaPlayer : LinearLayout {
         defStyleAttr
     ) {
         initView(attrs)
+    }
+
+    override fun onAttachedToWindow() {
+
+        super.onAttachedToWindow()
+        duration= mediaPlayer.duration
+        Log.d(TAG, "onAttachedToWindow: "+ getProgress(mediaPlayer.currentPosition,duration))
+        seekBar.progress = getProgress(mediaPlayer.currentPosition,duration)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
     }
 
     private fun initView(attrs: AttributeSet?) {
@@ -90,8 +110,11 @@ class MiniMediaPlayer : LinearLayout {
         txtAudioAuthor.text = PlayAudioManager.playingAudio?.author
         initViewData();
         txtAudioBookName.isSelected=true;
-        miniPlayerListener = object : isMediaPlayChanged {
-            override fun isPlayChanged(isPlaying: Boolean) {
+
+        duration= mediaPlayer.duration
+
+        MyApplication.mAppContext?.lifecycleOwner()?.let {
+            MyApplication.mIsPlaying.observe(it,{ isPlaying ->
                 imgPlayAndPause.setImageDrawable(
                     context.getDrawable(
                         if (isPlaying) R.drawable.ic_pause
@@ -104,9 +127,9 @@ class MiniMediaPlayer : LinearLayout {
                 else{
                     durationHandler.removeCallbacks(updateSeekBarTime);
                 }
-            }
-
-            override fun onPlaybackStateChanged(playbackState: Int) {
+            })
+            //
+            MyApplication.mPlaybackState.observe(it,{
                 Glide.with(context)
                     .load(PlayAudioManager.playingAudio?.thumbnailUrl)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
@@ -118,17 +141,18 @@ class MiniMediaPlayer : LinearLayout {
                 duration= mediaPlayer.duration
                 progressBar.visibility= GONE
                 imgPlayAndPause.visibility= VISIBLE
-            }
+            })
 
-            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+            mMediaItem.observe(it,{
                 progressBar.visibility= GONE
                 imgPlayAndPause.visibility= VISIBLE
-                seekBar.progress= 0;
+//                seekBar.progress= 0;
+                seekBar.progress = getProgress(mediaPlayer.currentPosition,duration)
                 txtAudioBookName.text = PlayAudioManager.playingAudio?.title+" - Tap "+ (mediaPlayer.currentMediaItemIndex+1)
                 txtAudioAuthor.text = PlayAudioManager.playingAudio?.author
-            }
-
+            })
         }
+
         imgPlayAndPause.setOnClickListener {
             if (mediaPlayer.isPlaying) {
                 mediaPlayer.pause()
