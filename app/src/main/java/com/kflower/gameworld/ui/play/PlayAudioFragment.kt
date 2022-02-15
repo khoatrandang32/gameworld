@@ -35,10 +35,17 @@ import com.tonyodev.fetch2.Priority
 import com.tonyodev.fetch2.Request
 import android.os.Environment
 import com.kflower.gameworld.MyApplication
+import com.kflower.gameworld.MyApplication.Companion.TAG
+import com.kflower.gameworld.MyApplication.Companion.currentMediaPos
+import com.kflower.gameworld.MyApplication.Companion.mAppContext
 import com.kflower.gameworld.bottomsheet.BottomSheetEpisodes
-import com.kflower.gameworld.common.Utils
 import com.kflower.gameworld.common.lifecycleOwner
 import com.kflower.gameworld.ui.timer.TimerFragment
+import kotlin.math.log
+import android.content.Context.MODE_PRIVATE
+
+import android.content.SharedPreferences
+import com.kflower.gameworld.common.Key
 
 
 class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
@@ -46,18 +53,29 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
 
     private lateinit var viewModel: PlayAudioViewModel;
 
-    private lateinit var durationHandler: Handler
     private var isChanging = false;
     lateinit var binding: PlayAudioFragmentBinding;
     lateinit var bottomSheet: BottomSheetEpisodes;
+    lateinit var episodes: MutableList<String>;
+
+    override fun onResume() {
+        super.onResume()
+        binding.viewModel?.currentPos?.postValue(currentMediaPos.value)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("KHOA", "onCreate: ")
 
         binding = PlayAudioFragmentBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(PlayAudioViewModel::class.java)
-        bottomSheet = BottomSheetEpisodes(item.episodes, object : AudioEpAdapter.AudioEpListener {
+
+        episodes= mutableListOf()
+
+        for(i in 1..item.episodesAmount){
+            episodes.add(String.format(item.baseEpisode,i))
+        }
+
+        bottomSheet = BottomSheetEpisodes(episodes, object : AudioEpAdapter.AudioEpListener {
             override fun onClick(audioUrl: String, position: Int) {
 //                viewModel?.isLoading?.postValue(true)
                 mediaPlayer.seekTo(position, 0);
@@ -69,7 +87,6 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
 
         })
         viewModel.item.postValue(item);
-        durationHandler = Handler(Looper.getMainLooper());
 
         binding.lifecycleOwner = this;
         binding.viewModel = viewModel;
@@ -90,15 +107,13 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
                   )
                   PlayAudioManager.isShowNoti = true;
               }
-              activity?.runOnUiThread(updateSeekBarTime)
-
-          } else {
-              durationHandler.removeCallbacks(updateSeekBarTime);
-
           }
       })
       MyApplication.mIsLoading.observe(it,{ isLoading ->
           viewModel.isLoading.postValue(isLoading)
+      })
+      MyApplication.currentMediaPos.observe(it,{ curPos ->
+          viewModel.currentPos.postValue(curPos)
       })
       MyApplication.mPlaybackState.observe(it, {
           if (mediaPlayer.duration > 0) {
@@ -136,15 +151,20 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
 
         if (item.id != PlayAudioManager.playingAudio?.id) {
             PlayAudioManager.preparePlayNewAudioList(
-                item.episodes
+                episodes
             )
             PlayAudioManager.playingAudio = item
             mediaPlayer.playWhenReady = true
 
+            val sharedPref: SharedPreferences = requireContext().getSharedPreferences(Key.KEY_STORE, MODE_PRIVATE)
+
+            val editor = sharedPref.edit()
+            editor.putString(Key.KEY_PLAYING_AUDIO_ID, item.id)
+            editor.commit()
+
         } else {
             viewModel.isPlaying.postValue(mediaPlayer.isPlaying)
             viewModel.duration.postValue(mediaPlayer.duration)
-            viewModel.currentPos.postValue(mediaPlayer.currentPosition)
             viewModel.currentPart?.postValue("Tap ${mediaPlayer.currentMediaItemIndex + 1}");
             if (mediaPlayer.isPlaying) {
                 if (!PlayAudioManager.isShowNoti) {
@@ -154,10 +174,6 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
                     )
                     PlayAudioManager.isShowNoti = true;
                 }
-                activity?.runOnUiThread(updateSeekBarTime)
-
-            } else {
-                durationHandler.removeCallbacks(updateSeekBarTime);
 
             }
         }
@@ -179,11 +195,10 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
             imgNext.setOnClickListener {
                 mediaPlayer.seekToNextMediaItem()
                 mediaPlayer.playWhenReady=true
-                if (mediaPlayer.currentMediaItemIndex != (PlayAudioManager.playingAudio?.episodes?.size!! - 1)) {
+                if (mediaPlayer.currentMediaItemIndex != (PlayAudioManager.playingAudio?.episodesAmount!! - 1)) {
                     viewModel?.reset()
                 } else {
                     mediaPlayer.seekTo(0, 0)
-                    viewModel?.currentPos?.postValue(0)
                 }
 
             }
@@ -196,7 +211,6 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
                     viewModel?.reset()
                 } else {
                     mediaPlayer.seekTo(0)
-                    viewModel?.currentPos?.postValue(0)
                 }
             }
             imgFoward.setOnClickListener {
@@ -230,7 +244,7 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
                         val ipInt = (progress as Number).toLong()
 
                         if (p2) {
-                            viewModel?.currentPos?.postValue(ipInt);
+                            viewModel?.currentPos?.postValue(ipInt)
                         }
                     }
 
@@ -260,7 +274,7 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path
             val dirPath = "$downloadsPath/FileDownloader/$file"
 
-            val request = Request(item.episodes[mediaPlayer.currentMediaItemIndex], dirPath)
+            val request = Request(episodes[mediaPlayer.currentMediaItemIndex], dirPath)
             request.priority = Priority.HIGH
             request.networkType = NetworkType.ALL
 //            request.addHeader("clientKey", "SD78DF93_3947&MVNGHE1WONG")
@@ -278,14 +292,6 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
 
     }
 
-    private val updateSeekBarTime: Runnable = object : Runnable {
-        override fun run() {
-            if (!isChanging) {
-                viewModel.currentPos.postValue(mediaPlayer.currentPosition)
-            }
-            durationHandler.postDelayed(this, 1000)
-        }
-    }
 
 
     override fun getLayoutBinding(): ViewDataBinding {

@@ -21,6 +21,7 @@ import com.kflower.gameworld.MyApplication.Companion.mIsPlaying
 import com.kflower.gameworld.MyApplication.Companion.mPlaybackState
 import com.kflower.gameworld.MyApplication.Companion.mediaPlayer
 import com.kflower.gameworld.common.lifecycleOwner
+import com.kflower.gameworld.common.toBitMap
 
 
 class MediaSessionService : Service() {
@@ -49,16 +50,15 @@ class MediaSessionService : Service() {
                 mediaPlayer.seekTo(pos)
             }
         })
-        MyApplication.mAppContext?.lifecycleOwner()?.let {
-            mIsPlaying.observe(it,{
-                startNotification()
-            })
-            mPlaybackState.observe(it,{
-                startNotification()
-            })
-            MyApplication.mMediaItem.observe(it,{
-                startNotification()
-            })
+        mIsPlaying.observeForever {
+            startNotification()
+        }
+        mPlaybackState.observeForever {
+            startNotification()
+
+        }
+        MyApplication.mMediaItem.observeForever {
+            startNotification()
         }
 
         startNotification()
@@ -74,7 +74,7 @@ class MediaSessionService : Service() {
         )
         builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, "Tập ${mediaPlayer.currentMediaItemIndex+1}")
         builder.putBitmap(
-            MediaMetadataCompat.METADATA_KEY_ALBUM_ART, PlayAudioManager.thumnailBitmap
+            MediaMetadataCompat.METADATA_KEY_ALBUM_ART, PlayAudioManager.playingAudio?.imgBase64?.toBitMap()
         )
 
         return builder.build()
@@ -99,6 +99,11 @@ class MediaSessionService : Service() {
             SystemClock.elapsedRealtime()
         )
         return stateBuilder.build()
+    }
+
+    override fun onDestroy() {
+        Log.d(TAG, "onDestroyx: ")
+        super.onDestroy()
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -126,7 +131,7 @@ class MediaSessionService : Service() {
             else if(
                 keyEvent?.keyCode === KeyEvent.KEYCODE_MEDIA_STOP
             ) {
-                mediaPlayer.pause()
+                mediaPlayer.stop()
                 PlayAudioManager.isShowNoti=false;
                 stopSelf()
                 return super.onStartCommand(intent, flags, startId)

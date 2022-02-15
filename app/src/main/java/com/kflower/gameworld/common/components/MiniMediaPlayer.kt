@@ -45,10 +45,9 @@ class MiniMediaPlayer : LinearLayout {
     lateinit var imgPre: ImageView;
     lateinit var imgNext: ImageView;
     lateinit var progressBar: ProgressBar;
-    var listener: View.OnClickListener?=null
+    var listener: View.OnClickListener? = null
 
-    private lateinit var durationHandler: Handler
-    var duration:Long= 0;
+    var duration: Long = 0;
 
     constructor(context: Context) : super(context) {
         initView(null)
@@ -67,21 +66,11 @@ class MiniMediaPlayer : LinearLayout {
         initView(attrs)
     }
 
-    override fun onAttachedToWindow() {
-
-        super.onAttachedToWindow()
-        duration= mediaPlayer.duration
-        Log.d(TAG, "onAttachedToWindow: "+ getProgress(mediaPlayer.currentPosition,duration))
-        seekBar.progress = getProgress(mediaPlayer.currentPosition,duration)
-    }
-
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
     }
 
     private fun initView(attrs: AttributeSet?) {
-        durationHandler = Handler(Looper.getMainLooper());
-
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         val view: View = LayoutInflater.from(context).inflate(
             R.layout.mini_player_layout, null
@@ -105,50 +94,50 @@ class MiniMediaPlayer : LinearLayout {
             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
             .transform(GlimpseTransformation())
             .into(imgAudio)
-        container.visibility= if (PlayAudioManager.playingAudio!=null)  View.VISIBLE else GONE;
-        txtAudioBookName.text = PlayAudioManager.playingAudio?.title+" - Tap "+ (mediaPlayer.currentMediaItemIndex+1)
+        container.visibility = if (PlayAudioManager.playingAudio != null) View.VISIBLE else GONE;
+        txtAudioBookName.text =
+            PlayAudioManager.playingAudio?.title + " - Tap " + (mediaPlayer.currentMediaItemIndex + 1)
         txtAudioAuthor.text = PlayAudioManager.playingAudio?.author
         initViewData();
-        txtAudioBookName.isSelected=true;
+        txtAudioBookName.isSelected = true;
 
-        duration= mediaPlayer.duration
-
+        duration = mediaPlayer.duration
         MyApplication.mAppContext?.lifecycleOwner()?.let {
-            MyApplication.mIsPlaying.observe(it,{ isPlaying ->
+            MyApplication.mIsPlaying.observe(it, { isPlaying ->
                 imgPlayAndPause.setImageDrawable(
                     context.getDrawable(
                         if (isPlaying) R.drawable.ic_pause
                         else R.drawable.ic_play
                     )
                 )
-                if(isPlaying){
-                    (context as Activity).runOnUiThread(updateSeekBarTime)
-                }
-                else{
-                    durationHandler.removeCallbacks(updateSeekBarTime);
-                }
             })
+            MyApplication.currentMediaPos.observe(it, { curPos ->
+                seekBar.progress= getProgress(curPos,duration)
+            }
+
+            )
             //
-            MyApplication.mPlaybackState.observe(it,{
+            MyApplication.mPlaybackState.observe(it, {
                 Glide.with(context)
                     .load(PlayAudioManager.playingAudio?.thumbnailUrl)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .transform(GlimpseTransformation())
                     .into(imgAudio)
-                container.visibility= if (PlayAudioManager.playingAudio!=null)  View.VISIBLE else GONE;
-                txtAudioBookName.text = PlayAudioManager.playingAudio?.title+" - Tap "+ (mediaPlayer.currentMediaItemIndex+1)
+                container.visibility =
+                    if (PlayAudioManager.playingAudio != null) View.VISIBLE else GONE;
+                txtAudioBookName.text =
+                    PlayAudioManager.playingAudio?.title + " - Tap " + (mediaPlayer.currentMediaItemIndex + 1)
                 txtAudioAuthor.text = PlayAudioManager.playingAudio?.author
-                duration= mediaPlayer.duration
-                progressBar.visibility= GONE
-                imgPlayAndPause.visibility= VISIBLE
+                duration = mediaPlayer.duration
+                progressBar.visibility = GONE
+                imgPlayAndPause.visibility = VISIBLE
             })
 
-            mMediaItem.observe(it,{
-                progressBar.visibility= GONE
-                imgPlayAndPause.visibility= VISIBLE
-//                seekBar.progress= 0;
-                seekBar.progress = getProgress(mediaPlayer.currentPosition,duration)
-                txtAudioBookName.text = PlayAudioManager.playingAudio?.title+" - Tap "+ (mediaPlayer.currentMediaItemIndex+1)
+            mMediaItem.observe(it, {
+                progressBar.visibility = GONE
+                imgPlayAndPause.visibility = VISIBLE
+                txtAudioBookName.text =
+                    PlayAudioManager.playingAudio?.title + " - Tap " + (mediaPlayer.currentMediaItemIndex + 1)
                 txtAudioAuthor.text = PlayAudioManager.playingAudio?.author
             })
         }
@@ -164,17 +153,17 @@ class MiniMediaPlayer : LinearLayout {
         }
         imgNext.setOnClickListener {
             mediaPlayer.seekToNextMediaItem()
-            if(mediaPlayer.currentMediaItemIndex!=(PlayAudioManager.playingAudio?.episodes?.size!! -1)){
-                progressBar.visibility= VISIBLE
-                imgPlayAndPause.visibility= GONE
+            if (mediaPlayer.currentMediaItemIndex != (PlayAudioManager.playingAudio?.episodesAmount!! - 1)) {
+                progressBar.visibility = VISIBLE
+                imgPlayAndPause.visibility = GONE
             }
 
         }
         imgPre.setOnClickListener {
             mediaPlayer.seekToPreviousMediaItem()
-            if(mediaPlayer.currentMediaItemIndex!=0){
-                progressBar.visibility= VISIBLE
-                imgPlayAndPause.visibility= GONE
+            if (mediaPlayer.currentMediaItemIndex != 0) {
+                progressBar.visibility = VISIBLE
+                imgPlayAndPause.visibility = GONE
             }
         }
         container.setOnClickListener {
@@ -182,23 +171,17 @@ class MiniMediaPlayer : LinearLayout {
         }
     }
 
-    private val updateSeekBarTime: Runnable = object : Runnable {
-        override fun run() {
-            seekBar.progress = getProgress(mediaPlayer.currentPosition,duration)
-            durationHandler.postDelayed(this, 1000)
-        }
-    }
 
-    fun getProgress(currentPos:Long,duration: Long ):Int{
+    fun getProgress(currentPos: Long, duration: Long): Int {
 
-        if(currentPos == 0L){
+        if (currentPos == 0L) {
             return 0
         }
         return ((currentPos.toFloat() / duration) * 100).roundToInt()
     }
 
-    fun setOnClick(listener: OnClickListener){
-        this.listener= listener
+    fun setOnClick(listener: OnClickListener) {
+        this.listener = listener
     }
 
     private fun initViewData() {
@@ -210,6 +193,10 @@ class MiniMediaPlayer : LinearLayout {
         )
     }
 
+    public fun refresh(){
+        duration= mediaPlayer.duration
+        seekBar.progress= getProgress(MyApplication.currentMediaPos.value!!,duration)
+    }
 
 
 }

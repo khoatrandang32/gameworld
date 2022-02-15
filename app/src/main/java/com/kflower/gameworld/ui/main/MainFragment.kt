@@ -103,4 +103,8 @@ open class MainFragment : BaseFragment() {
     override fun onBackPressed() {
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.miniMedia.refresh()
+    }
 }

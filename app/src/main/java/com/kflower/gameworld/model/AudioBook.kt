@@ -8,8 +8,8 @@ data class AudioBook(
     var id: String,
     @SerializedName("thumbnailUrl")
     var thumbnailUrl: String,
-    @SerializedName("episodes")
-    var episodes: MutableList<String>,
+    @SerializedName("baseEpisode")
+    var baseEpisode: String,
     @SerializedName("title")
     var title: String,
     @SerializedName("decription")
@@ -23,5 +23,10 @@ data class AudioBook(
     @SerializedName("episodesAmount")
     var episodesAmount: Int,
     @SerializedName("comments")
-    var comments: MutableList<Comment>,
+    var comments: MutableList<Comment>?,
+    //
+    var rate: Int =0,
+    var imgBase64: String,
+    var progress: Long,
+    var curEp: Int=0,
 )

@@ -12,12 +12,13 @@ class AppDatabaseHelper(context: Context?) :
     override fun onCreate(db: SQLiteDatabase) {
 
         UserTable(db).createTable();
+        AudioTable(db).createTable();
+        HomeCateTable(db).createTable();
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
 
         UserTable(db).deleteTable();
-
         onCreate(db)
     }
 
@@ -30,10 +31,5 @@ class AppDatabaseHelper(context: Context?) :
         // Database Name
         private const val DATABASE_NAME = "GameWorld.db"
 
-        // Table name: Note.
-        private const val TABLE_NOTE = "Note"
-        private const val COLUMN_NOTE_ID = "Note_Id"
-        private const val COLUMN_NOTE_TITLE = "Note_Title"
-        private const val COLUMN_NOTE_CONTENT = "Note_Content"
     }
 }

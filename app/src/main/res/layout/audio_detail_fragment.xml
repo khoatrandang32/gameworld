@@ -181,7 +181,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{viewModel.item.episodes.size()+` Episodes`}"
+                                android:text="@{viewModel.item.episodesAmount+` Episodes`}"
                                 android:textColor="@color/hint_color"
                                 tools:text="Reader" />
                         </LinearLayout>

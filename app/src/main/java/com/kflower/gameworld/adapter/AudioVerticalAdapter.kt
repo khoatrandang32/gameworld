@@ -1,6 +1,9 @@
 package com.kflower.gameworld.adapter
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.OnReceiveContentListener
 import android.view.View
@@ -10,9 +13,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
+import com.kflower.gameworld.MyApplication.Companion.TAG
+import com.kflower.gameworld.MyApplication.Companion.audioTable
 import com.kflower.gameworld.R
+import com.kflower.gameworld.common.PlayAudioManager
+import com.kflower.gameworld.common.bitMapToString
 import com.kflower.gameworld.interfaces.OnClickAudioBook
 import com.kflower.gameworld.model.AudioBook
 
@@ -57,7 +66,19 @@ class AudioVerticalAdapter(
             lvCategories.layoutManager = layoutManager;
             lvCategories.adapter = SmallCategoriesAdapter(context, audio.categories)
 
-            Glide.with(context).load(audio.thumbnailUrl).into(imgView);
+            Glide.with(context)
+                .asBitmap()
+                .load(audio.thumbnailUrl)
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        imgView.setImageBitmap(resource)
+                        audio.imgBase64= resource.bitMapToString()
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                    }
+                })
+
             txtAudioBookName.text = audio.title
             txtEpisodesAmount.text = "${audio.episodesAmount} Episodes";
             container.setOnClickListener {

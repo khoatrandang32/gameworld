@@ -27,11 +27,9 @@ class CategoriesViewModel : ViewModel() {
             ) {
                 if (response.isSuccessful ) {
                     listCategories.postValue(response.body())
-                    Log.d("KHOA", "success: " + response.code())
                     isLoading.postValue(false)
 
                 } else {
-                    Log.d("KHOA", "fail: " + response.code())
 //                    isLoading.postValue(false)
                     Handler().postDelayed({
                         isError.postValue(true)

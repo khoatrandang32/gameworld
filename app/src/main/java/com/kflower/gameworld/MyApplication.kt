@@ -32,6 +32,9 @@ import android.content.Intent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
+import android.database.sqlite.SQLiteDatabase
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
@@ -40,25 +43,37 @@ import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.text.Cue
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.trackselection.TrackSelectionParameters
+import com.kflower.gameworld.common.PlayAudioManager
+import com.kflower.gameworld.database.AppDatabaseHelper
+import com.kflower.gameworld.database.AudioTable
+import com.kflower.gameworld.database.HomeCateTable
 import com.kflower.gameworld.interfaces.TimerChange
+import com.kflower.gameworld.model.AudioGroup
 import com.kflower.gameworld.services.CountDownServices
 
 
-class MyApplication: Application(){
-    companion object{
-        var TAG= "KHOA"
-        var mAppContext:Context?=null;
-        var timeCountDown: Long= 0
+class MyApplication : Application() {
+    companion object {
+        var TAG = "KHOA"
+        var isSettingUp = true
+        var mAppContext: Context? = null;
+        var timeCountDown: Long = 0
         var curTimer = MutableLiveData<Long>(0);
         var mIsLoading = MutableLiveData(false);
-        var mIsPlaying = MutableLiveData<Boolean>(false);
+        var mIsPlaying = MutableLiveData(false);
         var mPlaybackState = MutableLiveData(0);
+        var currentMediaPos = MutableLiveData(0L);
         var mMediaItem = MutableLiveData<MediaItem>();
+        lateinit var db: SQLiteDatabase
+        lateinit var audioTable: AudioTable
+        lateinit var homeCateTable: HomeCateTable
+
         //
         lateinit var simpleCache: SimpleCache
         lateinit var downloadCache: SimpleCache
         lateinit var cacheFolder: File
         lateinit var fetchAudio: Fetch
+        private lateinit var durationHandler: Handler
 
         const val exoPlayerCacheSize: Long = 90 * 1024 * 1024
         lateinit var leastRecentlyUsedCacheEvictor: LeastRecentlyUsedCacheEvictor
@@ -67,25 +82,33 @@ class MyApplication: Application(){
         lateinit var mediaPlayer: ExoPlayer
         lateinit var downloadManager: DownloadManager
         const val CHANNEL_ID = "Kflower"
-        lateinit var httpDataSourceFactory:DefaultHttpDataSource.Factory;
+        lateinit var httpDataSourceFactory: DefaultHttpDataSource.Factory;
+
         //
-        var timeIntent:Intent ?=null;
-        lateinit  var databaseProvider: DatabaseProvider
+        var timeIntent: Intent? = null;
+        lateinit var databaseProvider: DatabaseProvider
         lateinit var downloadContentDirectory: File
 
-        public fun startTimer(time:Long, context:Context){
-            if(timeIntent!=null){
+        public fun startTimer(time: Long, context: Context) {
+            if (timeIntent != null) {
                 (context as Activity).stopService(timeIntent)
             }
-            timeCountDown= time
+            timeCountDown = time
             timeIntent = Intent(context, CountDownServices::class.java);
-            timeIntent?.putExtra(CountDownServices.TIME_KEY,time)
+            timeIntent?.putExtra(CountDownServices.TIME_KEY, time)
             (context as Activity).startService(timeIntent)
         }
 
     }
+
     override fun onCreate() {
         super.onCreate()
+
+        db = AppDatabaseHelper(this).writableDatabase;
+        audioTable = AudioTable(db);
+        homeCateTable = HomeCateTable(db);
+
+        durationHandler = Handler(Looper.getMainLooper());
 
         val br: BroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -150,7 +173,10 @@ class MyApplication: Application(){
                 downloadedBytesPerSecond: Long
             ) {
 
-                Log.d("KHOA", "onProgress: "+etaInMilliSeconds+" - "+downloadedBytesPerSecond+" - "+download.progress+" - "+download.total+" - "+download.id)
+                Log.d(
+                    "KHOA",
+                    "onProgress: " + etaInMilliSeconds + " - " + downloadedBytesPerSecond + " - " + download.progress + " - " + download.total + " - " + download.id
+                )
             }
 
             override fun onQueued(download: Download, waitingOnNetwork: Boolean) {
@@ -185,10 +211,10 @@ class MyApplication: Application(){
         exoDatabaseProvider = ExoDatabaseProvider(this)
         simpleCache = SimpleCache(cacheFolder, leastRecentlyUsedCacheEvictor, exoDatabaseProvider)
         //
-        databaseProvider= StandaloneDatabaseProvider(this)
+        databaseProvider = StandaloneDatabaseProvider(this)
         downloadContentDirectory = File(getExternalFilesDir(null), "KFlower")
-        Log.d("KHOA", "onCreate: 1"+ downloadContentDirectory.absolutePath)
-        Log.d("KHOA", "onCreate: 2"+ cacheFolder.absolutePath)
+        Log.d("KHOA", "onCreate: 1" + downloadContentDirectory.absolutePath)
+        Log.d("KHOA", "onCreate: 2" + cacheFolder.absolutePath)
         downloadCache = SimpleCache(downloadContentDirectory, NoOpCacheEvictor(), databaseProvider);
         //
         initMediaPlayer()
@@ -220,11 +246,11 @@ class MyApplication: Application(){
             .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
         mediaPlayer = ExoPlayer.Builder(applicationContext)
             .setMediaSourceFactory(DefaultMediaSourceFactory(cacheDataSourceFactory)).build()
-        mediaPlayer.addListener(object :Player.Listener{
+        mediaPlayer.addListener(object : Player.Listener {
 
             override fun onEvents(player: Player, events: Player.Events) {
                 super.onEvents(player, events)
-                Log.d(TAG, "onEvents: ")
+                currentMediaPos.postValue(mediaPlayer.currentPosition)
             }
 
             override fun onAudioAttributesChanged(audioAttributes: AudioAttributes) {
@@ -259,8 +285,11 @@ class MyApplication: Application(){
 
             override fun onIsLoadingChanged(isLoading: Boolean) {
                 mIsLoading.postValue(isLoading)
+                currentMediaPos.postValue(mediaPlayer.currentPosition)
+                if (!isSettingUp){
+                    mediaPlayer.playWhenReady = true
+                }
                 super.onIsLoadingChanged(isLoading)
-                Log.d(TAG, "onIsLoadingChanged: ")
             }
 
             override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
@@ -327,21 +356,33 @@ class MyApplication: Application(){
             }
 
             override fun onIsPlayingChanged(isPlaying: Boolean) {
-                Log.d(TAG, "onIsPlayingChanged: ")
                 mIsLoading.postValue(false)
                 super.onIsPlayingChanged(isPlaying)
                 mIsPlaying.postValue(isPlaying)
+                if (isPlaying) {
+                    isSettingUp= false;
+                    (mAppContext as Activity)?.runOnUiThread(updateSeekBarTime)
+                } else {
+                    durationHandler.removeCallbacks(updateSeekBarTime);
+                }
+
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
-                Log.d(TAG, "onPlaybackStateChanged: ")
                 super.onPlaybackStateChanged(playbackState)
+                currentMediaPos.postValue(mediaPlayer.currentPosition)
                 mPlaybackState.postValue(playbackState)
 
             }
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 Log.d(TAG, "onMediaItemTransition: ")
+                var audio = PlayAudioManager.playingAudio
+                audio?.let {
+                    it.curEp = mediaPlayer.currentMediaItemIndex
+                    audioTable.updateAudioEp(it)
+                }
+
                 super.onMediaItemTransition(mediaItem, reason)
                 mediaItem?.let {
                     mMediaItem.postValue(it)
@@ -351,6 +392,23 @@ class MyApplication: Application(){
         })
     }
 
+    private val updateSeekBarTime: Runnable = object : Runnable {
+        override fun run() {
+            currentMediaPos.postValue(mediaPlayer.currentPosition)
+            PlayAudioManager.playingAudio?.let {
+                var audio = it;
+                audio.progress = mediaPlayer.currentPosition
+                AudioTable(db).updateAudioProgress(audio)
+            }
 
+            durationHandler.postDelayed(this, 1000)
+
+        }
+    }
+
+    override fun onTerminate() {
+        Log.d(TAG, "onTerminate: ")
+        super.onTerminate()
+    }
 
 }

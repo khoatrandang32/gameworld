@@ -4,6 +4,8 @@ import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.kflower.gameworld.MyApplication
+import com.kflower.gameworld.MyApplication.Companion.homeCateTable
 import com.kflower.gameworld.model.AudioGroup
 import com.kflower.gameworld.network.NetworkProvider
 import retrofit2.Call
@@ -28,6 +30,7 @@ class HomeViewModel: ViewModel() {
                     isLoading.postValue(false)
                     listAudioGroup.postValue(response.body())
                     Log.d("KHOA", "success: " + response.code())
+
                 } else {
                     Log.d("KHOA", "fail: " + response.code())
                     isError.postValue(true)

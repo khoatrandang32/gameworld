@@ -41,10 +41,6 @@ class MediaNotificationManager(musicContext: MediaSessionService) {
     private val mCloseAction: NotificationCompat.Action
     val notificationManager: NotificationManager
 
-    fun onDestroy() {
-        Log.d(TAG, "onDestroy: ")
-    }
-
     fun getNotification(
         metadata: MediaMetadataCompat,
         state: PlaybackStateCompat,

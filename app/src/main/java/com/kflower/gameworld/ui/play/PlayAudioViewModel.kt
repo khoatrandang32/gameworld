@@ -14,7 +14,7 @@ class PlayAudioViewModel : ViewModel() {
     var isLoading = MutableLiveData(true);
     var duration = MutableLiveData<Long>(0);
     var currentPos = MutableLiveData<Long>(0);
-    var currentPart = MutableLiveData<String>("Tập 1");
+    var currentPart = MutableLiveData("Tập 1");
 
     fun reset(){
         duration.postValue(0)

@@ -46,7 +46,7 @@ class BottomSheetTimer : BottomSheetDialogFragment {
         //
         (dialog as BottomSheetDialog)?.apply {
             behavior.isDraggable = false
-            behavior.isHideable = false
+//            behavior.isHideable = false
         }
         isCancelable = false
         var list = mutableListOf<Int>();
@@ -64,7 +64,8 @@ class BottomSheetTimer : BottomSheetDialogFragment {
 
         btnDone.setOnClickListener {
             dismiss()
-            var timeset = list[adapter.selectedIndex] * 60000L
+//            var timeset = list[adapter.selectedIndex] * 60000L
+            var timeset = 10000L
             context?.let {
                 MyApplication.startTimer(timeset, it);
             }

@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat
 import com.kflower.gameworld.MyApplication
 
 import android.widget.RemoteViews
+import com.kflower.gameworld.MyApplication.Companion.mediaPlayer
 import com.kflower.gameworld.MyApplication.Companion.timeCountDown
 import com.kflower.gameworld.R
 
@@ -60,13 +61,20 @@ class CountDownServices : Service() {
         }
         cdt = object : CountDownTimer(time, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                bi.putExtra("countdown", millisUntilFinished)
+                var res= ((millisUntilFinished-1)/1000)*1000L;
+                bi.putExtra("countdown",res )
                 sendBroadcast(bi)
+
+                if(res==0L){
+                    mediaPlayer.pause();
+                    stopSelf()
+                }
+
             }
 
             override fun onFinish() {
                 timeCountDown= 0L;
-                MyApplication.mediaPlayer.pause()
+                Log.d(TAG, "onFinish: ")
                 onDestroy()
             }
         }
