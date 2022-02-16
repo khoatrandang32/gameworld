@@ -20,9 +20,16 @@ import com.kflower.gameworld.adapter.AudioEpAdapter
 import com.kflower.gameworld.adapter.TimeListAdapter
 import android.content.Intent
 import com.kflower.gameworld.services.CountDownServices
+import android.content.DialogInterface
+import android.util.Log
+import android.view.KeyEvent
+import com.kflower.gameworld.common.core.BaseFragment
+import com.kflower.gameworld.interfaces.BottomSheetListener
 
 
 class BottomSheetTimer : BottomSheetDialogFragment {
+
+    lateinit var listener: BottomSheetListener;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +53,8 @@ class BottomSheetTimer : BottomSheetDialogFragment {
         //
         (dialog as BottomSheetDialog)?.apply {
             behavior.isDraggable = false
-//            behavior.isHideable = false
+            behavior.isHideable = false
         }
-        isCancelable = false
         var list = mutableListOf<Int>();
         list.add(15);
         list.add(30);
@@ -64,16 +70,19 @@ class BottomSheetTimer : BottomSheetDialogFragment {
 
         btnDone.setOnClickListener {
             dismiss()
-//            var timeset = list[adapter.selectedIndex] * 60000L
-            var timeset = 10000L
-            context?.let {
-                MyApplication.startTimer(timeset, it);
-            }
+            var timeset = list[adapter.selectedIndex] * 60000L
+            MyApplication.startTimer(timeset);
         }
         return view;
     }
 
-    constructor() {
+    constructor(listener: BottomSheetListener) {
+        this.listener= listener
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        listener.onCancel()
+        super.onCancel(dialog)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

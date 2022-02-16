@@ -1,9 +1,11 @@
 package com.kflower.gameworld.ui.timer
 
+import android.content.DialogInterface
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.MyApplication.Companion.TAG
+import com.kflower.gameworld.MyApplication.Companion.stopTimer
 import com.kflower.gameworld.MyApplication.Companion.timeCountDown
 import com.kflower.gameworld.R
 import com.kflower.gameworld.bottomsheet.BottomSheetTimer
@@ -22,6 +25,7 @@ import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.databinding.SplashFragmentBinding
 import com.kflower.gameworld.databinding.TimerFragmentBinding
 import com.kflower.gameworld.dialog.LoadingDialog
+import com.kflower.gameworld.interfaces.BottomSheetListener
 import com.kflower.gameworld.interfaces.TimerChange
 import com.kflower.gameworld.ui.main.MainFragment
 import com.kflower.gameworld.ui.play.PlayAudioViewModel
@@ -47,22 +51,33 @@ class TimerFragment : BaseFragment() {
         viewModel = ViewModelProvider(this).get(TimerViewModel::class.java)
 
         binding.viewModel = viewModel;
-        binding.lifecycleOwner= this
+        binding.lifecycleOwner = this
 
-        bottomSheet= BottomSheetTimer();
+        bottomSheet = BottomSheetTimer(object :BottomSheetListener{
+            override fun onCancel() {
+                onBackPressed()
+            }
+        });
 
-        if(timeCountDown==0L){
-            bottomSheet.show(parentFragmentManager,BottomSheetTimer.TAG)
+        if (timeCountDown == 0L) {
+            bottomSheet.show(parentFragmentManager, BottomSheetTimer.TAG)
         }
 
-        binding.btnSetting.setOnClickListener{
-            bottomSheet.show(parentFragmentManager,BottomSheetTimer.TAG)
+        binding.imgBack.setOnClickListener {
+            onBackPressed()
         }
 
-        MyApplication.curTimer.observe(this,{
-                            binding.progressBar.max=  Integer.parseInt(timeCountDown.toString())
-                binding.progressBar.progress= Integer.parseInt(it.toString())
-                binding.txtTime.text = millisecondsToTime(it)
+        binding.btnSetting.setOnClickListener {
+            bottomSheet.show(parentFragmentManager, BottomSheetTimer.TAG)
+            stopTimer()
+            MyApplication.curTimer.postValue(0)
+
+        }
+
+        MyApplication.curTimer.observe(this, {
+            binding.progressBar.max = Integer.parseInt(timeCountDown.toString())
+            binding.progressBar.progress = Integer.parseInt(it.toString())
+            binding.txtTime.text = millisecondsToTime(it)
         })
 
 //        MyApplication.listenerTimer= object :TimerChange{
@@ -85,8 +100,12 @@ class TimerFragment : BaseFragment() {
         } else {
             "0$secondsStr"
         }
-        var minStr= if(minutes<10) "0$minutes" else minutes
+        var minStr = if (minutes < 10) "0$minutes" else minutes
         return "$minStr:$secs"
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
     override fun getLayoutBinding(): ViewDataBinding {

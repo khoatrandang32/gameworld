@@ -48,8 +48,8 @@ class CountDownServices : Service() {
             MyApplication.CHANNEL_ID
         )
         val notification: Notification = notificationBuilder
-            .setContentTitle("213123")
-            .setContentText("AHihi")
+            .setContentTitle("")
+            .setContentText("")
             .build()
         startForeground(1, notification)
     }

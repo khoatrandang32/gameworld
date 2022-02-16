@@ -36,7 +36,9 @@
                 android:textSize="@dimen/dimen_30" />
 
             <com.kflower.gameworld.common.components.AppEditText
+                android:id="@+id/edtSearch"
                 android:layout_width="match_parent"
+                app:imeOptions="actionSearch"
                 android:layout_height="wrap_content"
                 app:hint="Type to search ..."
                 app:iconLeftSrc="@drawable/ic_search"
@@ -48,7 +50,7 @@
                 android:id="@+id/lvGroupSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.searchText.length()>0?View.GONE:View.VISIBLE}"
+                android:visibility="@{viewModel.isSearching?View.GONE:View.VISIBLE}"
                 tools:visibility="gone" />
 
             <com.kflower.gameworld.common.components.CheckConnectionLayout
@@ -56,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:isError="@{viewModel.searchText.length>0?viewModel.isError:false}">
+                app:isError="@{viewModel.isSearching?viewModel.isError:false}">
 
                <LinearLayout
                    android:orientation="vertical"
@@ -67,7 +69,7 @@
                        android:layout_height="wrap_content"
                        android:layout_marginTop="@dimen/dimen_12"
                        android:orientation="vertical"
-                       android:visibility="@{ viewModel.searchText.length()>0 &amp; viewModel.listAudio.size()>0?View.VISIBLE:View.GONE}"
+                       android:visibility="@{ viewModel.isSearching &amp; viewModel.listAudio.size()>0?View.VISIBLE:View.GONE}"
                        tools:visibility="gone">
 
                        <TextView
@@ -91,7 +93,7 @@
                        android:layout_weight="1"
                        android:gravity="center"
                        android:orientation="vertical"
-                       android:visibility="@{(!viewModel.isLoading&amp;viewModel.listAudio.size()==0 &amp; viewModel.searchText.length()>0)?View.VISIBLE:View.GONE}"
+                       android:visibility="@{ (viewModel.isSearching &amp; viewModel.listAudio.size()&lt;=0)?View.VISIBLE:View.GONE}"
                        tools:visibility="gone">
 
                        <com.airbnb.lottie.LottieAnimationView
@@ -116,7 +118,7 @@
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content"
                        android:layout_marginTop="@dimen/dimen_14"
-                       android:visibility="@{viewModel.isLoading&amp; viewModel.searchText.length()>0?View.VISIBLE:View.GONE}">
+                       android:visibility="@{viewModel.isLoading&amp; viewModel.isSearching?View.VISIBLE:View.GONE}">
 
                        <include layout="@layout/audio_item_vertival_shimmer" />
                    </com.facebook.shimmer.ShimmerFrameLayout>

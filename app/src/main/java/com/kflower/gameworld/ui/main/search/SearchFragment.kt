@@ -2,7 +2,9 @@ package com.kflower.gameworld.ui.main.search
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,27 +32,33 @@ class SearchFragment : BaseFragment() {
 
     lateinit var binding: SearchFragmentBinding;
 
-    var searchText="";
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= SearchFragmentBinding.inflate(layoutInflater)
-        listAudios= mutableListOf();
+        binding = SearchFragmentBinding.inflate(layoutInflater)
+        listAudios = mutableListOf();
         viewModel = SearchViewModel();
-        binding.lifecycleOwner=this;
+        binding.lifecycleOwner = this;
 
-        binding.viewModel= viewModel;
+        binding.viewModel = viewModel;
 
         viewModel.searchText.observe(this,{
-            if(searchText!=it){
-                searchText= it;
-                viewModel.getAudioList(it)
-                Log.d("KHOA", "searchText: "+it)
+            if(it.isNullOrEmpty()){
+                viewModel.isSearching.postValue(false)
+                viewModel.listAudio.postValue(mutableListOf())
+
             }
         })
+
+        binding.edtSearch.setOnPressDone { v, actionId, event ->
+            if (!viewModel.searchText.value.isNullOrEmpty()) {
+                viewModel.getAudioList(viewModel.searchText.value!!)
+            }
+            false
+        }
+
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        viewModel.listAudio.observe(this,{
+        viewModel.listAudio.observe(this, {
 //            listAudios= it;
 //            audioAdapter.notifyDataSetChanged()
             audioAdapter.setData(it);
@@ -61,7 +69,7 @@ class SearchFragment : BaseFragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         //
-        var listSearch= mutableListOf<String>();
+        var listSearch = mutableListOf<String>();
         listSearch.add("Nhat niem vinh hang")
         listSearch.add("Pham nhan tu tien")
         listSearch.add("Kim dung")
@@ -70,20 +78,22 @@ class SearchFragment : BaseFragment() {
         listSearch.add("Su im lang cua bay cuu")
         listSearch.add("Mich tien lo")
 
-        var listSearchGr= mutableListOf<SearchGroup>();
-        listSearchGr.add(SearchGroup("Currently",listSearch))
+        var listSearchGr = mutableListOf<SearchGroup>();
+        listSearchGr.add(SearchGroup("Currently", listSearch))
 
 
-        audioAdapter= AudioVerticalAdapter(requireContext(), listAudios, object : OnClickAudioBook {
-            override fun onClick(item: AudioBook) {
-                parentNavigateTo(AudioDetailFragment(item))
-            }
-        });
+        audioAdapter =
+            AudioVerticalAdapter(requireContext(), listAudios, object : OnClickAudioBook {
+                override fun onClick(item: AudioBook) {
+                    parentNavigateTo(AudioDetailFragment(item))
+                }
+            });
         binding.apply {
-            lvGroupSearch.layoutManager=layoutManagerVertical
-            lvGroupSearch.adapter= GroupSearchAdapter(requireContext(),listSearchGr)
-            lvAudioResult.layoutManager=LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            lvAudioResult.adapter=audioAdapter;
+            lvGroupSearch.layoutManager = layoutManagerVertical
+            lvGroupSearch.adapter = GroupSearchAdapter(requireContext(), listSearchGr)
+            lvAudioResult.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            lvAudioResult.adapter = audioAdapter;
             checkConnectionLayout.setOnRetry {
                 viewModel?.searchText?.value?.apply {
                     viewModel?.getAudioList(this)
@@ -98,7 +108,7 @@ class SearchFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        if(viewModel.isError.value==true){
+        if (viewModel.isError.value == true) {
             viewModel.searchText.value?.apply {
                 viewModel?.getAudioList(this)
             }

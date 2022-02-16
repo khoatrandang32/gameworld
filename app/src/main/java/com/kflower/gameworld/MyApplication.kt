@@ -89,14 +89,20 @@ class MyApplication : Application() {
         lateinit var databaseProvider: DatabaseProvider
         lateinit var downloadContentDirectory: File
 
-        public fun startTimer(time: Long, context: Context) {
+        public fun startTimer(time: Long) {
             if (timeIntent != null) {
-                (context as Activity).stopService(timeIntent)
+                (mAppContext as Activity).stopService(timeIntent)
             }
             timeCountDown = time
-            timeIntent = Intent(context, CountDownServices::class.java);
+            timeIntent = Intent(mAppContext, CountDownServices::class.java);
             timeIntent?.putExtra(CountDownServices.TIME_KEY, time)
-            (context as Activity).startService(timeIntent)
+            (mAppContext as Activity).startService(timeIntent)
+        }
+
+        public fun stopTimer() {
+            if (timeIntent != null)
+                (mAppContext as Activity).stopService(timeIntent)
+
         }
 
     }
@@ -286,7 +292,7 @@ class MyApplication : Application() {
             override fun onIsLoadingChanged(isLoading: Boolean) {
                 mIsLoading.postValue(isLoading)
                 currentMediaPos.postValue(mediaPlayer.currentPosition)
-                if (!isSettingUp){
+                if (!isSettingUp) {
                     mediaPlayer.playWhenReady = true
                 }
                 super.onIsLoadingChanged(isLoading)
@@ -360,7 +366,7 @@ class MyApplication : Application() {
                 super.onIsPlayingChanged(isPlaying)
                 mIsPlaying.postValue(isPlaying)
                 if (isPlaying) {
-                    isSettingUp= false;
+                    isSettingUp = false;
                     (mAppContext as Activity)?.runOnUiThread(updateSeekBarTime)
                 } else {
                     durationHandler.removeCallbacks(updateSeekBarTime);

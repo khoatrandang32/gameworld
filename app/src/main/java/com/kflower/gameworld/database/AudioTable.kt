@@ -122,40 +122,48 @@ class AudioTable(var db: SQLiteDatabase) {
         with(cursor) {
             while (moveToNext()) {
                 val listType: Type = object : TypeToken<MutableList<Category?>>() {}.type
-                val listCategory: MutableList<Category> = Gson().fromJson(cursor?.getString(11), listType)
+                val listCategory: MutableList<Category> =
+                    Gson().fromJson(cursor?.getString(11), listType)
 
-                listUser.add(
-                    AudioBook(
-                        id = cursor?.getString(0),
-                        title = cursor?.getString(1),
-                        imgBase64 = cursor?.getString(2),
-                        author = cursor?.getString(3),
-                        reader = cursor?.getString(4),
-                        progress = cursor?.getLong(5),
-                        curEp = cursor?.getInt(6),
-                        baseEpisode = cursor?.getString(7),
-                        decription = cursor?.getString(8),
-                        episodesAmount = cursor?.getInt(9),
-                        thumbnailUrl = cursor?.getString(10),
-                        categories = listCategory,
-                        comments = null,
-                        rate = cursor?.getInt(12),
+                Log.d(TAG, "findAudio: " + getString(1))
 
-                        )
-                )
+                try {
+                    listUser.add(
+                        AudioBook(
+                            id = cursor?.getString(0),
+                            title = cursor?.getString(1),
+                            imgBase64 = cursor?.getString(2),
+                            author = cursor?.getString(3),
+                            reader = cursor?.getString(4),
+                            progress = cursor?.getLong(5),
+                            curEp = cursor?.getInt(6),
+                            baseEpisode = cursor?.getString(7),
+                            decription = cursor?.getString(8),
+                            episodesAmount = cursor?.getInt(9),
+                            thumbnailUrl = cursor?.getString(10),
+                            categories = listCategory,
+                            comments = null,
+                            rate = cursor?.getInt(12),
+
+                            )
+                    )
+                } catch (error: Exception) {
+
+                }
             }
         }
         cursor.close()
         return listUser
     }
 
-    fun updateAudioProgress(audio: AudioBook){
-            val values = ContentValues().apply {
-                put(AUDIO_PROGRESS, audio.progress)
-            }
+    fun updateAudioProgress(audio: AudioBook) {
+        val values = ContentValues().apply {
+            put(AUDIO_PROGRESS, audio.progress)
+        }
         db.update(TABLE_AUDIO, values, "$AUDIO_ID = ?", arrayOf(audio.id));
     }
-    fun updateAudioEp(audio: AudioBook){
+
+    fun updateAudioEp(audio: AudioBook) {
         val values = ContentValues().apply {
             put(AUDIO_CUR_EP, audio.curEp)
             put(AUDIO_PROGRESS, 0)

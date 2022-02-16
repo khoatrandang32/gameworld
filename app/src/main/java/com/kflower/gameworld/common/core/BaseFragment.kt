@@ -1,27 +1,38 @@
 package com.kflower.gameworld.common.core
 
+import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.R
 import com.kflower.gameworld.constants.StatusMode
 import com.kflower.gameworld.interfaces.IOnBackPressed
+import android.view.ViewGroup
+
+
+
 
 
 public abstract class BaseFragment : Fragment(), IOnBackPressed {
-    private var fgParent: ViewGroup?=null
+    private var fgParent: ViewGroup? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         fgParent = container!!;
-        return getLayoutBinding().root
+        var view = getLayoutBinding().root
+        setupUI(view)
+        return view
     }
 
     fun navigateTo(newFragment: Fragment) {
@@ -39,6 +50,7 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
         }
 
     }
+
     fun parentNavigateTo(newFragment: Fragment) {
         if (fgParent != null) {
             val ft: FragmentTransaction? = parentFragment?.parentFragmentManager?.beginTransaction()
@@ -93,6 +105,54 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
 
             }
         }
+
+    }
+
+    fun setupUI(view: View) {
+
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (view !is EditText) {
+            view.setOnTouchListener { v, event ->
+                hideSoftKeyboard(MyApplication.mAppContext as Activity)
+                clearForm(view)
+                false
+            }
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                val innerView = view.getChildAt(i)
+                setupUI(innerView)
+            }
+        }
+    }
+
+    fun hideSoftKeyboard(activity: Activity) {
+        val inputMethodManager: InputMethodManager = activity.getSystemService(
+            AppCompatActivity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
+        if (inputMethodManager.isAcceptingText) {
+            inputMethodManager.hideSoftInputFromWindow(
+                activity.currentFocus?.windowToken,
+                0
+            )
+        }
+    }
+
+     fun clearForm(view : View) {
+         if(view is ViewGroup){
+             var i = 0
+             val count = view.childCount
+             while (i < count) {
+                 val view = view.getChildAt(i)
+                 if (view is EditText) {
+                     view.clearFocus()
+                 }
+                 if (view is ViewGroup && (view).childCount > 0) clearForm(view)
+                 ++i
+             }
+         }
 
     }
 

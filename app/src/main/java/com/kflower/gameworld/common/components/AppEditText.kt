@@ -28,6 +28,15 @@ import android.text.InputFilter
 import android.R.attr.maxLength
 import android.text.InputFilter.LengthFilter
 import android.content.ContextWrapper
+import android.view.ViewGroup
+
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
+
+import android.widget.EditText
+
+
+
 
 
 
@@ -49,6 +58,8 @@ class AppEditText : LinearLayout {
     var isPassword = false;
     var isShowPassword = false;
     var isEdtError = false;
+
+    var edtionActionListener: TextView.OnEditorActionListener?=null
 
     interface OnChangeText{
         fun onChangeText(text: String)
@@ -232,17 +243,17 @@ class AppEditText : LinearLayout {
         //
         editText.setOnKeyPreImeListener(object : AppEdt.OnKeyPreImeListener {
             override fun onImeBack(editText: AppEdt) {
-                editText.clearFocus()
+                unfocus()
             }
 
         })
         editText.setOnEditorActionListener { v, actionId, event ->
-            if ((event != null && (event.keyCode == KeyEvent.KEYCODE_ENTER))
-                || (actionId == EditorInfo.IME_ACTION_DONE)
+            if (actionId != EditorInfo.IME_ACTION_NEXT
             ) {
-                editText.clearFocus()
-
+                unfocus()
+                edtionActionListener?.onEditorAction(v,actionId,event)
             }
+
             false
         }
 
@@ -262,12 +273,31 @@ class AppEditText : LinearLayout {
         }
     }
 
+    fun unfocus(){
+        hideSoftKeyboard();
+        editText.clearFocus()
+    }
+    fun hideSoftKeyboard() {
+        val inputMethodManager =  unwrap(context).getSystemService(
+            Activity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
+        if (inputMethodManager.isAcceptingText) {
+            inputMethodManager.hideSoftInputFromWindow(
+                unwrap(context).currentFocus!!.windowToken,
+                0
+            )
+        }
+    }
+
     private fun unwrap(context: Context): Activity {
         var context: Context? = context
         while (context !is Activity && context is ContextWrapper) {
             context = context.baseContext
         }
         return context as Activity
+    }
+    public fun  setOnPressDone(listener: TextView.OnEditorActionListener){
+        edtionActionListener= listener
     }
 
     public fun setError(isError: Boolean, errorMessage: String? = null) {

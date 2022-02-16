@@ -25,6 +25,15 @@ import com.kflower.gameworld.MyApplication.Companion.audioTable
 import com.kflower.gameworld.MyApplication.Companion.mediaPlayer
 import com.kflower.gameworld.common.Key
 import com.kflower.gameworld.services.MediaSessionService
+import android.view.ViewGroup
+
+import android.view.MotionEvent
+
+import android.view.View.OnTouchListener
+
+import android.widget.EditText
+import android.app.Activity
+import android.view.inputmethod.InputMethodManager
 
 
 class MainActivity : BaseActivity() {
@@ -67,8 +76,11 @@ class MainActivity : BaseActivity() {
 
             mediaPlayer.seekTo(item.curEp,item.progress)
 
+
         }
     }
+
+
 
     override fun setDefaultFragment(): Fragment {
         return SplashFragment();

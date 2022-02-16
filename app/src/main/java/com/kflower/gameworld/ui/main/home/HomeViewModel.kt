@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kflower.gameworld.MyApplication
+import com.kflower.gameworld.MyApplication.Companion.TAG
 import com.kflower.gameworld.MyApplication.Companion.homeCateTable
 import com.kflower.gameworld.model.AudioGroup
 import com.kflower.gameworld.network.NetworkProvider
@@ -18,6 +19,7 @@ class HomeViewModel: ViewModel() {
     val isError = MutableLiveData(false)
     var apiService = NetworkProvider.apiService;
 
+
     fun getAudioList() {
         isError.postValue(false)
         isLoading.postValue(true)
@@ -30,17 +32,14 @@ class HomeViewModel: ViewModel() {
                     isLoading.postValue(false)
                     listAudioGroup.postValue(response.body())
                     Log.d("KHOA", "success: " + response.code())
-
                 } else {
                     Log.d("KHOA", "fail: " + response.code())
                     isError.postValue(true)
-                    Handler().postDelayed({
-                        isError.postValue(true)
-                    }, 1000)
                 }
             }
 
             override fun onFailure(call: Call<MutableList<AudioGroup>>, t: Throwable) {
+                Log.d(TAG, "onFailure: "+t.message)
 //                NetworkErrorDialog(context = context).show()
                 Handler().postDelayed({
                     isError.postValue(true)

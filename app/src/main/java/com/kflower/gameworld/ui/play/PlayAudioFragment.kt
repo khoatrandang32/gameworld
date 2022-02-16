@@ -298,6 +298,8 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
         return binding;
     }
 
+
+
     override fun onDestroy() {
 //        listener= null
         super.onDestroy()

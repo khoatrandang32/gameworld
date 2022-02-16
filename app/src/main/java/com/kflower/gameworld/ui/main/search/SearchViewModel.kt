@@ -17,8 +17,10 @@ class SearchViewModel : ViewModel() {
     val listAudio = MutableLiveData<MutableList<AudioBook>>(arrayListOf())
     var apiService = NetworkProvider.apiService;
     val isError = MutableLiveData(false)
+    val isSearching = MutableLiveData(false)
 
     fun getAudioList(txt: String) {
+        isSearching.postValue(true)
         isError.postValue(false)
         isLoading.postValue(true)
         apiService.findAudio(txt).enqueue(object : Callback<MutableList<AudioBook>> {
