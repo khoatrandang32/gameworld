@@ -35,7 +35,7 @@ import com.kflower.gameworld.ui.splash.SplashViewModel
 class TimerFragment : BaseFragment() {
 
     companion object {
-        fun newInstance() = SplashFragment()
+        fun newInstance() = TimerFragment()
     }
 
     lateinit var binding: TimerFragmentBinding;

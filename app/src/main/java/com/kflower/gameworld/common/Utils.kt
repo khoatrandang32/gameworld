@@ -8,8 +8,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import java.io.ByteArrayOutputStream
 import android.graphics.BitmapFactory
-
-
+import java.nio.charset.Charset
+import java.util.*
+import kotlin.math.floor
 
 
 fun Context.fragmentActivity(): FragmentActivity? {
@@ -18,7 +19,7 @@ fun Context.fragmentActivity(): FragmentActivity? {
     while (--maxDepth > 0 && curContext !is FragmentActivity) {
         curContext = (curContext as ContextWrapper).baseContext
     }
-    return if(curContext is FragmentActivity)
+    return if (curContext is FragmentActivity)
         curContext
     else
         null
@@ -47,4 +48,15 @@ fun Bitmap.bitMapToString(): String {
 fun String.toBitMap(): Bitmap {
     val decodedString: ByteArray = Base64.decode(this, Base64.DEFAULT)
     return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+}
+
+fun renderRandomId(): String {
+    var id = ""
+    val min = 1000
+    val max = 9999
+    val randomInt =
+        floor(Math.random() * (max - min + 1) + min).toInt()
+    var uuid: String? = UUID.randomUUID().toString()
+    id += (randomInt.toString() + uuid)
+    return id
 }

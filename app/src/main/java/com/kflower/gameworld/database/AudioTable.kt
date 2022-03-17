@@ -75,14 +75,15 @@ class AudioTable(var db: SQLiteDatabase) {
                 put(AUDIO_RATE, audio.rate)
             }
             db.insert(TABLE_AUDIO, null, values);
+            Log.d(TAG, "playingAudioId insert: "+audio.title)
         } else {
+            Log.d(TAG, "playingAudioId update: "+audio.title)
             val values = ContentValues().apply {
                 put(AUDIO_ID, audio.id)
                 put(AUDIO_TITLE, audio.title)
                 put(AUDIO_IMG, audio.imgBase64)
                 put(AUDIO_AURHOR, audio.author)
                 put(AUDIO_READER, audio.reader)
-                put(AUDIO_PROGRESS, audio.progress)
                 put(AUDIO_BASE_EPISODE, audio.baseEpisode)
                 put(AUDIO_DESCRIPTION, audio.decription)
                 put(AUDIO_EP_AMOUNT, audio.episodesAmount)
@@ -164,6 +165,10 @@ class AudioTable(var db: SQLiteDatabase) {
     }
 
     fun updateAudioEp(audio: AudioBook) {
+        Log.d(TAG, "updateAudioEp : "+audio.title)
+        Log.d(TAG, "updateAudioEp : "+audio.id)
+        Log.d(TAG, "updateAudioEp : "+audio.curEp)
+
         val values = ContentValues().apply {
             put(AUDIO_CUR_EP, audio.curEp)
             put(AUDIO_PROGRESS, 0)

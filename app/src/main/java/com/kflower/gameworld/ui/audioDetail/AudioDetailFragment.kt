@@ -21,7 +21,10 @@ import com.kflower.gameworld.model.AudioBook
 import com.kflower.gameworld.ui.play.PlayAudioFragment
 import glimpse.glide.GlimpseTransformation
 
-class AudioDetailFragment(val item: AudioBook) : BaseFragment() {
+class AudioDetailFragment(
+    val item: AudioBook,
+    var isFromDownload: Boolean? = false
+) : BaseFragment() {
 
     private lateinit var viewModel: AudioDetailViewModel
 

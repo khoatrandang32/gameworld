@@ -10,10 +10,11 @@ class AppDatabaseHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase) {
-
+        Log.d(TAG, "onCreate database: ")
         UserTable(db).createTable();
         AudioTable(db).createTable();
         HomeCateTable(db).createTable();
+        DownloadTable(db).createTable();
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

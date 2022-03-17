@@ -15,7 +15,6 @@ import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvicto
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.google.firebase.FirebaseApp
-import com.kflower.gameworld.interfaces.isMediaPlayChanged
 import com.tonyodev.fetch2.Download
 import glimpse.core.Glimpse
 import java.io.File
@@ -26,7 +25,6 @@ import com.tonyodev.fetch2.Fetch.Impl.getInstance
 import com.tonyodev.fetch2.FetchConfiguration
 import com.tonyodev.fetch2.FetchListener
 import com.tonyodev.fetch2core.DownloadBlock
-import java.lang.Error
 import android.content.Intent
 
 import android.content.BroadcastReceiver
@@ -46,9 +44,11 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionParameters
 import com.kflower.gameworld.common.PlayAudioManager
 import com.kflower.gameworld.database.AppDatabaseHelper
 import com.kflower.gameworld.database.AudioTable
+import com.kflower.gameworld.database.DownloadTable
 import com.kflower.gameworld.database.HomeCateTable
-import com.kflower.gameworld.interfaces.TimerChange
-import com.kflower.gameworld.model.AudioGroup
+import com.kflower.gameworld.enum.DownloadState
+import com.kflower.gameworld.model.AudioBook
+import com.kflower.gameworld.model.DownloadAudio
 import com.kflower.gameworld.services.CountDownServices
 
 
@@ -58,15 +58,20 @@ class MyApplication : Application() {
         var isSettingUp = true
         var mAppContext: Context? = null;
         var timeCountDown: Long = 0
+        var isAbleToUpdateCurEp = true
         var curTimer = MutableLiveData<Long>(0);
         var mIsLoading = MutableLiveData(false);
         var mIsPlaying = MutableLiveData(false);
         var mPlaybackState = MutableLiveData(0);
         var currentMediaPos = MutableLiveData(0L);
         var mMediaItem = MutableLiveData<MediaItem>();
+        var listDownloading = MutableLiveData<MutableList<DownloadAudio>>(mutableListOf())
+        var listDownloaded = MutableLiveData<MutableList<DownloadAudio>>(mutableListOf())
+        var listDownloadedAudio = MutableLiveData<MutableList<AudioBook>>(mutableListOf())
         lateinit var db: SQLiteDatabase
         lateinit var audioTable: AudioTable
         lateinit var homeCateTable: HomeCateTable
+        lateinit var downloadTable: DownloadTable
 
         //
         lateinit var simpleCache: SimpleCache
@@ -88,6 +93,21 @@ class MyApplication : Application() {
         var timeIntent: Intent? = null;
         lateinit var databaseProvider: DatabaseProvider
         lateinit var downloadContentDirectory: File
+
+        public fun addNewDownload(downloadAudio: DownloadAudio) {
+            Log.d(TAG, "addNewDownload: ")
+            var listData = listDownloading.value
+
+            listData?.add(downloadAudio)
+            Log.d(TAG, "addNewDownload 0: "+listData?.size)
+            //
+            listData.apply {
+                Log.d(TAG, "addNewDownload 1: "+listData?.size)
+                listDownloading.postValue(this)
+                downloadTable.addNewDownload(downloadAudio)
+            }
+
+        }
 
         public fun startTimer(time: Long) {
             if (timeIntent != null) {
@@ -113,6 +133,7 @@ class MyApplication : Application() {
         db = AppDatabaseHelper(this).writableDatabase;
         audioTable = AudioTable(db);
         homeCateTable = HomeCateTable(db);
+        downloadTable = DownloadTable(db);
 
         durationHandler = Handler(Looper.getMainLooper());
 
@@ -143,14 +164,44 @@ class MyApplication : Application() {
 
             override fun onCancelled(download: Download) {
                 Log.d("KHOA", "onCancelled: ")
+                listDownloading.value?.forEachIndexed { index, downloadAudio ->
+                    if(downloadAudio.id==download.id.toString()){
+                        var listData= listDownloading.value;
+                        listData?.apply {
+                            removeAt(index)
+                            listDownloading.postValue(this)
+                        }
+                        downloadTable.deleteSpecificContents(download.id.toString())
+                    }
+                }
             }
 
             override fun onCompleted(download: Download) {
-                Log.d("KHOA", "onCompleted: ")
+                listDownloading.value?.let { it ->
+                    for (index in 0 until it.size) {
+                        var listDownloadedAudio= listDownloaded.value
+                        listDownloadedAudio?.add(it[index])
+                        listDownloadedAudio?.let { itemListDownloaded->
+                            listDownloaded.postValue(itemListDownloaded)
+                        }
+                        //
+                        if(it[index].id==download.id.toString()){
+                            var listData= listDownloading.value;
+                            listData?.apply {
+                                removeAt(index)
+                                listDownloading.postValue(this)
+                            }
+                            downloadTable.updateDownloadState(download.id.toString(),DownloadState.COMPLETED)
+
+                        }
+                    }
+                }
+
+
+
             }
 
             override fun onDeleted(download: Download) {
-                Log.d("KHOA", "onDeleted: ")
             }
 
             override fun onDownloadBlockUpdated(
@@ -158,7 +209,6 @@ class MyApplication : Application() {
                 downloadBlock: DownloadBlock,
                 totalBlocks: Int
             ) {
-                Log.d("KHOA", "onDownloadBlockUpdated: ")
             }
 
             override fun onError(
@@ -166,11 +216,9 @@ class MyApplication : Application() {
                 error: com.tonyodev.fetch2.Error,
                 throwable: Throwable?
             ) {
-                Log.d("KHOA", "onError: ")
             }
 
             override fun onPaused(download: Download) {
-                Log.d("KHOA", "onPaused: ")
             }
 
             override fun onProgress(
@@ -178,23 +226,31 @@ class MyApplication : Application() {
                 etaInMilliSeconds: Long,
                 downloadedBytesPerSecond: Long
             ) {
-
-                Log.d(
-                    "KHOA",
-                    "onProgress: " + etaInMilliSeconds + " - " + downloadedBytesPerSecond + " - " + download.progress + " - " + download.total + " - " + download.id
-                )
+                Log.d(TAG, "onProgress: "+ download.progress)
+                listDownloading.value?.forEachIndexed { index, downloadAudio ->
+                    var listData = listDownloading.value;
+                    if (downloadAudio.id == download.id.toString()) {
+                        downloadAudio.progress = download.progress;
+                        try {
+                            listData?.set(index, downloadAudio);
+                            listData.apply {
+                                listDownloading.postValue(this)
+                            }
+                            downloadTable.updateDownloadProgress(downloadAudio)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
             }
 
             override fun onQueued(download: Download, waitingOnNetwork: Boolean) {
-                Log.d("KHOA", "onQueued: ")
             }
 
             override fun onRemoved(download: Download) {
-                Log.d("KHOA", "onRemoved: ")
             }
 
             override fun onResumed(download: Download) {
-                Log.d("KHOA", "onResumed: ")
             }
 
             override fun onStarted(
@@ -202,7 +258,6 @@ class MyApplication : Application() {
                 downloadBlocks: List<DownloadBlock>,
                 totalBlocks: Int
             ) {
-                Log.d("KHOA", "onStarted: ")
             }
 
             override fun onWaitingNetwork(download: Download) {
@@ -384,10 +439,15 @@ class MyApplication : Application() {
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 Log.d(TAG, "onMediaItemTransition: ")
                 var audio = PlayAudioManager.playingAudio
-                audio?.let {
-                    it.curEp = mediaPlayer.currentMediaItemIndex
-                    audioTable.updateAudioEp(it)
+                if (isAbleToUpdateCurEp) {
+                    audio?.let {
+                        it.curEp = mediaPlayer.currentMediaItemIndex
+                        audioTable.updateAudioEp(it)
+                    }
+                } else {
+                    isAbleToUpdateCurEp = true
                 }
+
 
                 super.onMediaItemTransition(mediaItem, reason)
                 mediaItem?.let {

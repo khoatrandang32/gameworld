@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.kflower.gameworld.ui.downloadColection.DownloadCollectionViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.kflower.gameworld.common.components.AppLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/layout_px">
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="@dimen/dimen_20"
+                android:layout_height="@dimen/dimen_20"
+                android:layout_marginVertical="@dimen/dimen_16"
+                android:src="@drawable/ic_left_arrow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/text_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dimen_12"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Kho Tải Truyện"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_16"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="@dimen/dimen_20"
+                android:layout_height="@dimen/dimen_20"
+                android:layout_marginVertical="@dimen/dimen_16"
+                android:src="@drawable/ic_more"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/text_color" />
+        </LinearLayout>
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="@dimen/layout_px"
+                    android:paddingHorizontal="@dimen/dimen_4"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/dimen_8"
+                    android:background="@drawable/bg_button"
+                    android:backgroundTint="@color/sub_color">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabLayout"
+                        android:background="@color/transparent"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        app:tabIndicator="@drawable/bg_button"
+                        app:tabIndicatorFullWidth="true"
+                        app:tabIndicatorGravity="center"
+                        app:tabIndicatorHeight="40dp"
+                        app:tabSelectedTextColor="@color/white"
+                        app:tabTextColor="@color/main_color">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Đã tải" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Đang tải" />
+                    </com.google.android.material.tabs.TabLayout>
+                </LinearLayout>
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:id="@+id/downloadTabViewContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
+</layout>

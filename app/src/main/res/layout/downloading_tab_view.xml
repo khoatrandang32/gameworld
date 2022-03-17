@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.kflower.gameworld.ui.downloadColection.downloading.DownloadingTabViewModel" />
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:paddingHorizontal="@dimen/layout_px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rvDownload"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
+    </LinearLayout>
+</layout>

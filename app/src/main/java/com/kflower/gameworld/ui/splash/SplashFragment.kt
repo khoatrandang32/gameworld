@@ -5,19 +5,9 @@ import android.os.Handler
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.ui.main.MainFragment
 
-import android.widget.LinearLayout
 import androidx.databinding.ViewDataBinding
-import androidx.transition.TransitionManager
 import com.kflower.gameworld.databinding.SplashFragmentBinding
-import androidx.transition.ArcMotion
-import androidx.transition.ChangeBounds
-import android.animation.ArgbEvaluator
-import android.content.res.Resources
 
-import android.animation.ValueAnimator
-
-import android.animation.ValueAnimator.AnimatorUpdateListener
-import android.content.Intent
 import com.kflower.gameworld.R
 
 import android.util.Log
@@ -25,11 +15,17 @@ import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.kflower.gameworld.databinding.PlayAudioFragmentBinding
 import com.kflower.gameworld.dialog.LoadingDialog
+import android.os.Environment
+import com.kflower.gameworld.MyApplication
+import com.kflower.gameworld.MyApplication.Companion.TAG
+import com.kflower.gameworld.MyApplication.Companion.downloadTable
+import com.kflower.gameworld.MyApplication.Companion.listDownloadedAudio
+import com.kflower.gameworld.common.renderRandomId
+import com.kflower.gameworld.enum.DownloadState
+import com.kflower.gameworld.model.DownloadAudio
+import java.io.File
 
 
 class SplashFragment : BaseFragment() {
@@ -62,15 +58,91 @@ class SplashFragment : BaseFragment() {
 
         binding.viewModel = viewModel;
 
+        checkFilesInStorage();
+
+        checkDownloadingData();
+        checkDownloadedData();
+
         Handler().postDelayed({
 //            finish()
-            navigateTo( MainFragment.newInstance())
+            navigateTo(MainFragment.newInstance())
 
         }, 3000)
 
     }
 
+    private fun checkDownloadedData() {
+        var listDownloaded= downloadTable.findDownloadsByState(DownloadState.COMPLETED)
+        if(listDownloaded.size>0){
+            MyApplication.listDownloaded.postValue(listDownloaded);
+        }
+    }
+
+    private fun checkDownloadingData() {
+        var listDownloading= downloadTable.findDownloadsByState(DownloadState.DOWNLOADING)
+        if(listDownloading.size>0){
+            MyApplication.listDownloading.postValue(listDownloading);
+        }
+    }
+
+    private fun checkFilesInStorage() {
+        Log.d(TAG, "checkFilesInStorage: "+ downloadTable.findDownload("3665544683f0-ba17-4579-8343-538b44a9444b"))
+        val path =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + "/TopTopFiles"
+        val directory = File(path)
+        try {
+            val files: Array<File> = directory.listFiles()
+            for (i in files.indices) {
+                try {
+                    var fileName = files[i].name
+                    var wrapFileName = fileName.substring(0, fileName.length - 4);
+                    var listStr = wrapFileName.split("_ID_")
+                    var audioId = listStr[0];
+                    var audioEp = listStr[1].toInt() - 1;
+                    var downloadItem = DownloadAudio(
+                        audioId = audioId,
+                        ep = audioEp,
+                        state = DownloadState.COMPLETED,
+                        progress = 100,
+                        id = renderRandomId(),
+                        uri = "$path/$fileName"
+                    )
+                    if (downloadTable.findDownloadByAudioId(audioId, audioEp) == null) {
+                        downloadTable.addNewDownload(downloadItem)
+                    }
+
+                } catch (e: Exception) {
+                    Log.d(TAG, "checkFilesInStorage error: " + e.message)
+                    e.printStackTrace()
+                }
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     override fun getLayoutBinding(): ViewDataBinding {
         return binding
     }
+
+    private fun setUpDataDownload() {
+        var listDownloaded = downloadTable.findDownloadsByState(DownloadState.COMPLETED);
+
+        listDownloaded?.forEach { item ->
+            var audioBookList = MyApplication.audioTable.findAudio(item.audioId);
+            if (audioBookList.size > 0) {
+                var audioBook = audioBookList[0];
+                var listData= listDownloadedAudio.value
+                listData?.let {
+                    if (!it.contains(audioBook)) {
+                        it.add(audioBook)
+                    }
+                }
+
+            }
+
+        }
+    }
+
 }

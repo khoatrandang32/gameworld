@@ -45,6 +45,9 @@ class OptionAdapter(
             binding?.apply {
                 txtName.text= option.title;
                 imgIcon.setImageDrawable(context.getDrawable(option.iconDrawable))
+                container.setOnClickListener{
+                    listener.onClick(option,position)
+                }
             }
         }
     }

@@ -62,7 +62,6 @@ class AudioEpAdapter(
               }
               imgDownload.setOnClickListener {
                   listener.onDownload(audio,position)
-                  notifyDataSetChanged()
               }
           }
 

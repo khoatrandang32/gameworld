@@ -40,7 +40,7 @@ class HomeCateTable(var db: SQLiteDatabase) {
             db.insert(TABLE_HOMECATE, null, values);
         }
         else{
-            db.update(TABLE_HOMECATE, values, "_id = ?", arrayOf(audioGroup.id));
+            db.update(TABLE_HOMECATE, values, "$HOMECATE_ID = ?", arrayOf(audioGroup.id));
 
         }
 

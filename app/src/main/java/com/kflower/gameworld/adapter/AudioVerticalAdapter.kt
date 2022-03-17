@@ -18,7 +18,6 @@ import com.bumptech.glide.request.transition.Transition
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.kflower.gameworld.MyApplication.Companion.TAG
-import com.kflower.gameworld.MyApplication.Companion.audioTable
 import com.kflower.gameworld.R
 import com.kflower.gameworld.common.PlayAudioManager
 import com.kflower.gameworld.common.bitMapToString
