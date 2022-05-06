@@ -18,17 +18,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.kflower.gameworld.dialog.LoadingDialog
 import android.os.Environment
-import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.MyApplication.Companion.TAG
+import com.kflower.gameworld.MyApplication.Companion.appFragmentManager
 import com.kflower.gameworld.MyApplication.Companion.downloadTable
-import com.kflower.gameworld.MyApplication.Companion.listDownloadedAudio
+import com.kflower.gameworld.common.core.BaseChildFragment
 import com.kflower.gameworld.common.renderRandomId
 import com.kflower.gameworld.enum.DownloadState
 import com.kflower.gameworld.model.DownloadAudio
 import java.io.File
 
 
-class SplashFragment : BaseFragment() {
+class SplashFragment : BaseChildFragment() {
 
     companion object {
         fun newInstance() = SplashFragment()
@@ -58,6 +58,8 @@ class SplashFragment : BaseFragment() {
 
         binding.viewModel = viewModel;
 
+        appFragmentManager= parentFragmentManager
+
         checkFilesInStorage();
 
         checkDownloadingData();
@@ -71,22 +73,25 @@ class SplashFragment : BaseFragment() {
 
     }
 
+
     private fun checkDownloadedData() {
-        var listDownloaded= downloadTable.findDownloadsByState(DownloadState.COMPLETED)
-        if(listDownloaded.size>0){
-            MyApplication.listDownloaded.postValue(listDownloaded);
-        }
+//        var listDownloaded= downloadTable.findDownloadsByState(DownloadState.COMPLETED)
+//        if(listDownloaded.size>0){
+//            MyApplication.listDownloaded.postValue(listDownloaded);
+//        }
     }
 
     private fun checkDownloadingData() {
-        var listDownloading= downloadTable.findDownloadsByState(DownloadState.DOWNLOADING)
-        if(listDownloading.size>0){
-            MyApplication.listDownloading.postValue(listDownloading);
-        }
+//        var listDownloading= downloadTable.findDownloadsByState(DownloadState.DOWNLOADING)
+//        if(listDownloading.size>0){
+//            MyApplication.listDownloading.postValue(listDownloading);
+//        }
     }
 
+
+
+
     private fun checkFilesInStorage() {
-        Log.d(TAG, "checkFilesInStorage: "+ downloadTable.findDownload("3665544683f0-ba17-4579-8343-538b44a9444b"))
         val path =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + "/TopTopFiles"
         val directory = File(path)
@@ -126,23 +131,5 @@ class SplashFragment : BaseFragment() {
         return binding
     }
 
-    private fun setUpDataDownload() {
-        var listDownloaded = downloadTable.findDownloadsByState(DownloadState.COMPLETED);
-
-        listDownloaded?.forEach { item ->
-            var audioBookList = MyApplication.audioTable.findAudio(item.audioId);
-            if (audioBookList.size > 0) {
-                var audioBook = audioBookList[0];
-                var listData= listDownloadedAudio.value
-                listData?.let {
-                    if (!it.contains(audioBook)) {
-                        it.add(audioBook)
-                    }
-                }
-
-            }
-
-        }
-    }
 
 }

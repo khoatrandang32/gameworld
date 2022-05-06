@@ -3,6 +3,7 @@ package com.kflower.gameworld.ui.main.search
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.databinding.ViewDataBinding
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kflower.gameworld.adapter.AudioVerticalAdapter
 import com.kflower.gameworld.adapter.GroupSearchAdapter
+import com.kflower.gameworld.common.core.BaseChildFragment
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.databinding.HomeFragmentBinding
 import com.kflower.gameworld.databinding.SearchFragmentBinding
@@ -20,7 +22,7 @@ import com.kflower.gameworld.ui.audioDetail.AudioDetailFragment
 import com.kflower.gameworld.ui.main.home.HomeFragment
 import com.kflower.gameworld.ui.main.home.HomeViewModel
 
-class SearchFragment : BaseFragment() {
+class SearchFragment : BaseChildFragment() {
 
     companion object {
         fun newInstance() = SearchFragment()

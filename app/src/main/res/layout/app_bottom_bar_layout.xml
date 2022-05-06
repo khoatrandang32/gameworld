@@ -7,9 +7,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_14"
-        android:background="@drawable/bg_app_bottom_bar"
-        android:elevation="@dimen/dimen_20"
         android:gravity="center"
         android:orientation="horizontal">
         <LinearLayout

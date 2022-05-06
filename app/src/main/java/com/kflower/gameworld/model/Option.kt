@@ -1,10 +1,10 @@
 package com.kflower.gameworld.model
 
-import com.kflower.gameworld.common.core.BaseFragment
+import androidx.fragment.app.Fragment
 
 data class Option(
     var id: Int,
     var title: String,
     var iconDrawable: Int,
-    var fragment:BaseFragment?=null
+    var fragment:Fragment?=null
     )

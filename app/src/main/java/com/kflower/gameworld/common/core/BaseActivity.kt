@@ -41,15 +41,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
-    fun navigate(newFragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.container, newFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-
-
-
 
     protected abstract fun setDefaultFragment(): Fragment
 

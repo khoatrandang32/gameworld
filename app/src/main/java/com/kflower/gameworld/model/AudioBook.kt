@@ -29,4 +29,5 @@ data class AudioBook(
     var imgBase64: String,
     var progress: Long,
     var curEp: Int=0,
+    var historyTime: Int=0,
 )

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kflower.gameworld.adapter.CategoriesAdapter
 import com.kflower.gameworld.adapter.FavouriteCategoriesAdapter
 import com.kflower.gameworld.common.components.CenterZoomLinearLayoutManager
+import com.kflower.gameworld.common.core.BaseChildFragment
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.databinding.CategoriesFragmentBinding
 import com.kflower.gameworld.databinding.HomeFragmentBinding
@@ -20,7 +21,7 @@ import com.kflower.gameworld.ui.main.home.HomeFragment
 import com.kflower.gameworld.ui.main.home.HomeViewModel
 import com.kflower.gameworld.ui.main.listAudio.ListAudioFragment
 
-class CategoriesFragment : BaseFragment() {
+class CategoriesFragment : BaseChildFragment() {
 
     companion object {
         fun newInstance() = CategoriesFragment()

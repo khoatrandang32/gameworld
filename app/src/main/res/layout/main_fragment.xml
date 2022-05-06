@@ -1,40 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-      <androidx.drawerlayout.widget.DrawerLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
-          <androidx.constraintlayout.widget.ConstraintLayout
-              android:id="@+id/main"
-              android:layout_width="match_parent"
-              android:background="@color/background_color"
-              android:layout_height="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_color"
+        android:orientation="vertical"
+        tools:context=".ui.main.MainFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/frameLayoutHomeNav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.kflower.gameworld.common.components.MiniMediaPlayer
+                android:id="@+id/miniMedia"
+                android:layout_marginBottom="60dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/bottomBar" />
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-14dp"
+            app:cardCornerRadius="@dimen/dimen_14"
+            app:cardElevation="@dimen/dimen_16"
+            android:background="@drawable/bg_app_bottom_bar"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+          <LinearLayout
               android:orientation="vertical"
-              tools:context=".ui.main.MainFragment">
-
-
-              <FrameLayout
-                  android:id="@+id/frameLayoutHomeNav"
-                  android:layout_marginBottom="80dp"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  tools:layout_editor_absoluteX="0dp"
-                  tools:layout_editor_absoluteY="0dp" />
-              <com.kflower.gameworld.common.components.MiniMediaPlayer
-                  android:id="@+id/miniMedia"
-                  app:layout_constraintBottom_toTopOf="@id/bottomBar"
-                  android:layout_marginBottom="-40dp"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"/>
-
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
               <com.kflower.gameworld.common.components.AppBottomBar
                   android:id="@+id/bottomBar"
                   android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  app:layout_constraintBottom_toBottomOf="parent" />
-          </androidx.constraintlayout.widget.ConstraintLayout>
+                  android:layout_height="wrap_content" />
+              <View
+                  android:layout_width="match_parent"
+                  android:layout_height="14dp"/>
+          </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-      </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

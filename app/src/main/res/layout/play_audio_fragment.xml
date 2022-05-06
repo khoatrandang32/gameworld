@@ -115,7 +115,7 @@
                             android:layout_marginHorizontal="50dp"
                             android:layout_marginTop="@dimen/dimen_20"
                             android:gravity="center"
-                            android:text="@{viewModel.currentPart}"
+                            android:text="@{`Tap `+ viewModel.currentPart}"
                             android:textColor="@color/main_color"
                             android:textSize="@dimen/text_size_20"
                             android:textStyle="bold"
@@ -165,37 +165,6 @@
                             android:layout_marginHorizontal="@dimen/dimen_20"
                             android:src="@drawable/ic_download"
                             app:tint="@color/hint_color" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:visibility="gone"
-                            tools:visibility="visible"
-                            android:id="@+id/inDownloadLayout"
-                            android:layout_marginHorizontal="@dimen/dimen_20"
-                            android:layout_width="@dimen/dimen_26"
-                            android:layout_height="@dimen/dimen_26">
-                            <ProgressBar
-                                android:id="@+id/downloadProgressBar"
-                                style="?android:attr/progressBarStyleHorizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/circle_shape_mini"
-                                android:indeterminate="false"
-                                android:max="100"
-                                android:progress="0"
-                                tools:progress="50"
-                                android:progressDrawable="@drawable/circular_progress_bar_mini" />
-                            <ImageView
-
-                                android:id="@+id/imgStopDownload"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                android:src="@drawable/ic_stop"
-                                android:layout_width="@dimen/dimen_20"
-                                android:layout_height="@dimen/dimen_20"
-                                app:tint="@color/main_color" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <ImageView
                             android:id="@+id/imgList"

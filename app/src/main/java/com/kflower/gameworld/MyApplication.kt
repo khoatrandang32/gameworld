@@ -50,6 +50,12 @@ import com.kflower.gameworld.enum.DownloadState
 import com.kflower.gameworld.model.AudioBook
 import com.kflower.gameworld.model.DownloadAudio
 import com.kflower.gameworld.services.CountDownServices
+import java.util.*
+import android.content.SharedPreferences
+import androidx.fragment.app.FragmentManager
+import com.kflower.gameworld.common.getAudioEpFromUri
+import com.kflower.gameworld.common.getAudioIdFromUri
+import com.kflower.gameworld.services.MediaSessionService
 
 
 class MyApplication : Application() {
@@ -57,17 +63,17 @@ class MyApplication : Application() {
         var TAG = "KHOA"
         var isSettingUp = true
         var mAppContext: Context? = null;
+        var appFragmentManager: FragmentManager? = null;
         var timeCountDown: Long = 0
         var isAbleToUpdateCurEp = true
         var curTimer = MutableLiveData<Long>(0);
         var mIsLoading = MutableLiveData(false);
         var mIsPlaying = MutableLiveData(false);
+        var playerState = MutableLiveData(0);
         var mPlaybackState = MutableLiveData(0);
         var currentMediaPos = MutableLiveData(0L);
         var mMediaItem = MutableLiveData<MediaItem>();
-        var listDownloading = MutableLiveData<MutableList<DownloadAudio>>(mutableListOf())
-        var listDownloaded = MutableLiveData<MutableList<DownloadAudio>>(mutableListOf())
-        var listDownloadedAudio = MutableLiveData<MutableList<AudioBook>>(mutableListOf())
+
         lateinit var db: SQLiteDatabase
         lateinit var audioTable: AudioTable
         lateinit var homeCateTable: HomeCateTable
@@ -93,21 +99,6 @@ class MyApplication : Application() {
         var timeIntent: Intent? = null;
         lateinit var databaseProvider: DatabaseProvider
         lateinit var downloadContentDirectory: File
-
-        public fun addNewDownload(downloadAudio: DownloadAudio) {
-            Log.d(TAG, "addNewDownload: ")
-            var listData = listDownloading.value
-
-            listData?.add(downloadAudio)
-            Log.d(TAG, "addNewDownload 0: "+listData?.size)
-            //
-            listData.apply {
-                Log.d(TAG, "addNewDownload 1: "+listData?.size)
-                listDownloading.postValue(this)
-                downloadTable.addNewDownload(downloadAudio)
-            }
-
-        }
 
         public fun startTimer(time: Long) {
             if (timeIntent != null) {
@@ -159,46 +150,26 @@ class MyApplication : Application() {
 
         val fetchListener: FetchListener = object : FetchListener {
             override fun onAdded(download: Download) {
-                Log.d("KHOA", "onAdded: ")
+                var downloadItem = DownloadAudio(
+                    id = download.id.toString(),
+                    audioId = download.fileUri.toString()
+                        .getAudioIdFromUri(mAppContext as Activity),
+                    state = DownloadState.DOWNLOADING,
+                    ep = download.fileUri.toString().getAudioEpFromUri(mAppContext as Activity),
+                    uri = download.fileUri.toString()
+                )
+
+                Log.d(TAG, "onAdded: " + downloadItem.audioId + " - " + downloadItem.ep)
+                downloadTable.addNewDownload(downloadItem)
             }
 
             override fun onCancelled(download: Download) {
-                Log.d("KHOA", "onCancelled: ")
-                listDownloading.value?.forEachIndexed { index, downloadAudio ->
-                    if(downloadAudio.id==download.id.toString()){
-                        var listData= listDownloading.value;
-                        listData?.apply {
-                            removeAt(index)
-                            listDownloading.postValue(this)
-                        }
-                        downloadTable.deleteSpecificContents(download.id.toString())
-                    }
-                }
+                downloadTable.updateDownloadState(download.id.toString(), DownloadState.CANCELED)
+
             }
 
             override fun onCompleted(download: Download) {
-                listDownloading.value?.let { it ->
-                    for (index in 0 until it.size) {
-                        var listDownloadedAudio= listDownloaded.value
-                        listDownloadedAudio?.add(it[index])
-                        listDownloadedAudio?.let { itemListDownloaded->
-                            listDownloaded.postValue(itemListDownloaded)
-                        }
-                        //
-                        if(it[index].id==download.id.toString()){
-                            var listData= listDownloading.value;
-                            listData?.apply {
-                                removeAt(index)
-                                listDownloading.postValue(this)
-                            }
-                            downloadTable.updateDownloadState(download.id.toString(),DownloadState.COMPLETED)
-
-                        }
-                    }
-                }
-
-
-
+                downloadTable.updateDownloadState(download.id.toString(), DownloadState.COMPLETED)
             }
 
             override fun onDeleted(download: Download) {
@@ -226,22 +197,7 @@ class MyApplication : Application() {
                 etaInMilliSeconds: Long,
                 downloadedBytesPerSecond: Long
             ) {
-                Log.d(TAG, "onProgress: "+ download.progress)
-                listDownloading.value?.forEachIndexed { index, downloadAudio ->
-                    var listData = listDownloading.value;
-                    if (downloadAudio.id == download.id.toString()) {
-                        downloadAudio.progress = download.progress;
-                        try {
-                            listData?.set(index, downloadAudio);
-                            listData.apply {
-                                listDownloading.postValue(this)
-                            }
-                            downloadTable.updateDownloadProgress(downloadAudio)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
+
             }
 
             override fun onQueued(download: Download, waitingOnNetwork: Boolean) {
@@ -261,7 +217,6 @@ class MyApplication : Application() {
             }
 
             override fun onWaitingNetwork(download: Download) {
-                Log.d("KHOA", "onWaitingNetwork: ")
             }
 
         }
@@ -360,7 +315,7 @@ class MyApplication : Application() {
 
             override fun onPlayerError(error: PlaybackException) {
                 super.onPlayerError(error)
-                Log.d(TAG, "onPlayerError: ")
+                Log.d(TAG, "onPlayerError: $error")
             }
 
             override fun onRenderedFirstFrame() {
@@ -427,6 +382,11 @@ class MyApplication : Application() {
                     durationHandler.removeCallbacks(updateSeekBarTime);
                 }
 
+            }
+
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                playerState.postValue(playbackState)
+                super.onPlayerStateChanged(playWhenReady, playbackState)
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {

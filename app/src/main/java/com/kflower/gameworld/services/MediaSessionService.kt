@@ -16,6 +16,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.view.KeyEvent
 import android.util.Log
+import com.google.android.exoplayer2.Player
 import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.MyApplication.Companion.mIsPlaying
 import com.kflower.gameworld.MyApplication.Companion.mPlaybackState
@@ -56,6 +57,11 @@ class MediaSessionService : Service() {
         mPlaybackState.observeForever {
             startNotification()
 
+        }
+        MyApplication.playerState.observeForever {
+            if(it== Player.STATE_ENDED){
+                mediaPlayer.seekTo(0,0);
+            }
         }
         MyApplication.mMediaItem.observeForever {
             startNotification()

@@ -18,6 +18,7 @@ import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.databinding.HomeFragmentBinding
 import com.kflower.gameworld.adapter.AudioGroupAdapter
 import com.kflower.gameworld.common.Key
+import com.kflower.gameworld.common.core.BaseChildFragment
 import com.kflower.gameworld.dialog.AppDrawer
 import com.kflower.gameworld.interfaces.OnClickAudioBook
 import com.kflower.gameworld.model.AudioBook
@@ -29,11 +30,12 @@ import com.kflower.gameworld.ui.splash.SplashFragment
 import java.lang.reflect.Type
 
 
-class HomeFragment() : BaseFragment() {
+class HomeFragment() : BaseChildFragment() {
 
     private lateinit var viewModel: HomeViewModel
 
     lateinit var binding: HomeFragmentBinding;
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

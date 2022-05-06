@@ -129,6 +129,7 @@
                     android:paddingHorizontal="@dimen/layout_px">
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:overScrollMode="never"
                         android:id="@+id/rcOptions"
                         tools:listitem="@layout/option_item"
                         android:layout_width="match_parent"

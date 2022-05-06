@@ -3,12 +3,15 @@ package com.kflower.gameworld.ui.main
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.kflower.gameworld.MyApplication.Companion.appFragmentManager
 import com.kflower.gameworld.R
 import com.kflower.gameworld.common.PlayAudioManager
 import com.kflower.gameworld.common.components.AppBottomBarInterface
+import com.kflower.gameworld.common.core.BaseChildFragment
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.constants.StatusMode
 import com.kflower.gameworld.databinding.MainFragmentBinding
@@ -21,7 +24,7 @@ import com.kflower.gameworld.ui.play.PlayAudioFragment
 import retrofit2.Callback
 
 
-open class MainFragment : BaseFragment() {
+open class MainFragment : BaseChildFragment() {
 
     companion object {
         fun newInstance() = MainFragment()
@@ -33,10 +36,12 @@ open class MainFragment : BaseFragment() {
 
     var currentTab = 0;
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = MainFragmentBinding.inflate(layoutInflater)
-        viewModel =  ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         val homeFragment = HomeFragment();
         val searchFragment = SearchFragment();
@@ -44,9 +49,7 @@ open class MainFragment : BaseFragment() {
         val profileFragment = ProfileFragment();
 
         if (savedInstanceState == null) {
-            childFragmentManager.beginTransaction()
-                .replace(R.id.frameLayoutHomeNav, homeFragment)
-                .commitNow()
+            goToTab(homeFragment,false)
         }
         binding.bottomBar.setOnTabChange(object : AppBottomBarInterface {
             override fun onChangeTab(index: Int) {
@@ -76,7 +79,7 @@ open class MainFragment : BaseFragment() {
 
     protected fun goToTab(newFragment: Fragment, isRightSlide: Boolean) {
 
-        val ft: FragmentTransaction = childFragmentManager.beginTransaction()
+        val ft: FragmentTransaction = appFragmentManager!!.beginTransaction()
         if (isRightSlide) {
 
             ft.setCustomAnimations(

@@ -44,5 +44,6 @@
     // EditText
     <dimen name="edt_py">@dimen/dimen_8</dimen>
     <dimen name="edt_px">@dimen/dimen_14</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 </resources>

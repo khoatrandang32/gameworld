@@ -1,11 +1,8 @@
 package com.kflower.gameworld.common.core
 
 import android.app.Activity
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -15,19 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.R
-import com.kflower.gameworld.constants.StatusMode
-import com.kflower.gameworld.interfaces.IOnBackPressed
-import android.view.ViewGroup
 import com.kflower.gameworld.common.AppFragment
 import com.kflower.gameworld.common.PlayAudioManager
-import com.kflower.gameworld.databinding.BaseActivityBinding
+import com.kflower.gameworld.constants.StatusMode
 import com.kflower.gameworld.databinding.BaseFragmentLayoutBinding
+import com.kflower.gameworld.interfaces.IOnBackPressed
 import com.kflower.gameworld.ui.play.PlayAudioFragment
 
-
-public abstract class BaseFragment : Fragment(), IOnBackPressed {
-    private var fgParent: ViewGroup? = null
-    lateinit var bindingBase: BaseFragmentLayoutBinding
+public abstract class BaseChildFragment : Fragment(), IOnBackPressed {
     lateinit var childFragment: Fragment
 
 
@@ -35,35 +27,7 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        bindingBase = BaseFragmentLayoutBinding.inflate(inflater)
-
-        bindingBase.miniMedia.setOnClick {
-            val ft: FragmentTransaction? = MyApplication.appFragmentManager?.beginTransaction()
-            ft?.setCustomAnimations(
-                R.anim.slide_in,
-                R.anim.slide_out,
-                R.anim.slide_left,
-                R.anim.slide_right,
-            )
-            PlayAudioManager.playingAudio?.let {
-                ft?.replace(R.id.container, PlayAudioFragment(it))
-
-            }
-            ft?.addToBackStack(null)
-            ft?.commit()
-        }
-
-        fgParent = container!!;
-        var view = bindingBase.root
-
-        var viewChild = getLayoutBinding().root
-        childFragment = AppFragment(viewChild)
-
-        if (savedInstanceState == null) {
-            childFragmentManager.beginTransaction()
-                .replace(R.id.baseFragmentFrameLayout, childFragment)
-                .commitNow()
-        }
+        var view = getLayoutBinding().root
         setupUI(view)
         return view
     }
@@ -78,6 +42,7 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
             R.anim.slide_right,
         )
         ft?.replace(R.id.container, newFragment)
+
         ft?.addToBackStack(null)
         ft?.commit()
 
@@ -92,6 +57,7 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
             R.anim.slide_right,
         )
         ft?.replace(R.id.container, newFragment)
+
         ft?.addToBackStack(null)
         ft?.commit()
 
@@ -110,10 +76,6 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
 
     override fun onBackPressed() {
         parentFragmentManager.popBackStack()
-    }
-
-    fun hideAudioPlayer(isHide: Boolean) {
-        bindingBase.miniMedia.visibility = if (isHide) View.GONE else View.VISIBLE
     }
 
 
@@ -188,11 +150,6 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
             }
         }
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        bindingBase.miniMedia.refresh()
     }
 
 

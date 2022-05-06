@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.kflower.gameworld.ui.history.HistoryAudioViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.kflower.gameworld.common.components.AppLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:paddingHorizontal="@dimen/layout_px"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/dimen_12"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dimen_12">
+
+                <ImageView
+                    android:id="@+id/imgLeft"
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:src="@drawable/ic_left_arrow" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dimen_12"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Lịch sử nghe truyện"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/dimen_22"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imgRight"
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_24"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_weight="1"
+                android:id="@+id/rvAudio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dimen_12"
+                android:clipToPadding="false"
+                tools:listitem="@layout/audio_vertical_item" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</layout>

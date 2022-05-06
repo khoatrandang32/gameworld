@@ -34,12 +34,25 @@ import android.widget.EditText
 import android.app.Activity
 import android.view.inputmethod.InputMethodManager
 import com.kflower.gameworld.MyApplication.Companion.audioTable
+import com.kflower.gameworld.MyApplication.Companion.downloadTable
+import com.kflower.gameworld.common.getAudioIdFromUri
+import com.kflower.gameworld.enum.DownloadState
 
 
 class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val currentTime: Date = Calendar.getInstance().getTime()
+
+        var idResult= getPreferences(MODE_PRIVATE).getString(Key.KEY_APP_ID, null);
+
+        if(idResult.isNullOrEmpty()){
+            var  UUID = UUID.randomUUID()
+            var id= UUID.toString().split("-")[0]
+            val editor = getPreferences(MODE_PRIVATE).edit()
+            editor.putString(Key.KEY_APP_ID, id);
+            editor.commit();
+        }
+
 
         super.onCreate(savedInstanceState)
         mAppContext= this;
@@ -81,6 +94,15 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        var listDownload= downloadTable.findDownloadsByState(DownloadState.COMPLETED)
+        if(listDownload.size>0){
+            listDownload.forEach {
+                downloadTable.findAndCheckDownloadByAudioId(it.audioId, it.ep);
+            }
+        }
+    }
 
 
     override fun setDefaultFragment(): Fragment {

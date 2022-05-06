@@ -17,6 +17,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.material.imageview.ShapeableImageView
 import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.MyApplication.Companion.TAG
@@ -132,7 +133,11 @@ class MiniMediaPlayer : LinearLayout {
                 progressBar.visibility = GONE
                 imgPlayAndPause.visibility = VISIBLE
             })
-
+            MyApplication.playerState.observe(it,{ playerState ->
+                if(playerState== Player.STATE_ENDED){
+                    mediaPlayer.seekTo(0,0);
+                }
+            })
             mMediaItem.observe(it, {
                 progressBar.visibility = GONE
                 imgPlayAndPause.visibility = VISIBLE

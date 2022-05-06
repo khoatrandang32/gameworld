@@ -38,11 +38,11 @@ class DownloadTable(var db: SQLiteDatabase) {
         db.execSQL(script)
     }
 
-    fun updateDownloadProgress(download: DownloadAudio) {
+    fun updateDownloadProgress(id:String,progress:Int) {
         val values = ContentValues().apply {
-            put(DOWNLOAD_PROGRESS, download.progress)
+            put(DOWNLOAD_PROGRESS, progress)
         }
-        db.update(TABLE_DOWNLOAD, values, "$DOWNLOAD_ID = ?", arrayOf(download.id));
+        db.update(TABLE_DOWNLOAD, values, "$DOWNLOAD_ID = ?", arrayOf(id));
     }
 
     fun updateDownloadState(id: String, state: DownloadState) {
@@ -118,7 +118,43 @@ class DownloadTable(var db: SQLiteDatabase) {
     }
 
     fun findDownloadByAudioId(audioId: String?, audioEp: Int): DownloadAudio? {
-        Log.d(TAG, "findDownloadByAudioId: $audioId : $audioEp")
+        var result: DownloadAudio? = null
+        val cursor: Cursor = db.query(
+            TABLE_DOWNLOAD,
+            arrayOf(
+                DOWNLOAD_ID,
+                DOWNLOAD_AUDIO_ID,
+                DOWNLOAD_URI,
+                DOWNLOAD_STATE,
+                DOWNLOAD_PROGRESS,
+                DOWNLOAD_EP,
+
+
+                ),
+            "$DOWNLOAD_AUDIO_ID =? AND $DOWNLOAD_EP =?",
+            arrayOf(audioId, audioEp.toString()),
+            null,
+            null,
+            null,
+            null
+        )
+        with(cursor) {
+            while (moveToNext()) {
+                result = DownloadAudio(
+                    id = cursor?.getString(0),
+                    audioId = cursor?.getString(1),
+                    uri = cursor?.getString(2),
+                    state = DownloadState.valueOf(cursor?.getString(3)),
+                    progress = cursor?.getInt(4),
+                    ep = cursor?.getInt(5),
+                )
+            }
+        }
+        cursor.close()
+        return result
+    }
+
+    fun findAndCheckDownloadByAudioId(audioId: String?, audioEp: Int): DownloadAudio? {
         var result: DownloadAudio? = null
         val cursor: Cursor = db.query(
             TABLE_DOWNLOAD,
@@ -153,16 +189,15 @@ class DownloadTable(var db: SQLiteDatabase) {
         }
         cursor.close()
         result?.apply {
-            Log.d(TAG, "findDownloadByAudioId: "+uri)
-            val file = File(uri)
-            Log.d(TAG, "findDownloadByAudioId exists: "+file.exists())
+            if (state==DownloadState.COMPLETED){
+                Log.d(TAG, "findAndCheckDownloadByAudioId: "+uri.substring(7))
+                val file = File(uri.substring(7))
+                if (!file.exists()) {
+                    deleteSpecificContents(id)
+                    result= null
+                }
 
-            if (!file.exists()) {
-                deleteSpecificContents(id)
-                result= null
-            }
-        }
-        Log.d(TAG, "findDownloadByAudioId: $result")
+            }        }
         return result
     }
 

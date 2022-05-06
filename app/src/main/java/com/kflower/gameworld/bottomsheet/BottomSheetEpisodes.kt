@@ -1,20 +1,40 @@
 package com.kflower.gameworld.bottomsheet
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.R
 import com.kflower.gameworld.adapter.AudioEpAdapter
+import com.kflower.gameworld.model.AudioBook
 import java.lang.RuntimeException
 
 
 class BottomSheetEpisodes : BottomSheetDialogFragment {
+    lateinit var episodes: MutableList<String>;
+    lateinit var listener: AudioEpAdapter.AudioEpListener;
+    lateinit var audio: AudioBook
+
+
+    constructor(
+        episodes: MutableList<String>,
+        audio: AudioBook,
+        listener: AudioEpAdapter.AudioEpListener
+    ) {
+        this.episodes = episodes
+        this.listener = listener;
+        this.audio = audio;
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,29 +43,52 @@ class BottomSheetEpisodes : BottomSheetDialogFragment {
     ): View? {
         var view = inflater.inflate(R.layout.bottom_sheet_select_ep, container, false)
         var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        var imgClose = view.findViewById<ImageView>(R.id.imgClose)
+        imgClose.setOnClickListener {
+            dismiss()
+        }
         recyclerView.layoutManager = GridLayoutManager(context, 3);
 
         recyclerView.adapter = AudioEpAdapter(
             requireContext(),
             episodes,
-            listener);
+            listener, audio,
+        );
+
+        val offsetFromTop = 400
+        (dialog as? BottomSheetDialog)?.behavior?.apply {
+            isFitToContents = false
+//            expandedOffset = offsetFromTop
+            state = BottomSheetBehavior.STATE_EXPANDED
+            setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if(newState==BottomSheetBehavior.STATE_HALF_EXPANDED||newState== BottomSheetBehavior.STATE_COLLAPSED||newState== BottomSheetBehavior.STATE_HIDDEN){
+                        dismiss()
+                    }
+                }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
+
+            })
+        }
+
         return view;
     }
 
-    lateinit var episodes: MutableList<String>;
-    lateinit var listener: AudioEpAdapter.AudioEpListener;
-
-    constructor(episodes: MutableList<String>,listener:AudioEpAdapter.AudioEpListener ) {
-        this.episodes = episodes
-        this.listener= listener;
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        (recyclerView.layoutManager as GridLayoutManager).scrollToPositionWithOffset(MyApplication.mediaPlayer.currentMediaItemIndex,500);
+        (recyclerView.layoutManager as GridLayoutManager).scrollToPositionWithOffset(
+            MyApplication.mediaPlayer.currentMediaItemIndex,
+            500
+        );
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+    }
 
     companion object {
         const val TAG = "ActionBottomDialog"

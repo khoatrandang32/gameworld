@@ -6,8 +6,6 @@ import android.widget.SeekBar
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.kflower.gameworld.common.PlayAudioManager
-import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.databinding.PlayAudioFragmentBinding
 import com.kflower.gameworld.model.AudioBook
 import android.graphics.drawable.Drawable
@@ -25,55 +23,48 @@ import com.bumptech.glide.request.transition.Transition
 import com.kflower.gameworld.MyApplication.Companion.mediaPlayer
 import com.kflower.gameworld.adapter.AudioEpAdapter
 import com.kflower.gameworld.MyApplication.Companion.fetchAudio
-import com.tonyodev.fetch2.NetworkType
-import com.tonyodev.fetch2.Priority
-import com.tonyodev.fetch2.Request
-import android.os.Environment
 import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.MyApplication.Companion.currentMediaPos
 import com.kflower.gameworld.bottomsheet.BottomSheetEpisodes
-import com.kflower.gameworld.common.lifecycleOwner
 import com.kflower.gameworld.ui.timer.TimerFragment
 import android.content.Context.MODE_PRIVATE
 
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.view.View
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.core.content.ContextCompat.getDrawable
+import com.google.android.exoplayer2.Player
 import com.kflower.gameworld.MyApplication.Companion.TAG
-import com.kflower.gameworld.MyApplication.Companion.addNewDownload
+import com.kflower.gameworld.MyApplication.Companion.audioTable
 import com.kflower.gameworld.MyApplication.Companion.downloadTable
-import com.kflower.gameworld.MyApplication.Companion.listDownloading
-import com.kflower.gameworld.common.Key
+import com.kflower.gameworld.bottomsheet.BottomSheetDownload
+import com.kflower.gameworld.common.*
+import com.kflower.gameworld.common.core.BaseChildFragment
 import com.kflower.gameworld.enum.DownloadState
-import com.kflower.gameworld.model.DownloadAudio
+import com.tonyodev.fetch2.*
+import com.tonyodev.fetch2core.DownloadBlock
 import java.lang.Exception
 
 
-class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
+class PlayAudioFragment(val item: AudioBook) : BaseChildFragment() {
 
 
     private lateinit var viewModel: PlayAudioViewModel;
 
     private var isChanging = false;
     lateinit var binding: PlayAudioFragmentBinding;
-    lateinit var bottomSheet: BottomSheetEpisodes;
+    lateinit var bottomSheetEp: BottomSheetEpisodes;
+    lateinit var bottomSheetDownload: BottomSheetDownload;
     lateinit var episodes: MutableList<String>;
-    var downloadId: String? = null;
-    var isDownloaded = false;
 
     override fun onResume() {
         super.onResume()
         binding.viewModel?.currentPos?.postValue(currentMediaPos.value)
-        checkDownloadState()
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = PlayAudioFragmentBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(PlayAudioViewModel::class.java)
 
@@ -82,15 +73,12 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
         for (i in 1..item.episodesAmount) {
             episodes.add(String.format(item.baseEpisode, i))
         }
-
-        bottomSheet = BottomSheetEpisodes(episodes, object : AudioEpAdapter.AudioEpListener {
+        bottomSheetDownload= BottomSheetDownload(episodes,item)
+        bottomSheetEp = BottomSheetEpisodes(episodes, item, object : AudioEpAdapter.AudioEpListener {
             override fun onClick(audioUrl: String, position: Int) {
 //                viewModel?.isLoading?.postValue(true)
                 mediaPlayer.seekTo(position, 0);
-                bottomSheet.dismiss()
-            }
-
-            override fun onDownload(audioUrl: String, position: Int) {
+                bottomSheetEp.dismiss()
             }
 
         })
@@ -135,9 +123,13 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
                     PlayAudioManager.isShowNoti = true;
                 }
             })
+            MyApplication.playerState.observe(it, { playerState ->
+                if (playerState == Player.STATE_ENDED) {
+                    mediaPlayer.seekTo(0, 0);
+                }
+            })
             MyApplication.mMediaItem.observe(it, {
-                checkDownloadState();
-                viewModel?.currentPart?.postValue("Tap ${mediaPlayer.currentMediaItemIndex + 1}");
+                viewModel?.currentPart?.postValue(mediaPlayer.currentMediaItemIndex + 1);
                 viewModel?.reset()
                 if (mediaPlayer.duration > 0) {
                     viewModel.duration.postValue(mediaPlayer.duration);
@@ -145,28 +137,6 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
 
             })
 
-            listDownloading.observe(this, { download ->
-                if (download.size == 0 || download == null) {
-                    binding.inDownloadLayout.visibility = View.GONE;
-                    binding.imgDownload.visibility = View.VISIBLE;
-                    downloadId = null;
-                }
-                download?.forEach { downloadIt ->
-                    if (downloadIt.audioId == item.id &&
-                        downloadIt.ep == mediaPlayer.currentMediaItemIndex
-                    ) {
-                        binding.inDownloadLayout.visibility = View.VISIBLE;
-                        binding.imgDownload.visibility = View.GONE;
-                        binding.downloadProgressBar.progress = downloadIt.progress
-                        downloadId = downloadIt.id;
-                    } else {
-                        binding.inDownloadLayout.visibility = View.GONE;
-                        binding.imgDownload.visibility = View.VISIBLE;
-                        downloadId = null;
-                    }
-                }
-                checkDownloadState();
-            })
         }
 
         Glide.with(this)
@@ -188,19 +158,20 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
             PlayAudioManager.preparePlayNewAudioList(
                 episodes
             )
-            var result = MyApplication.audioTable.findAudio(item.id)
+            audioTable.updateAudioHistoryTime(requireContext(), item.id)
 
-            Log.d(TAG, "onCreate: " + result[0].curEp)
+            var result = audioTable.findAudio(item.id)
+
             mediaPlayer.playWhenReady = true
 
             if (result.size > 0) {
                 var audioItem = result[0];
-                Log.d(TAG, "seeking: ");
                 mediaPlayer.seekTo(audioItem.curEp, audioItem.progress)
             }
 
 
             //
+
             val sharedPref: SharedPreferences =
                 requireContext().getSharedPreferences(Key.KEY_STORE, MODE_PRIVATE)
 
@@ -209,10 +180,9 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
             editor.commit()
 
         } else {
-            checkDownloadState();
             viewModel.isPlaying.postValue(mediaPlayer.isPlaying)
             viewModel.duration.postValue(mediaPlayer.duration)
-            viewModel.currentPart?.postValue("Tap ${mediaPlayer.currentMediaItemIndex + 1}");
+            viewModel.currentPart?.postValue(mediaPlayer.currentMediaItemIndex + 1);
             if (mediaPlayer.isPlaying) {
                 if (!PlayAudioManager.isShowNoti) {
                     ContextCompat.startForegroundService(
@@ -237,16 +207,6 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
 
             imgClock.setOnClickListener {
                 navigateTo(TimerFragment());
-            }
-
-            imgStopDownload.setOnClickListener {
-                try {
-                    Log.d(TAG, "imgStopDownload: ")
-                    fetchAudio.cancel(downloadId!!.toInt())
-                } catch (e: Exception) {
-                    Log.d(TAG, "imgStopDownload Error: " + e.message)
-                    e.printStackTrace()
-                }
             }
 
             imgNext.setOnClickListener {
@@ -324,119 +284,41 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
 
         binding.imgList.setOnClickListener {
             try {
-                bottomSheet.show(parentFragmentManager, BottomSheetEpisodes.TAG);
+                bottomSheetEp.show(parentFragmentManager, BottomSheetEpisodes.TAG);
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
         binding.imgDownload.setOnClickListener {
-
-            if (isDownloaded) {
-                Toast.makeText(
+            if (checkSelfPermission(
                     requireContext(),
-                    "Bạn đã tải tập truyện này rồi!",
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
-                if (checkSelfPermission(
-                        requireContext(),
+                    WRITE_EXTERNAL_STORAGE
+                ) !==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        requireActivity(),
                         WRITE_EXTERNAL_STORAGE
-                    ) !==
-                    PackageManager.PERMISSION_GRANTED
-                ) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            requireActivity(),
-                            WRITE_EXTERNAL_STORAGE
-                        )
-                    ) {
-                        ActivityCompat.requestPermissions(
-                            requireActivity(),
-                            arrayOf(WRITE_EXTERNAL_STORAGE),
-                            1
-                        )
-                    } else {
-                        ActivityCompat.requestPermissions(
-                            requireActivity(),
-                            arrayOf(WRITE_EXTERNAL_STORAGE), 1
-                        )
-                    }
-                } else {
-                    val file = "${item.id}_ID_${mediaPlayer.currentMediaItemIndex + 1}.mp3"
-                    val downloadsPath =
-                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path
-                    val dirPath = "$downloadsPath/TopTopFiles/$file"
-
-                    val request = Request(episodes[mediaPlayer.currentMediaItemIndex], dirPath)
-                    request.priority = Priority.HIGH
-                    request.networkType = NetworkType.ALL
-
-                    fetchAudio.enqueue(request, { updatedRequest ->
-                        var downloadItem = DownloadAudio(
-                            id = updatedRequest.id.toString(),
-                            audioId = item.id,
-                            uri = dirPath,
-                            ep = mediaPlayer.currentMediaItemIndex,
-                        )
-                        addNewDownload(downloadItem)
-
-                    }) { error ->
-
-                        Log.d("KHOA", "downloadError" + error)
-                    }
-
-                }
-
-            }
-        }
-
-    }
-
-    private fun checkDownloadState() {
-
-        binding.inDownloadLayout.visibility = View.GONE;
-        binding.imgDownload.visibility = View.VISIBLE;
-
-        var result =
-            downloadTable.findDownloadByAudioId(item.id, mediaPlayer.currentMediaItemIndex);
-        if (result != null) {
-            when (result.state) {
-                DownloadState.COMPLETED -> {
-                    isDownloaded = true;
-                    context?.apply {
-                        binding.imgDownload.setImageDrawable(
-                            getDrawable(
-                                this,
-                                com.kflower.gameworld.R.drawable.ic_check
-                            )
-                        )
-                    }
-                    downloadId = null;
-                }
-                DownloadState.DOWNLOADING -> {
-                    binding.inDownloadLayout.visibility = View.VISIBLE;
-                    binding.imgDownload.visibility = View.GONE;
-                    binding.downloadProgressBar.progress = result.progress
-                    downloadId = result.id;
-                }
-                else -> {
-                    binding.inDownloadLayout.visibility = View.GONE;
-                    binding.imgDownload.visibility = View.VISIBLE;
-                    downloadId = null;
-                }
-            }
-        } else {
-            context?.apply {
-                binding.imgDownload.setImageDrawable(
-                    getDrawable(
-                        this,
-                        com.kflower.gameworld.R.drawable.ic_download
                     )
-                )
+                ) {
+                    ActivityCompat.requestPermissions(
+                        requireActivity(),
+                        arrayOf(WRITE_EXTERNAL_STORAGE),
+                        1
+                    )
+                } else {
+                    ActivityCompat.requestPermissions(
+                        requireActivity(),
+                        arrayOf(WRITE_EXTERNAL_STORAGE), 1
+                    )
+                }
             }
-            isDownloaded = false;
-        }
-    }
+            else bottomSheetDownload.show(parentFragmentManager, BottomSheetDownload.TAG);
 
+
+        }
+
+    }
 
     override fun getLayoutBinding(): ViewDataBinding {
         return binding;
@@ -444,8 +326,8 @@ class PlayAudioFragment(val item: AudioBook) : BaseFragment() {
 
 
     override fun onDestroy() {
-//        listener= null
         super.onDestroy()
     }
+
 
 }

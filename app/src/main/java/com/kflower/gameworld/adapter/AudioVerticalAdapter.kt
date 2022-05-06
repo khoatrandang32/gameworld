@@ -21,6 +21,7 @@ import com.kflower.gameworld.MyApplication.Companion.TAG
 import com.kflower.gameworld.R
 import com.kflower.gameworld.common.PlayAudioManager
 import com.kflower.gameworld.common.bitMapToString
+import com.kflower.gameworld.common.toBitMap
 import com.kflower.gameworld.interfaces.OnClickAudioBook
 import com.kflower.gameworld.model.AudioBook
 
@@ -65,18 +66,23 @@ class AudioVerticalAdapter(
             lvCategories.layoutManager = layoutManager;
             lvCategories.adapter = SmallCategoriesAdapter(context, audio.categories)
 
-            Glide.with(context)
-                .asBitmap()
-                .load(audio.thumbnailUrl)
-                .into(object : CustomTarget<Bitmap>() {
-                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                        imgView.setImageBitmap(resource)
-                        audio.imgBase64= resource.bitMapToString()
-                    }
+            if(audio.imgBase64==null){
+                Glide.with(context)
+                    .asBitmap()
+                    .load(audio.thumbnailUrl)
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                            imgView.setImageBitmap(resource)
+                            audio.imgBase64= resource.bitMapToString()
+                        }
 
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                    }
-                })
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                        }
+                    })
+            }
+            else{
+                imgView.setImageBitmap(audio.imgBase64.toBitMap())
+            }
 
             txtAudioBookName.text = audio.title
             txtEpisodesAmount.text = "${audio.episodesAmount} Episodes";

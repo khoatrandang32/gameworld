@@ -7,8 +7,13 @@
     </data>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:paddingHorizontal="@dimen/layout_px"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <TextView
+            android:text="downloaded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvDownload"
             android:layout_width="match_parent"

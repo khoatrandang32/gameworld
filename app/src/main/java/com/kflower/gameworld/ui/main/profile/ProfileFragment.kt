@@ -1,21 +1,24 @@
 package com.kflower.gameworld.ui.main.profile
 
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kflower.gameworld.R
 import com.kflower.gameworld.adapter.OptionAdapter
+import com.kflower.gameworld.common.core.BaseChildFragment
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.databinding.HomeFragmentBinding
 import com.kflower.gameworld.databinding.ProfileFragmentBinding
 import com.kflower.gameworld.model.Option
 import com.kflower.gameworld.ui.downloadColection.DownloadCollectionFragment
+import com.kflower.gameworld.ui.history.HistoryAudioFragment
 import com.kflower.gameworld.ui.login.LoginFragment
 import com.kflower.gameworld.ui.main.home.HomeFragment
 import com.kflower.gameworld.ui.main.home.HomeViewModel
 
-class ProfileFragment : BaseFragment() {
+class ProfileFragment : BaseChildFragment() {
 
     companion object {
         fun newInstance() = ProfileFragment()
@@ -45,8 +48,8 @@ class ProfileFragment : BaseFragment() {
                 DownloadCollectionFragment()
             )
         )
-        listOption.add(Option(2, "Lịch sử nghe", R.drawable.ic_outline_history))
-        listOption.add(Option(3, "Thể loại yêu thích", R.drawable.ic_categories_outline))
+        listOption.add(Option(2, "Lịch sử nghe", R.drawable.ic_outline_history,
+            HistoryAudioFragment()))
         listOption.add(Option(4, "Thông báo", R.drawable.ic_notification))
         //
         optionAdapter =

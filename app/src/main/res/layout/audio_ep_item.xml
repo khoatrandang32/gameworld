@@ -2,38 +2,60 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <data >
+
+    <data>
+
         <variable
             name="isSelect"
             type="Boolean" />
+
+        <variable
+            name="isDisable"
+            type="Boolean" />
+
     </data>
-    <LinearLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/dimen_10"
-        android:layout_height="wrap_content"
-        android:background="@{isSelect?@drawable/bg_solid_rounded:@drawable/bg_edt_layout}"
-        android:gravity="center_vertical"
+    <androidx.cardview.widget.CardView
         android:layout_marginHorizontal="@dimen/dimen_8"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/dimen_6"
-        android:paddingVertical="@dimen/dimen_8">
-
-        <TextView
-            android:id="@+id/txtAudioEp"
-            android:layout_width="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_10"
+        app:cardCornerRadius="@dimen/dimen_8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@{isSelect?@color/white:@color/main_color}"
-            android:textSize="@dimen/text_size_14"
-            android:textStyle="bold"
-            tools:text="Tap 1" />
+            android:background="@{isDisable?@color/gray_color:(isSelect?@color/main_color:@color/sub_color)}"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:id="@+id/layoutProgress"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:progressDrawable="@drawable/custom_download_progress_bg"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:progress="20"
+                android:visibility="gone"
+                android:layout_height="0dp"/>
 
-        <ImageView
-            android:id="@+id/imgDownload"
-            android:layout_width="@dimen/dimen_18"
-            android:layout_height="@dimen/dimen_18"
-            android:src="@drawable/ic_download"
-            app:tint="@color/main_color" />
-    </LinearLayout>
+            <TextView
+                android:paddingHorizontal="@dimen/dimen_6"
+                android:paddingVertical="@dimen/dimen_8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/txtAudioEp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@{isDisable?@color/white:isSelect?@color/white:@color/main_color}"
+                android:textSize="@dimen/text_size_14"
+                android:textStyle="bold"
+                tools:text="Tap 1" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 </layout>
