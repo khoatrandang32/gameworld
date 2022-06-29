@@ -1,5 +1,6 @@
 package com.kflower.gameworld.bottomsheet
 
+import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -54,28 +56,21 @@ class BottomSheetEpisodes : BottomSheetDialogFragment {
             episodes,
             listener, audio,
         );
-
-        val offsetFromTop = 400
-        (dialog as? BottomSheetDialog)?.behavior?.apply {
-            isFitToContents = false
-//            expandedOffset = offsetFromTop
-            state = BottomSheetBehavior.STATE_EXPANDED
-            setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    if(newState==BottomSheetBehavior.STATE_HALF_EXPANDED||newState== BottomSheetBehavior.STATE_COLLAPSED||newState== BottomSheetBehavior.STATE_HIDDEN){
-                        dismiss()
-                    }
-                }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                }
-
-            })
-        }
-
         return view;
     }
 
+    override fun onStart() {
+        super.onStart()
+        val appView = view
+        appView?.post {
+            val parent = appView.parent as View
+            val params = parent.layoutParams as CoordinatorLayout.LayoutParams
+            val behavior = params.behavior
+            val bottomSheetBehavior = behavior as BottomSheetBehavior<*>?
+            bottomSheetBehavior!!.peekHeight = appView.measuredHeight
+        }
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)

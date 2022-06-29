@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.kflower.gameworld.MyApplication.Companion.appFragmentManager
 import com.kflower.gameworld.R
+import com.kflower.gameworld.bottomsheet.BottomSheetMedia
 import com.kflower.gameworld.common.PlayAudioManager
 import com.kflower.gameworld.common.components.AppBottomBarInterface
 import com.kflower.gameworld.common.core.BaseChildFragment
@@ -66,7 +67,9 @@ open class MainFragment : BaseChildFragment() {
         })
         binding.miniMedia.setOnClick {
             PlayAudioManager.playingAudio?.let {
-                navigateTo(PlayAudioFragment(it))
+//                navigateTo(PlayAudioFragment(it))
+                showBottomSheet(it)
+
             }
         }
         setStatusBarMode(StatusMode.DarkMode)

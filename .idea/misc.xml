@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidProject/app/src/main/res/font/font.xml" value="0.14629629629629629" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/app_edittext_component_layout.xml" value="0.1" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/base_activity.xml" value="0.17300724637681159" />
@@ -124,6 +125,18 @@
         <entry key="..\:/Work/Kotlin/GameWolrd/app/src/main/res/layout/small_category_item.xml" value="0.536" />
         <entry key="..\:/Work/Kotlin/GameWolrd/app/src/main/res/layout/splash_fragment.xml" value="0.245018115942029" />
         <entry key="..\:/Work/Kotlin/GameWolrd/app/src/main/res/layout/timer_fragment.xml" value="0.16" />
+        <entry key="app/src/main/res/drawable/bg_cover_white.xml" value="0.1505" />
+        <entry key="app/src/main/res/drawable/bg_rounded_.xml" value="0.1505" />
+        <entry key="app/src/main/res/drawable/bg_sub_btn.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/bg_top_rounded.xml" value="0.1505" />
+        <entry key="app/src/main/res/layout/audio_detail_fragment.xml" value="0.14114583333333333" />
+        <entry key="app/src/main/res/layout/audio_ep_item.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/bottom_sheet_media_player.xml" value="0.3020442717885001" />
+        <entry key="app/src/main/res/layout/bottom_sheet_timer.xml" value="0.15572916666666667" />
+        <entry key="app/src/main/res/layout/categories_fragment.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/category_item.xml" value="0.140625" />
+        <entry key="app/src/main/res/layout/play_audio_fragment.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/timer_fragment.xml" value="0.15572916666666667" />
       </map>
     </option>
   </component>

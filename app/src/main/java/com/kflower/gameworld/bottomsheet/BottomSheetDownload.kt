@@ -1,6 +1,8 @@
 package com.kflower.gameworld.bottomsheet
 
+import android.app.Dialog
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,12 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.MyApplication.Companion.fetchAudio
@@ -21,12 +23,12 @@ import com.kflower.gameworld.MyApplication.Companion.mediaPlayer
 import com.kflower.gameworld.R
 import com.kflower.gameworld.adapter.AudioEpAdapter
 import com.kflower.gameworld.adapter.SelectedDownloadAdapter
-import com.kflower.gameworld.adapter.SmallCategoriesAdapter
 import com.kflower.gameworld.common.getDownloadSpecificPath
 import com.kflower.gameworld.enum.DownloadState
 import com.kflower.gameworld.model.AudioBook
 import com.tonyodev.fetch2.*
 import com.tonyodev.fetch2core.DownloadBlock
+
 
 class BottomSheetDownload : BottomSheetDialogFragment {
     lateinit var episodes: MutableList<String>;
@@ -100,25 +102,6 @@ class BottomSheetDownload : BottomSheetDialogFragment {
         recyclerViewDownload.layoutManager = layoutManager;
         recyclerViewDownload.adapter = selectedDownloadAdapter;
         ///
-
-        val offsetFromTop = 400
-        (dialog as? BottomSheetDialog)?.behavior?.apply {
-//            isFitToContents = false
-//            expandedOffset = offsetFromTop
-            state = BottomSheetBehavior.STATE_EXPANDED
-            setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    if (newState == BottomSheetBehavior.STATE_HALF_EXPANDED || newState == BottomSheetBehavior.STATE_COLLAPSED || newState == BottomSheetBehavior.STATE_HIDDEN) {
-                        dismiss()
-                    }
-                }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                }
-
-            })
-        }
-
         btnDone.setOnClickListener {
             var listRequest = mutableListOf<Request>()
             audioAdapter.listDownload.forEach { itemDownload ->
@@ -142,7 +125,7 @@ class BottomSheetDownload : BottomSheetDialogFragment {
             dismiss()
 
         }
-        fetchListener= object :FetchListener{
+        fetchListener = object : FetchListener {
             override fun onAdded(download: Download) {
             }
 
@@ -206,6 +189,20 @@ class BottomSheetDownload : BottomSheetDialogFragment {
     override fun onDestroy() {
         fetchAudio.removeListener(fetchListener)
         super.onDestroy()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val appView = view
+        appView?.post {
+            val parent = appView.parent as View
+            val params = parent.layoutParams as CoordinatorLayout.LayoutParams
+            val behavior = params.behavior
+            val bottomSheetBehavior = behavior as BottomSheetBehavior<*>?
+            bottomSheetBehavior!!.peekHeight = appView.measuredHeight
+        }
+
     }
 
 

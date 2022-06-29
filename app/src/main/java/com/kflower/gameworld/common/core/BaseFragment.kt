@@ -18,10 +18,12 @@ import com.kflower.gameworld.R
 import com.kflower.gameworld.constants.StatusMode
 import com.kflower.gameworld.interfaces.IOnBackPressed
 import android.view.ViewGroup
+import com.kflower.gameworld.bottomsheet.BottomSheetMedia
 import com.kflower.gameworld.common.AppFragment
 import com.kflower.gameworld.common.PlayAudioManager
 import com.kflower.gameworld.databinding.BaseActivityBinding
 import com.kflower.gameworld.databinding.BaseFragmentLayoutBinding
+import com.kflower.gameworld.model.AudioBook
 import com.kflower.gameworld.ui.play.PlayAudioFragment
 
 
@@ -29,6 +31,7 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
     private var fgParent: ViewGroup? = null
     lateinit var bindingBase: BaseFragmentLayoutBinding
     lateinit var childFragment: Fragment
+    lateinit var bottomSheetMedia: BottomSheetMedia
 
 
     override fun onCreateView(
@@ -46,9 +49,10 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
                 R.anim.slide_right,
             )
             PlayAudioManager.playingAudio?.let {
-                ft?.replace(R.id.container, PlayAudioFragment(it))
-
+//                ft?.replace(R.id.container, PlayAudioFragment(it))
+                showBottomSheet(it)
             }
+
             ft?.addToBackStack(null)
             ft?.commit()
         }
@@ -66,6 +70,11 @@ public abstract class BaseFragment : Fragment(), IOnBackPressed {
         }
         setupUI(view)
         return view
+    }
+
+    fun showBottomSheet(it:AudioBook){
+        bottomSheetMedia=BottomSheetMedia(it);
+        bottomSheetMedia.show(childFragmentManager, BottomSheetMedia.TAG);
     }
 
 

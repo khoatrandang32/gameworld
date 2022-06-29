@@ -12,15 +12,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.R
+import com.kflower.gameworld.bottomsheet.BottomSheetMedia
 import com.kflower.gameworld.common.AppFragment
 import com.kflower.gameworld.common.PlayAudioManager
 import com.kflower.gameworld.constants.StatusMode
 import com.kflower.gameworld.databinding.BaseFragmentLayoutBinding
 import com.kflower.gameworld.interfaces.IOnBackPressed
+import com.kflower.gameworld.model.AudioBook
 import com.kflower.gameworld.ui.play.PlayAudioFragment
 
 public abstract class BaseChildFragment : Fragment(), IOnBackPressed {
     lateinit var childFragment: Fragment
+    lateinit var bottomSheetMedia: BottomSheetMedia
 
 
     override fun onCreateView(
@@ -47,6 +50,12 @@ public abstract class BaseChildFragment : Fragment(), IOnBackPressed {
         ft?.commit()
 
     }
+
+    fun showBottomSheet(it: AudioBook){
+        bottomSheetMedia=BottomSheetMedia(it);
+        bottomSheetMedia.show(childFragmentManager, BottomSheetMedia.TAG);
+    }
+
 
     fun parentNavigateTo(newFragment: Fragment) {
         val ft: FragmentTransaction? = MyApplication.appFragmentManager?.beginTransaction()

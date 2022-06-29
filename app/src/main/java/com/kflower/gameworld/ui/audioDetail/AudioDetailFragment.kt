@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kflower.gameworld.MyApplication
 import com.kflower.gameworld.adapter.CommentAdapter
+import com.kflower.gameworld.bottomsheet.BottomSheetMedia
 import com.kflower.gameworld.common.PlayAudioManager
 import com.kflower.gameworld.common.core.BaseFragment
 import com.kflower.gameworld.common.toBitMap
@@ -27,7 +28,6 @@ class AudioDetailFragment(
 ) : BaseFragment() {
 
     private lateinit var viewModel: AudioDetailViewModel
-
     lateinit var binding: AudioDetailFragmentBinding;
 
     override fun onCreateView(
@@ -52,14 +52,18 @@ class AudioDetailFragment(
         }
         binding.viewModel = viewModel;
         binding.imgPlay.setOnClickListener {
-            navigateTo(PlayAudioFragment(item))
+//            navigateTo(PlayAudioFragment(item))
+            showBottomSheet(item)
         }
 
         val layoutManagerVertical =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
+        Glide.with(this).load(item.imgBase64.toBitMap())
+            .transform(GlimpseTransformation())
+            .into(binding.imgThumbnail);
+
         binding.apply {
-            imgThumbnail.setImageBitmap(item.imgBase64.toBitMap())
             lvComments.layoutManager = layoutManagerVertical;
             lvComments.adapter = CommentAdapter(requireContext(), mutableListOf());
             refreshLayout.apply {

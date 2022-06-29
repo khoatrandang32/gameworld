@@ -33,8 +33,10 @@ import android.view.View.OnTouchListener
 import android.widget.EditText
 import android.app.Activity
 import android.view.inputmethod.InputMethodManager
+import com.kflower.gameworld.MyApplication.Companion.appFragmentManager
 import com.kflower.gameworld.MyApplication.Companion.audioTable
 import com.kflower.gameworld.MyApplication.Companion.downloadTable
+import com.kflower.gameworld.bottomsheet.BottomSheetMedia
 import com.kflower.gameworld.common.getAudioIdFromUri
 import com.kflower.gameworld.enum.DownloadState
 
@@ -42,7 +44,6 @@ import com.kflower.gameworld.enum.DownloadState
 class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         var idResult= getPreferences(MODE_PRIVATE).getString(Key.KEY_APP_ID, null);
 
         if(idResult.isNullOrEmpty()){
@@ -89,10 +90,10 @@ class MainActivity : BaseActivity() {
             PlayAudioManager.isShowNoti = true;
 
             mediaPlayer.seekTo(item.curEp,item.progress)
-
-
         }
     }
+
+
 
     override fun onResume() {
         super.onResume()

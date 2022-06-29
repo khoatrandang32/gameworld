@@ -52,6 +52,7 @@ import com.kflower.gameworld.model.DownloadAudio
 import com.kflower.gameworld.services.CountDownServices
 import java.util.*
 import android.content.SharedPreferences
+import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import com.kflower.gameworld.common.getAudioEpFromUri
 import com.kflower.gameworld.common.getAudioIdFromUri
@@ -187,6 +188,7 @@ class MyApplication : Application() {
                 error: com.tonyodev.fetch2.Error,
                 throwable: Throwable?
             ) {
+                Toast.makeText(mAppContext,"Error : "+error.name,Toast.LENGTH_LONG).show();
             }
 
             override fun onPaused(download: Download) {
