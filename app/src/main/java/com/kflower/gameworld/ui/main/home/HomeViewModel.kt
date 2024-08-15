@@ -13,7 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeViewModel: ViewModel() {
+class HomeViewModel : ViewModel() {
     val listAudioGroup = MutableLiveData<MutableList<AudioGroup>>()
     val isLoading = MutableLiveData(false)
     val isError = MutableLiveData(false)
@@ -39,11 +39,12 @@ class HomeViewModel: ViewModel() {
             }
 
             override fun onFailure(call: Call<MutableList<AudioGroup>>, t: Throwable) {
-                Log.d(TAG, "onFailure: "+t.message)
+                Log.d(TAG, "onFailure xx: " + t.message)
 //                NetworkErrorDialog(context = context).show()
                 Handler().postDelayed({
                     isError.postValue(true)
-                }, 1000)            }
+                }, 1000)
+            }
 
         })
     }

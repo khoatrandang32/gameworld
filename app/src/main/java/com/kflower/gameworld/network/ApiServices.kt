@@ -9,7 +9,7 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiServices {
-    @POST("/audios/getHomeCate")
+    @GET("/audios/getHomeCate")
     fun getAudioList(): Call<MutableList<AudioGroup>>
 
     @GET("/audios/getAudio/{id}")
@@ -21,13 +21,12 @@ interface ApiServices {
         @Field("title") title: String
     ): Call<MutableList<AudioBook>>
 
-    @POST("/categories/getAll")
+    @GET("/categories/getAll")
     fun getAllCategories(): Call<MutableList<Category>>
 
-    @FormUrlEncoded
-    @POST("/audios/getByCategory")
+    @GET("/audios/getByCategory/{categoryId}")
     fun getListAudioByCategory(
-        @Field("categoryId") categoryId: String
+        @Path("categoryId") categoryId: String
     ): Call<MutableList<AudioBook>>
 
 }

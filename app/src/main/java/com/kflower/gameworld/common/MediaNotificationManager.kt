@@ -128,7 +128,8 @@ class MediaNotificationManager(musicContext: MediaSessionService) {
         val openUI = Intent(mService, MainActivity::class.java)
         openUI.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         return PendingIntent.getActivity(
-            mService, REQUEST_CODE, openUI, PendingIntent.FLAG_CANCEL_CURRENT
+            mService, REQUEST_CODE, openUI,
+            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 
